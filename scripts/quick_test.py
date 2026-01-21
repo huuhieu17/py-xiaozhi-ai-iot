@@ -2,13 +2,19 @@
 """Quick test script for Smart C AI on Raspberry Pi"""
 import subprocess
 import sys
+import os
 
 def run(cmd):
+    """Run a shell command safely and return output."""
     try:
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=10)
         return result.stdout.strip() or result.stderr.strip()
-    except:
-        return "Error"
+    except subprocess.TimeoutExpired:
+        return "Error: Command timed out"
+    except subprocess.SubprocessError as e:
+        return f"Error: {e}"
+    except OSError as e:
+        return f"Error: {e}"
 
 def test_audio():
     print("\n🔊 AUDIO TEST")
@@ -28,7 +34,7 @@ def test_audio():
     # Test record
     print("\n📢 Recording 2 seconds...")
     run("arecord -d 2 -f cd /tmp/test.wav 2>/dev/null")
-    if subprocess.run("test -f /tmp/test.wav", shell=True).returncode == 0:
+    if os.path.exists("/tmp/test.wav"):
         size = run("ls -lh /tmp/test.wav | awk '{print $5}'")
         print(f"✓ Recording saved: {size}")
     else:

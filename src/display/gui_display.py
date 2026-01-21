@@ -784,7 +784,7 @@ class GuiDisplay(BaseDisplay, QObject, metaclass=CombinedMeta):
             # Cố gắng khôi phục video nếu có lỗi
             try:
                 self.reload_video_from_config()
-            except:
+            except Exception:
                 pass
 
     def reload_video_from_config(self) -> None:

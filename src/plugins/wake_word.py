@@ -25,7 +25,11 @@ class WakeWordPlugin(Plugin):
             # Gắn kết callback
             self.detector.on_detected(self._on_detected)
             self.detector.on_error = self._on_error
+        except ImportError:
+            # WakeWordDetector module not available
+            self.detector = None
         except Exception:
+            # Other initialization errors
             self.detector = None
 
     async def start(self) -> None:
@@ -40,8 +44,10 @@ class WakeWordPlugin(Plugin):
                 logger.warning("WakeWordPlugin: audio_codec not found in app, detection will not start.")
                 return
             await self.detector.start(audio_codec)
-        except Exception:
-            pass
+        except Exception as e:
+            # Log but don't crash if wake word fails to start
+            from src.utils.logging_config import get_logger
+            get_logger(__name__).warning(f"Failed to start wake word detection: {e}")
 
     async def stop(self) -> None:
         if self.detector:
