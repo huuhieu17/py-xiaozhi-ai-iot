@@ -220,7 +220,7 @@ StandardOutput=append:$INSTALL_DIR/logs/smartc.log
 StandardError=append:$INSTALL_DIR/logs/smartc.log
 
 # Giới hạn tài nguyên để tối ưu
-MemoryMax=512M
+MemoryMax=452M
 CPUQuota=80%
 
 [Install]
