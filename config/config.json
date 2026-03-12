@@ -16,7 +16,7 @@
   "WAKE_WORD_OPTIONS": {
     "USE_WAKE_WORD": true,
     "PICOVOICE_API_KEY": "+O7z1r9Q9TI5Gab+D4a4VbvDxda6alboY0+zOoDd23NRl82xvuoM5Q==",
-    "KEYWORDS": ["Hey lily"],
+    "KEYWORDS": ["hey siri", "ok google"],
     "SENSITIVITY": 0.5
   },
   "CAMERA": {
