@@ -100,14 +100,14 @@ install_python_deps() {
         numpy \
         aiohttp \
         websockets \
-        sherpa-onnx \
+        pvporcupine \
         2>&1 | tee -a "$LOG_FILE" || \
     pip3 install --user \
         sounddevice \
         numpy \
         aiohttp \
         websockets \
-        sherpa-onnx \
+        pvporcupine \
         2>&1 | tee -a "$LOG_FILE"
     
     log "✓ Python dependencies đã cài đặt"
