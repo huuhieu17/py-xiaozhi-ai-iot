@@ -15,14 +15,9 @@
   },
   "WAKE_WORD_OPTIONS": {
     "USE_WAKE_WORD": true,
-    "MODEL_PATH": "models",
-    "NUM_THREADS": 4,
-    "PROVIDER": "cpu",
-    "MAX_ACTIVE_PATHS": 2,
-    "KEYWORDS_SCORE": 1.8,
-    "KEYWORDS_THRESHOLD": 0.2,
-    "NUM_TRAILING_BLANKS": 1,
-    "PICOVOICE_API_KEY":""
+    "PICOVOICE_API_KEY": "+O7z1r9Q9TI5Gab+D4a4VbvDxda6alboY0+zOoDd23NRl82xvuoM5Q==",
+    "KEYWORDS": ["Hey lily"],
+    "SENSITIVITY": 0.5
   },
   "CAMERA": {
     "camera_index": 0,
