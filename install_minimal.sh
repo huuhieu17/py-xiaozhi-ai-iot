@@ -322,17 +322,17 @@ optimize_system() {
     log "BƯỚC 7: Tối ưu hệ thống"
     log "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     
-    # Tắt các service không cần thiết
-    sudo systemctl disable bluetooth 2>/dev/null || true
-    sudo systemctl stop bluetooth 2>/dev/null || true
+    # # Tắt các service không cần thiết
+    # sudo systemctl disable bluetooth 2>/dev/null || true
+    # sudo systemctl stop bluetooth 2>/dev/null || true
     
-    # Tắt avahi (mDNS)
-    sudo systemctl disable avahi-daemon 2>/dev/null || true
-    sudo systemctl stop avahi-daemon 2>/dev/null || true
+    # # Tắt avahi (mDNS)
+    # sudo systemctl disable avahi-daemon 2>/dev/null || true
+    # sudo systemctl stop avahi-daemon 2>/dev/null || true
     
-    # Tắt triggerhappy (hotkey daemon)
-    sudo systemctl disable triggerhappy 2>/dev/null || true
-    sudo systemctl stop triggerhappy 2>/dev/null || true
+    # # Tắt triggerhappy (hotkey daemon)
+    # sudo systemctl disable triggerhappy 2>/dev/null || true
+    # sudo systemctl stop triggerhappy 2>/dev/null || true
     
     # Giảm GPU memory (nếu không dùng màn hình)
     if ! grep -q "gpu_mem=16" /boot/config.txt 2>/dev/null && \
