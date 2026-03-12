@@ -61,18 +61,22 @@ install_audio() {
     
     # Chỉ cài những gì cần thiết cho audio
     sudo apt-get install -y \
-        alsa-utils \
-        libportaudio2 \
-        portaudio19-dev \
-        libsndfile1 \
-        libopus0 \
-        libopus-dev \
-        2>&1 | tee -a "$LOG_FILE"
+    alsa-utils \
+    pulseaudio \
+    pulseaudio-module-bluetooth \
+    bluez \
+    bluez-tools \
+    libportaudio2 \
+    portaudio19-dev \
+    libsndfile1 \
+    libopus0 \
+    libopus-dev \
+    2>&1 | tee -a "$LOG_FILE"
     
     # Thêm user vào group audio
     sudo usermod -aG audio $USER
     
-    log "✓ Audio đã cài đặt (ALSA only, không PulseAudio)"
+    log "✓ Audio đã cài đặt "
 }
 
 # =============================================================================
