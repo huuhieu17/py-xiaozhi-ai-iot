@@ -3,11 +3,17 @@ Mô-đun tập hợp các hàm tiện ích chung bao gồm chuyển văn bản t
 """
 
 import queue
+import re
 import shutil
 import threading
 import time
+import tempfile
+import os
+import uuid
 import webbrowser
 from typing import Optional
+
+import requests
 
 from src.utils.logging_config import get_logger
 
@@ -19,6 +25,74 @@ _audio_lock = threading.Lock()
 _audio_worker_thread = None
 _audio_worker_running = False
 _audio_device_warmed_up = False
+
+
+def clean_ssml_tags(text: str) -> str:
+    if not text:
+        return ""
+    return re.sub(r"<[^>]+>", "", text).strip()
+
+
+def synthesize_text_custom_tts(text_content: str, output_filename: str, voice_gender: str = "FEMALE") -> Optional[str]:
+    custom_tts_base_url = "https://tts.imsteve.dev"
+    custom_tts_api_key = f"rand-{uuid.uuid4().hex}"
+
+    payload = {
+        "input": clean_ssml_tags(text_content),
+        "voice": "vi-VN-HoaiMyNeural" if voice_gender == "FEMALE" else "vi-VN-NamMinhNeural",
+        "response_format": "mp3",
+    }
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {custom_tts_api_key}",
+    }
+
+    try:
+        response = requests.post(
+            f"{custom_tts_base_url}/v1/audio/speech",
+            json=payload,
+            headers=headers,
+            timeout=30,
+        )
+        response.raise_for_status()
+        with open(output_filename, "wb") as file:
+            file.write(response.content)
+        return output_filename
+    except Exception as e:
+        logger.error(f"❌ TTS Error: {e}")
+        return None
+
+
+def _play_custom_tts(text: str) -> bool:
+    temp_file_path = None
+    try:
+        import pygame
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_file:
+            temp_file_path = temp_file.name
+
+        output_file = synthesize_text_custom_tts(text, temp_file_path, "FEMALE")
+        if not output_file:
+            return False
+
+        if not pygame.mixer.get_init():
+            pygame.mixer.init()
+
+        pygame.mixer.music.load(output_file)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():
+            time.sleep(0.05)
+        return True
+    except Exception as e:
+        logger.error(f"Lỗi khi phát custom TTS: {e}")
+        return False
+    finally:
+        if temp_file_path:
+            try:
+                os.remove(temp_file_path)
+            except Exception:
+                pass
 
 
 def _warm_up_audio_device():
@@ -142,7 +216,6 @@ def copy_to_clipboard(text: str) -> bool:
 def _play_windows_tts(text: str, set_chinese_voice: bool = True) -> bool:
     try:
         import win32com.client
-
         speaker = win32com.client.Dispatch("SAPI.SpVoice")
 
         if set_chinese_voice:
@@ -224,17 +297,16 @@ def _play_macos_tts(text: str) -> bool:
 
 
 def _play_system_tts(text: str) -> bool:
-    import os
     import platform
-
+    
     if os.name == "nt":
-        return _play_windows_tts(text)
+        return _play_custom_tts(text)
     else:
         system = platform.system()
         if system == "Linux":
-            return _play_linux_tts(text)
+            return _play_custom_tts(text)
         elif system == "Darwin":
-            return _play_macos_tts(text)
+            return _play_custom_tts(text)
         else:
             logger.warning(f"Hệ thống không được hỗ trợ {system}, bỏ qua phát âm thanh")
             return False
