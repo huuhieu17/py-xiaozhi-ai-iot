@@ -1,5 +1,4 @@
 cryptography==44.0.1
-numpy==1.26.4
 sounddevice>=0.4.4
 pygame==2.6.1
 PyQt5==5.15.11
