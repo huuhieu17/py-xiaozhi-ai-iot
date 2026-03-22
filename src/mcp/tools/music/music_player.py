@@ -689,31 +689,36 @@ class MusicPlayer:
                 query = title_part.strip()
                 artist_query = artist_part.strip()
 
-            params = {"song": query}
-            if artist_query:
-                params["artist"] = artist_query
-
             base_search_url = str(self.config.get("SEARCH_URL", "")).rstrip("/")
             if not base_search_url:
                 return "", ""
 
-            search_url = (
-                base_search_url
-                if base_search_url.endswith("/stream_pcm")
-                else f"{base_search_url}/stream_pcm"
-            )
+            # API mới: /api/search?q=...
+            # Gộp cả tên bài + ca sĩ để tăng tỉ lệ khớp khi người dùng nhập "Tên bài - Ca sĩ"
+            search_query = f"{query} {artist_query}".strip() if artist_query else query
+            search_url = f"{base_search_url}/api/search"
 
             response = await asyncio.to_thread(
                 requests.get,
                 search_url,
-                params=params,
+                params={"q": search_query},
                 headers=self.config["HEADERS"],
                 timeout=10,
             )
             response.raise_for_status()
 
             data = response.json()
-            songs = data.get("songs") if isinstance(data, dict) else None
+
+            # Ưu tiên format mới: {err, data: {songs: [...]}}
+            songs = None
+            if isinstance(data, dict):
+                api_data = data.get("data")
+                if isinstance(api_data, dict):
+                    songs = api_data.get("songs")
+                # Fallback cho format cũ: {songs: [...]}
+                if songs is None:
+                    songs = data.get("songs")
+
             if not songs:
                 return "", ""
 
@@ -723,28 +728,41 @@ class MusicPlayer:
             lower_artist = artist_query.lower()
             for item in songs:
                 title = str(item.get("title", "")).lower()
-                artist = str(item.get("artist", "")).lower()
+                artist = str(
+                    item.get("artistsNames", "")
+                    or item.get("artist", "")
+                ).lower()
                 title_match = lower_query and lower_query in title
                 artist_match = (not lower_artist) or (lower_artist in artist)
                 if title_match and artist_match:
                     selected_song = item
                     break
 
-            # Chuẩn hóa URL audio (API có thể trả relative path)
-            raw_audio_url = str(selected_song.get("audio_url", "")).strip()
-            if not raw_audio_url:
-                return "", ""
-            audio_url = urljoin(f"{base_search_url}/", raw_audio_url)
+            # API mới trả encodeId, stream tại /api/song/stream?id={encodeId}
+            song_id = str(
+                selected_song.get("encodeId", "")
+                or selected_song.get("id", "")
+            ).strip()
 
-            # Lấy song_id từ query param id nếu có
-            parsed = urlparse(audio_url)
-            song_id = parse_qs(parsed.query).get("id", [""])[0]
-            if not song_id:
-                song_id = str(selected_song.get("id", "") or selected_song.get("title", "")).strip()
+            # Fallback tương thích API cũ có audio_url
+            if song_id:
+                audio_url = f"{base_search_url}/api/song/stream?id={song_id}"
+            else:
+                raw_audio_url = str(selected_song.get("audio_url", "")).strip()
+                if not raw_audio_url:
+                    return "", ""
+                audio_url = urljoin(f"{base_search_url}/", raw_audio_url)
+                parsed = urlparse(audio_url)
+                song_id = parse_qs(parsed.query).get("id", [""])[0]
+                if not song_id:
+                    song_id = str(selected_song.get("title", "")).strip()
 
             # Trích xuất metadata
             title = str(selected_song.get("title", "")).strip() or query
-            artist = str(selected_song.get("artist", "")).strip()
+            artist = str(
+                selected_song.get("artistsNames", "")
+                or selected_song.get("artist", "")
+            ).strip()
             duration_val = selected_song.get("duration", 0)
             try:
                 self.total_duration = int(duration_val)
@@ -884,12 +902,8 @@ class MusicPlayer:
                 logger.warning("LYRIC_URL chưa được cấu hình")
                 return
 
-            # Proxy lyric mới: GET /proxy_lyric?id={song_id}
-            lyric_api_url = (
-                lyric_base_url
-                if lyric_base_url.endswith("/proxy_lyric")
-                else f"{lyric_base_url}/proxy_lyric"
-            )
+            # API mới: GET /api/lyric?id={song_id}
+            lyric_api_url = f"{lyric_base_url}/api/lyric"
             logger.info(f"URL lấy lời bài hát: {lyric_api_url}")
 
             response = await asyncio.to_thread(
@@ -903,15 +917,27 @@ class MusicPlayer:
 
             content_type = (response.headers.get("Content-Type") or "").lower()
 
-            # Fallback tương thích: một số API cũ trả JSON {data: {content: ...}}
+            # Ưu tiên API mới: {data: {file: "https://...lrc"}}
             lrc_content = ""
             if "application/json" in content_type:
                 data = response.json()
-                lrc_content = (
-                    str(data.get("data", {}).get("content", ""))
-                    if isinstance(data, dict)
-                    else ""
-                )
+                if isinstance(data, dict):
+                    payload = data.get("data")
+                    if isinstance(payload, dict):
+                        lrc_file_url = str(payload.get("file", "")).strip()
+                        if lrc_file_url:
+                            lrc_resp = await asyncio.to_thread(
+                                requests.get,
+                                lrc_file_url,
+                                headers=self.config["HEADERS"],
+                                timeout=10,
+                            )
+                            lrc_resp.raise_for_status()
+                            lrc_content = lrc_resp.text or ""
+
+                        # Fallback tương thích: API cũ trả trực tiếp content
+                        if not lrc_content.strip():
+                            lrc_content = str(payload.get("content", "") or "")
             else:
                 lrc_content = response.text or ""
 
