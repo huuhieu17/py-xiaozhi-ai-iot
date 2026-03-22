@@ -26,7 +26,9 @@
   <div class="row">
     <input id="queryInput" type="text" placeholder="Nhập tên bài / link YouTube / videoId" />
     <button onclick="searchTracks()">Search</button>
-    <button onclick="playSelected()">Phát bài đã chọn</button>
+    <button onclick="playSelected()">Start (loa thiết bị)</button>
+    <button onclick="togglePlayback()">Pause/Resume</button>
+    <button onclick="stopPlayback()">Stop</button>
     <button onclick="nextTrack()">Next</button>
   </div>
   <div class="row">
@@ -42,7 +44,7 @@
 
   <h2>Đang phát</h2>
   <div class="card" id="nowPlaying">Chưa phát bài nào</div>
-  <audio id="player" controls style="width: 100%;"></audio>
+  <div class="muted">Phát bằng backend pygame ra loa thiết bị (không dùng audio trình duyệt)</div>
 
   <script>
     (function () {
@@ -54,6 +56,19 @@
         const data = await res.json().catch(() => ({}));
         if (!res.ok || data.ok === false) {
           throw new Error(data.error || res.statusText || 'Request failed');
+        }
+        return data;
+      }
+
+      async function callApiPost(url, body) {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body || {})
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.ok === false) {
+          throw new Error(data.error || data.message || res.statusText || 'Request failed');
         }
         return data;
       }
@@ -133,13 +148,31 @@
         const title = selected.dataset.title || query;
         const artists = selected.dataset.artists || '';
 
-        const audio = document.getElementById('player');
-        audio.src = '/api/youtube/stream?q=' + encodeURIComponent(query);
-        await audio.play().catch(() => {});
+        await callApiPost('/api/youtube/player/play', { q: query });
 
         if (videoId) addHistory(videoId);
         currentSeed = query;
         document.getElementById('nowPlaying').textContent = artists ? `${title} - ${artists}` : title;
+      };
+
+      window.togglePlayback = async function () {
+        try {
+          const data = await callApiPost('/api/youtube/player/toggle');
+          if (data && data.current_song) {
+            document.getElementById('nowPlaying').textContent = data.current_song;
+          }
+        } catch (e) {
+          alert('Lỗi toggle: ' + e.message);
+        }
+      };
+
+      window.stopPlayback = async function () {
+        try {
+          await callApiPost('/api/youtube/player/stop');
+          document.getElementById('nowPlaying').textContent = 'Đã dừng phát';
+        } catch (e) {
+          alert('Lỗi stop: ' + e.message);
+        }
       };
 
       window.nextTrack = async function () {
@@ -153,19 +186,12 @@
           const history = historyIds.join(',');
           const data = await callApi('/api/youtube/next?q=' + encodeURIComponent(seed) + '&history=' + encodeURIComponent(history));
           const next = data.next || {};
-          const streamUrl = String(next.streamUrl || '').trim();
           const videoId = String(next.videoId || '').trim();
           const title = String(next.title || 'Bài tiếp theo').trim();
           const artists = String(next.artists || '').trim();
 
-          const audio = document.getElementById('player');
-          if (streamUrl) {
-            audio.src = streamUrl;
-          } else {
-            const q = next.youtubeUrl || next.videoId || title;
-            audio.src = '/api/youtube/stream?q=' + encodeURIComponent(q);
-          }
-          await audio.play().catch(() => {});
+          const q = next.youtubeUrl || next.videoId || title;
+          await callApiPost('/api/youtube/player/play', { q });
 
           if (videoId) addHistory(videoId);
           currentSeed = next.youtubeUrl || next.videoId || seed;
@@ -175,13 +201,36 @@
         }
       };
 
-      document.getElementById('player').addEventListener('ended', async () => {
-        const enabled = document.getElementById('autoplayToggle').checked;
-        if (!enabled) return;
-        await window.nextTrack();
+      async function syncPlayerStatus() {
+        try {
+          const data = await callApi('/api/youtube/player/status');
+          const isPlaying = !!data.is_playing;
+          const paused = !!data.paused;
+          const song = String(data.current_song || '').trim();
+          if (song) {
+            document.getElementById('nowPlaying').textContent = isPlaying
+              ? (paused ? ('Tạm dừng: ' + song) : ('Đang phát: ' + song))
+              : ('Chờ phát: ' + song);
+          }
+          if (typeof data.autoplay_enabled === 'boolean') {
+            document.getElementById('autoplayToggle').checked = data.autoplay_enabled;
+          }
+        } catch (e) {
+          // ignore periodic status errors
+        }
+      }
+
+      document.getElementById('autoplayToggle').addEventListener('change', async (ev) => {
+        try {
+          await callApiPost('/api/youtube/player/autoplay', { enabled: !!ev.target.checked });
+        } catch (e) {
+          alert('Lỗi đổi autoplay: ' + e.message);
+        }
       });
 
       loadServerInfo();
+      syncPlayerStatus();
+      setInterval(syncPlayerStatus, 3000);
     })();
   </script>
 </body>

@@ -76,6 +76,12 @@ class WebControlPlugin(Plugin):
                 web.get("/api/youtube/next", self._handle_youtube_next),
                 web.get("/api/youtube/stream", self._handle_youtube_stream),
                 web.get("/api/youtube/status", self._handle_youtube_status),
+                web.post("/api/youtube/player/play", self._handle_youtube_player_play),
+                web.post("/api/youtube/player/toggle", self._handle_youtube_player_toggle),
+                web.post("/api/youtube/player/stop", self._handle_youtube_player_stop),
+                web.post("/api/youtube/player/next", self._handle_youtube_player_next),
+                web.get("/api/youtube/player/status", self._handle_youtube_player_status),
+                web.post("/api/youtube/player/autoplay", self._handle_youtube_player_autoplay),
                 web.get("/api/volume", self._handle_get_volume),
                 web.post("/api/volume", self._handle_set_volume),
                 web.post("/api/volume/mute", self._handle_mute_volume),
@@ -357,6 +363,48 @@ class WebControlPlugin(Plugin):
         base = self._get_youtube_server_base()
         stream_url = f"{base}/stream?q={quote(query)}"
         raise web.HTTPFound(location=stream_url)
+
+    async def _handle_youtube_player_play(self, request) -> Any:
+        payload = await self._read_json(request)
+        query = str(payload.get("q", "")).strip()
+        if not query:
+            raise web.HTTPBadRequest(reason="q is required")
+
+        player = get_music_player_instance()
+        result = await player.search_and_play(query)
+        status_code = 200 if result.get("status") == "success" else 400
+        return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    async def _handle_youtube_player_toggle(self, request) -> Any:
+        player = get_music_player_instance()
+        result = await player.play_pause()
+        status_code = 200 if result.get("status") in {"success", "info"} else 400
+        return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    async def _handle_youtube_player_stop(self, request) -> Any:
+        player = get_music_player_instance()
+        result = await player.stop()
+        status_code = 200 if result.get("status") in {"success", "info"} else 400
+        return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    async def _handle_youtube_player_next(self, request) -> Any:
+        player = get_music_player_instance()
+        result = await player.play_next()
+        status_code = 200 if result.get("status") == "success" else 400
+        return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    async def _handle_youtube_player_status(self, request) -> Any:
+        player = get_music_player_instance()
+        status = await player.get_status()
+        return web.json_response({"ok": True, **status})
+
+    async def _handle_youtube_player_autoplay(self, request) -> Any:
+        payload = await self._read_json(request)
+        enabled = bool(payload.get("enabled", True))
+        player = get_music_player_instance()
+        result = await player.set_autoplay(enabled)
+        status_code = 200 if result.get("status") == "success" else 400
+        return web.json_response({"ok": status_code == 200, **result}, status=status_code)
 
     async def _handle_get_volume(self, request) -> Any:
         try:
