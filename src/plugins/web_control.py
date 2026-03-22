@@ -26,6 +26,10 @@ class WebControlPlugin(Plugin):
         self._site: Any = None
         self._host = os.environ.get("WEB_CONTROL_HOST", "0.0.0.0")
         self._port = int(os.environ.get("WEB_CONTROL_PORT", "8088"))
+        default_html = Path(get_project_root()) / "assets" / "web" / "web_control.html"
+        self._html_path = Path(
+            os.environ.get("WEB_CONTROL_HTML_PATH", str(default_html))
+        )
 
     async def setup(self, app: Any) -> None:
         self.application = app
@@ -77,142 +81,7 @@ class WebControlPlugin(Plugin):
             self._runner = None
 
     async def _handle_index(self, request) -> Any:
-        html = f"""
-<!doctype html>
-<html lang=\"vi\">
-<head>
-  <meta charset=\"UTF-8\" />
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
-  <title>Xiaozhi Web Control</title>
-  <style>
-    body {{ font-family: Arial, sans-serif; margin: 20px; max-width: 820px; }}
-    h2 {{ margin-top: 24px; }}
-    .row {{ display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }}
-    input[type=text], input[type=number] {{ flex: 1; padding: 8px; min-width: 260px; }}
-    button {{ padding: 8px 14px; cursor: pointer; }}
-    pre {{ background: #111; color: #ddd; padding: 12px; border-radius: 6px; overflow: auto; max-height: 360px; }}
-    #status {{ background: #f6f6f6; padding: 10px; border-radius: 6px; }}
-  </style>
-</head>
-<body>
-  <h1>Xiaozhi Web Control</h1>
-  <div id=\"status\">Đang tải trạng thái...</div>
-
-  <h2>Hỏi AI</h2>
-  <div class=\"row\">
-    <input id=\"askText\" type=\"text\" placeholder=\"Nhập câu hỏi...\" />
-    <button onclick=\"askAI()\">Gửi</button>
-  </div>
-
-  <h2>Mở nhạc</h2>
-  <div class=\"row\">
-    <input id=\"songName\" type=\"text\" placeholder=\"Tên bài hát\" />
-    <button onclick=\"playMusic()\">Mở nhạc</button>
-    <button onclick=\"toggleMusic()\">Play/Pause</button>
-    <button onclick=\"stopMusic()\">Stop</button>
-  </div>
-
-  <h2>Logs</h2>
-  <div class=\"row\">
-    <input id=\"logLines\" type=\"number\" min=\"10\" max=\"2000\" value=\"200\" />
-    <button onclick=\"loadLogs()\">Tải log</button>
-  </div>
-  <pre id=\"logs\">Chưa tải logs...</pre>
-
-  <h2>Restart</h2>
-  <div class=\"row\">
-    <button onclick=\"restartApp()\">Restart ứng dụng</button>
-  </div>
-
-<script>
-async function callApi(url, method='GET', body=null) {{
-  const options = {{ method, headers: {{ 'Content-Type': 'application/json' }} }};
-  if (body) options.body = JSON.stringify(body);
-  const res = await fetch(url, options);
-  const data = await res.json().catch(() => ({{ ok: false, error: 'Invalid response' }}));
-  if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
-  return data;
-}}
-
-async function refreshStatus() {{
-  try {{
-    const data = await callApi('/api/status');
-    document.getElementById('status').innerText = JSON.stringify(data, null, 2);
-  }} catch (e) {{
-    document.getElementById('status').innerText = 'Lỗi status: ' + e.message;
-  }}
-}}
-
-async function askAI() {{
-  const text = document.getElementById('askText').value.trim();
-  if (!text) return;
-  try {{
-    const data = await callApi('/api/ask', 'POST', {{ text }});
-    alert(data.message || 'Đã gửi câu hỏi');
-  }} catch (e) {{
-    alert('Lỗi hỏi AI: ' + e.message);
-  }}
-}}
-
-async function playMusic() {{
-  const song_name = document.getElementById('songName').value.trim();
-  if (!song_name) return;
-  try {{
-    const data = await callApi('/api/music/play', 'POST', {{ song_name }});
-    alert(data.message || 'Đã xử lý mở nhạc');
-    refreshStatus();
-  }} catch (e) {{
-    alert('Lỗi mở nhạc: ' + e.message);
-  }}
-}}
-
-async function toggleMusic() {{
-  try {{
-    const data = await callApi('/api/music/toggle', 'POST');
-    alert(data.message || 'Đã toggle nhạc');
-    refreshStatus();
-  }} catch (e) {{
-    alert('Lỗi toggle nhạc: ' + e.message);
-  }}
-}}
-
-async function stopMusic() {{
-  try {{
-    const data = await callApi('/api/music/stop', 'POST');
-    alert(data.message || 'Đã dừng nhạc');
-    refreshStatus();
-  }} catch (e) {{
-    alert('Lỗi dừng nhạc: ' + e.message);
-  }}
-}}
-
-async function loadLogs() {{
-  const lines = Number(document.getElementById('logLines').value || 200);
-  try {{
-    const data = await callApi('/api/logs?lines=' + encodeURIComponent(lines));
-    document.getElementById('logs').innerText = (data.lines || []).join('\n');
-  }} catch (e) {{
-    document.getElementById('logs').innerText = 'Lỗi tải logs: ' + e.message;
-  }}
-}}
-
-async function restartApp() {{
-  if (!confirm('Bạn chắc chắn muốn restart ứng dụng?')) return;
-  try {{
-    const data = await callApi('/api/restart', 'POST');
-    alert(data.message || 'Đang restart');
-  }} catch (e) {{
-    alert('Lỗi restart: ' + e.message);
-  }}
-}}
-
-refreshStatus();
-loadLogs();
-setInterval(refreshStatus, 4000);
-</script>
-</body>
-</html>
-"""
+        html = self._load_index_html()
         return web.Response(text=html, content_type="text/html")
 
     async def _handle_status(self, request) -> Any:
@@ -337,3 +206,16 @@ setInterval(refreshStatus, 4000);
             return [f"Failed to read log file: {e}"]
 
         return list(queue)
+
+    def _load_index_html(self) -> str:
+        try:
+            if self._html_path.exists():
+                return self._html_path.read_text(encoding="utf-8")
+            logger.warning("Web HTML file not found: %s", self._html_path)
+        except Exception as e:
+            logger.error("Failed to load web html: %s", e)
+
+        return (
+            "<html><body><h1>Web UI not found</h1><p>Set WEB_CONTROL_HTML_PATH "
+            "or create assets/web/web_control.html</p></body></html>"
+        )
