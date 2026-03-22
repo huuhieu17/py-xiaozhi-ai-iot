@@ -19,6 +19,7 @@ from src.plugins.manager import PluginManager
 from src.plugins.mcp import McpPlugin
 from src.plugins.shortcuts import ShortcutsPlugin
 from src.plugins.ui import UIPlugin
+from src.plugins.web_control import WebControlPlugin
 from src.plugins.wake_word import WakeWordPlugin
 from src.protocols.mqtt_protocol import MqttProtocol
 from src.protocols.websocket_protocol import WebsocketProtocol
@@ -108,6 +109,7 @@ class Application:
                 CalendarPlugin(),
                 UIPlugin(mode=mode),
                 ShortcutsPlugin(),
+                WebControlPlugin(),
             )
             await self.plugins.setup_all(self)
             # Sau khi khởi động, phát sóng trạng thái ban đầu, đảm bảo UI sẵn sàng thấy "Đang chờ"
