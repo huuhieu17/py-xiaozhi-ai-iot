@@ -115,26 +115,44 @@ class WebControlPlugin(Plugin):
         if not text:
             raise web.HTTPBadRequest(reason="text is required")
 
-        if self.application.device_state.name == "SPEAKING":
-            audio_plugin = self.application.plugins.get_plugin("audio")
-            if audio_plugin:
-                try:
-                    await audio_plugin.codec.clear_audio_queue()
-                except Exception:
-                    pass
-            await self.application.abort_speaking(None)
+        try:
+            app = self.application
+            if app is None:
+                return web.json_response(
+                    {"ok": False, "error": "Application is not ready"}, status=503
+                )
 
-        ok = await self.application.connect_protocol()
-        if not ok:
+            state_name = str(getattr(getattr(app, "device_state", None), "name", ""))
+            if state_name == "SPEAKING":
+                audio_plugin = app.plugins.get_plugin("audio") if app.plugins else None
+                if audio_plugin:
+                    try:
+                        await audio_plugin.codec.clear_audio_queue()
+                    except Exception:
+                        pass
+                await app.abort_speaking(None)
+
+            ok = await app.connect_protocol()
+            if not ok:
+                return web.json_response(
+                    {"ok": False, "error": "Protocol is not connected"}, status=503
+                )
+
+            if not getattr(app, "protocol", None):
+                return web.json_response(
+                    {"ok": False, "error": "Protocol is unavailable"}, status=503
+                )
+
+            app.set_chat_message("user", text)
+            await app.protocol.send_wake_word_detected(text)
             return web.json_response(
-                {"ok": False, "error": "Protocol is not connected"}, status=503
+                {"ok": True, "message": "Đã gửi câu hỏi", "text": text}
             )
-
-        self.application.set_chat_message("user", text)
-        await self.application.protocol.send_wake_word_detected(text)
-        return web.json_response(
-            {"ok": True, "message": "Đã gửi câu hỏi", "text": text}
-        )
+        except Exception as e:
+            logger.error("/api/ask failed: %s", e, exc_info=True)
+            return web.json_response(
+                {"ok": False, "error": f"ask failed: {str(e)}"}, status=500
+            )
 
     async def _handle_music_play(self, request) -> Any:
         payload = await self._read_json(request)

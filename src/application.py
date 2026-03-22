@@ -69,6 +69,7 @@ class Application:
         # Tự động lắng nghe liên tục sau mỗi câu trả lời, bất kể có AEC hay không
         self.listening_mode = ListeningMode.REALTIME
         self.keep_listening = False
+        self.aborted = False
 
         # Tập hợp nhiệm vụ đồng nhất (thay thế _main_tasks/_bg_tasks)
         self._tasks: set[asyncio.Task] = set()
