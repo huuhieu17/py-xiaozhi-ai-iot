@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YouTube Music - Xiaozhi</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 900px; }
+    h2 { margin-top: 24px; }
+    .row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    input[type=text] { flex: 1; min-width: 260px; padding: 8px; }
+    button { padding: 8px 14px; cursor: pointer; }
+    select { width: 100%; min-height: 220px; }
+    .card { background: #f6f6f6; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
+    .muted { color: #555; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>YouTube Music UI (Riêng)</h1>
+  <div class="card">
+    <div><strong>Server:</strong> <span id="serverInfo">Đang kiểm tra...</span></div>
+    <div class="muted">UI này gọi API riêng qua các endpoint /api/youtube/*</div>
+  </div>
+
+  <h2>Tìm và phát</h2>
+  <div class="row">
+    <input id="queryInput" type="text" placeholder="Nhập tên bài / link YouTube / videoId" />
+    <button onclick="searchTracks()">Search</button>
+    <button onclick="playSelected()">Phát bài đã chọn</button>
+    <button onclick="nextTrack()">Next</button>
+  </div>
+  <div class="row">
+    <label style="display:flex; align-items:center; gap:6px;">
+      <input id="autoplayToggle" type="checkbox" checked />
+      Auto next
+    </label>
+  </div>
+
+  <div class="row">
+    <select id="resultList" size="10"></select>
+  </div>
+
+  <h2>Đang phát</h2>
+  <div class="card" id="nowPlaying">Chưa phát bài nào</div>
+  <audio id="player" controls style="width: 100%;"></audio>
+
+  <script>
+    (function () {
+      const historyIds = [];
+      let currentSeed = '';
+
+      async function callApi(url) {
+        const res = await fetch(url);
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || data.ok === false) {
+          throw new Error(data.error || res.statusText || 'Request failed');
+        }
+        return data;
+      }
+
+      function addHistory(videoId) {
+        const id = String(videoId || '').trim();
+        if (!id) return;
+        const idx = historyIds.indexOf(id);
+        if (idx >= 0) historyIds.splice(idx, 1);
+        historyIds.push(id);
+        if (historyIds.length > 50) historyIds.shift();
+      }
+
+      function renderResults(items) {
+        const list = document.getElementById('resultList');
+        list.innerHTML = '';
+        if (!Array.isArray(items) || !items.length) {
+          const opt = document.createElement('option');
+          opt.textContent = 'Không có kết quả';
+          opt.value = '';
+          list.appendChild(opt);
+          return;
+        }
+
+        for (const item of items) {
+          const title = String(item.title || 'Bài hát').trim();
+          const artists = String(item.artists || '').trim();
+          const videoId = String(item.videoId || '').trim();
+          const youtubeUrl = String(item.youtubeUrl || '').trim();
+          const queryValue = youtubeUrl || videoId || title;
+          const label = artists ? `${title} - ${artists}` : title;
+
+          const opt = document.createElement('option');
+          opt.value = queryValue;
+          opt.dataset.videoId = videoId;
+          opt.dataset.title = title;
+          opt.dataset.artists = artists;
+          opt.textContent = label;
+          list.appendChild(opt);
+        }
+      }
+
+      async function loadServerInfo() {
+        try {
+          const data = await callApi('/api/youtube/status');
+          document.getElementById('serverInfo').textContent = data.server || 'unknown';
+        } catch (e) {
+          document.getElementById('serverInfo').textContent = 'Lỗi: ' + e.message;
+        }
+      }
+
+      window.searchTracks = async function () {
+        const query = document.getElementById('queryInput').value.trim();
+        if (!query) return;
+
+        try {
+          const history = historyIds.join(',');
+          const url = '/api/youtube/recommendations?q=' + encodeURIComponent(query) + '&limit=20&history=' + encodeURIComponent(history);
+          const data = await callApi(url);
+          renderResults(data.tracks || []);
+          currentSeed = query;
+        } catch (e) {
+          alert('Lỗi search: ' + e.message);
+        }
+      };
+
+      window.playSelected = async function () {
+        const list = document.getElementById('resultList');
+        const selected = list.options[list.selectedIndex];
+        if (!selected || !selected.value) {
+          alert('Bạn chưa chọn bài hát');
+          return;
+        }
+
+        const query = selected.value;
+        const videoId = selected.dataset.videoId || '';
+        const title = selected.dataset.title || query;
+        const artists = selected.dataset.artists || '';
+
+        const audio = document.getElementById('player');
+        audio.src = '/api/youtube/stream?q=' + encodeURIComponent(query);
+        await audio.play().catch(() => {});
+
+        if (videoId) addHistory(videoId);
+        currentSeed = query;
+        document.getElementById('nowPlaying').textContent = artists ? `${title} - ${artists}` : title;
+      };
+
+      window.nextTrack = async function () {
+        const seed = (currentSeed || document.getElementById('queryInput').value || '').trim();
+        if (!seed) {
+          alert('Bạn cần search hoặc phát bài trước');
+          return;
+        }
+
+        try {
+          const history = historyIds.join(',');
+          const data = await callApi('/api/youtube/next?q=' + encodeURIComponent(seed) + '&history=' + encodeURIComponent(history));
+          const next = data.next || {};
+          const streamUrl = String(next.streamUrl || '').trim();
+          const videoId = String(next.videoId || '').trim();
+          const title = String(next.title || 'Bài tiếp theo').trim();
+          const artists = String(next.artists || '').trim();
+
+          const audio = document.getElementById('player');
+          if (streamUrl) {
+            audio.src = streamUrl;
+          } else {
+            const q = next.youtubeUrl || next.videoId || title;
+            audio.src = '/api/youtube/stream?q=' + encodeURIComponent(q);
+          }
+          await audio.play().catch(() => {});
+
+          if (videoId) addHistory(videoId);
+          currentSeed = next.youtubeUrl || next.videoId || seed;
+          document.getElementById('nowPlaying').textContent = artists ? `${title} - ${artists}` : title;
+        } catch (e) {
+          alert('Lỗi next: ' + e.message);
+        }
+      };
+
+      document.getElementById('player').addEventListener('ended', async () => {
+        const enabled = document.getElementById('autoplayToggle').checked;
+        if (!enabled) return;
+        await window.nextTrack();
+      });
+
+      loadServerInfo();
+    })();
+  </script>
+</body>
+</html>

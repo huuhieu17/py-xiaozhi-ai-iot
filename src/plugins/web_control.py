@@ -5,9 +5,11 @@ import re
 import sys
 from collections import deque
 from pathlib import Path
+from urllib.parse import quote
 from typing import Any
 
 web = None
+import requests
 
 from src.mcp.tools.music import get_music_player_instance
 from src.plugins.base import Plugin
@@ -39,6 +41,10 @@ class WebControlPlugin(Plugin):
         self._html_path = Path(
             os.environ.get("WEB_CONTROL_HTML_PATH", str(default_html))
         )
+        default_yt_html = Path(get_project_root()) / "assets" / "web" / "youtube_music.html"
+        self._yt_html_path = Path(
+            os.environ.get("WEB_YOUTUBE_HTML_PATH", str(default_yt_html))
+        )
 
     async def setup(self, app: Any) -> None:
         self.application = app
@@ -58,6 +64,7 @@ class WebControlPlugin(Plugin):
         web_app.add_routes(
             [
                 web.get("/", self._handle_index),
+                web.get("/youtube-music", self._handle_youtube_music_index),
                 web.get("/api/status", self._handle_status),
                 web.post("/api/ask", self._handle_ask),
                 web.post("/api/listen/start", self._handle_listen_start),
@@ -65,6 +72,10 @@ class WebControlPlugin(Plugin):
                 web.post("/api/music/play", self._handle_music_play),
                 web.post("/api/music/toggle", self._handle_music_toggle),
                 web.post("/api/music/stop", self._handle_music_stop),
+                web.get("/api/youtube/recommendations", self._handle_youtube_recommendations),
+                web.get("/api/youtube/next", self._handle_youtube_next),
+                web.get("/api/youtube/stream", self._handle_youtube_stream),
+                web.get("/api/youtube/status", self._handle_youtube_status),
                 web.get("/api/volume", self._handle_get_volume),
                 web.post("/api/volume", self._handle_set_volume),
                 web.post("/api/volume/mute", self._handle_mute_volume),
@@ -97,6 +108,10 @@ class WebControlPlugin(Plugin):
 
     async def _handle_index(self, request) -> Any:
         html = self._load_index_html()
+        return web.Response(text=html, content_type="text/html")
+
+    async def _handle_youtube_music_index(self, request) -> Any:
+        html = self._load_youtube_html()
         return web.Response(text=html, content_type="text/html")
 
     async def _handle_status(self, request) -> Any:
@@ -273,6 +288,75 @@ class WebControlPlugin(Plugin):
         result = await get_music_player_instance().stop()
         status_code = 200 if result.get("status") in {"success", "info"} else 400
         return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    def _get_youtube_server_base(self) -> str:
+        return os.environ.get("YT_MUSIC_SERVER_URL", "https://youtube-proxy.imsteve.dev").rstrip("/")
+
+    async def _handle_youtube_status(self, request) -> Any:
+        base = self._get_youtube_server_base()
+        return web.json_response({"ok": True, "server": base})
+
+    async def _handle_youtube_recommendations(self, request) -> Any:
+        query = str(request.query.get("q", "")).strip()
+        if not query:
+            raise web.HTTPBadRequest(reason="q is required")
+
+        history = str(request.query.get("history", "")).strip()
+        limit = str(request.query.get("limit", "10")).strip()
+        base = self._get_youtube_server_base()
+
+        try:
+            resp = await asyncio.to_thread(
+                requests.get,
+                f"{base}/api/recommendations",
+                params={"q": query, "history": history, "limit": limit},
+                timeout=15,
+            )
+            payload = resp.json() if resp.content else {}
+            if resp.status_code >= 400:
+                return web.json_response(
+                    {"ok": False, "error": payload.get("error") if isinstance(payload, dict) else "request failed"},
+                    status=resp.status_code,
+                )
+            return web.json_response({"ok": True, **(payload if isinstance(payload, dict) else {})})
+        except Exception as e:
+            logger.error("/api/youtube/recommendations failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "error": str(e)}, status=500)
+
+    async def _handle_youtube_next(self, request) -> Any:
+        query = str(request.query.get("q", "")).strip()
+        if not query:
+            raise web.HTTPBadRequest(reason="q is required")
+
+        history = str(request.query.get("history", "")).strip()
+        base = self._get_youtube_server_base()
+
+        try:
+            resp = await asyncio.to_thread(
+                requests.get,
+                f"{base}/api/next",
+                params={"q": query, "history": history},
+                timeout=15,
+            )
+            payload = resp.json() if resp.content else {}
+            if resp.status_code >= 400:
+                return web.json_response(
+                    {"ok": False, "error": payload.get("error") if isinstance(payload, dict) else "request failed"},
+                    status=resp.status_code,
+                )
+            return web.json_response({"ok": True, **(payload if isinstance(payload, dict) else {})})
+        except Exception as e:
+            logger.error("/api/youtube/next failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "error": str(e)}, status=500)
+
+    async def _handle_youtube_stream(self, request) -> Any:
+        query = str(request.query.get("q", "")).strip()
+        if not query:
+            raise web.HTTPBadRequest(reason="q is required")
+
+        base = self._get_youtube_server_base()
+        stream_url = f"{base}/stream?q={quote(query)}"
+        raise web.HTTPFound(location=stream_url)
 
     async def _handle_get_volume(self, request) -> Any:
         try:
@@ -523,4 +607,17 @@ class WebControlPlugin(Plugin):
         return (
             "<html><body><h1>Web UI not found</h1><p>Set WEB_CONTROL_HTML_PATH "
             "or create assets/web/web_control.html</p></body></html>"
+        )
+
+    def _load_youtube_html(self) -> str:
+        try:
+            if self._yt_html_path.exists():
+                return self._yt_html_path.read_text(encoding="utf-8")
+            logger.warning("YouTube Web HTML file not found: %s", self._yt_html_path)
+        except Exception as e:
+            logger.error("Failed to load youtube web html: %s", e)
+
+        return (
+            "<html><body><h1>YouTube Music UI not found</h1><p>Set WEB_YOUTUBE_HTML_PATH "
+            "or create assets/web/youtube_music.html</p></body></html>"
         )
