@@ -110,8 +110,10 @@ class WakeWordPlugin(Plugin):
             return
 
         try:
+            # Không tự khởi tạo/re-init mixer ở đây để tránh xung đột cấu hình âm thanh toàn cục.
+            # Chỉ phát beep nếu mixer đã được khởi tạo sẵn bởi luồng âm thanh chính.
             if not pygame.mixer.get_init():
-                pygame.mixer.init(frequency=16000, size=-16, channels=1, buffer=512)
+                return
 
             if self._wake_beep_sound is None:
                 sample_rate = 16000

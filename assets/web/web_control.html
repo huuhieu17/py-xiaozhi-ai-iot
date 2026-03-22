@@ -22,6 +22,8 @@
   <div class="row">
     <input id="askText" type="text" placeholder="Nhập câu hỏi..." />
     <button onclick="askAI()">Gửi</button>
+    <button onclick="startListen()">Listen</button>
+    <button onclick="stopListen()">Stop Listen</button>
   </div>
 
   <h2>Mở nhạc</h2>
@@ -150,6 +152,26 @@
           alert(data.message || 'Đã gửi câu hỏi');
         } catch (e) {
           alert('Lỗi hỏi AI: ' + e.message);
+        }
+      };
+
+      window.startListen = async function () {
+        try {
+          const data = await callApi('/api/listen/start', 'POST');
+          alert(data.message || 'Đã bắt đầu lắng nghe');
+          await window.refreshStatus();
+        } catch (e) {
+          alert('Lỗi start listen: ' + e.message);
+        }
+      };
+
+      window.stopListen = async function () {
+        try {
+          const data = await callApi('/api/listen/stop', 'POST');
+          alert(data.message || 'Đã dừng lắng nghe');
+          await window.refreshStatus();
+        } catch (e) {
+          alert('Lỗi stop listen: ' + e.message);
         }
       };
 

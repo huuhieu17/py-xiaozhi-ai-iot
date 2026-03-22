@@ -60,6 +60,8 @@ class WebControlPlugin(Plugin):
                 web.get("/", self._handle_index),
                 web.get("/api/status", self._handle_status),
                 web.post("/api/ask", self._handle_ask),
+                web.post("/api/listen/start", self._handle_listen_start),
+                web.post("/api/listen/stop", self._handle_listen_stop),
                 web.post("/api/music/play", self._handle_music_play),
                 web.post("/api/music/toggle", self._handle_music_toggle),
                 web.post("/api/music/stop", self._handle_music_stop),
@@ -233,6 +235,34 @@ class WebControlPlugin(Plugin):
         result = await get_music_player_instance().search_and_play(song_name)
         status_code = 200 if result.get("status") == "success" else 400
         return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    async def _handle_listen_start(self, request) -> Any:
+        try:
+            app = self.application
+            if app is None:
+                return web.json_response(
+                    {"ok": False, "error": "Application is not ready"}, status=503
+                )
+
+            await app.start_listening_manual()
+            return web.json_response({"ok": True, "message": "Đã bắt đầu lắng nghe"})
+        except Exception as e:
+            logger.error("/api/listen/start failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "error": str(e)}, status=500)
+
+    async def _handle_listen_stop(self, request) -> Any:
+        try:
+            app = self.application
+            if app is None:
+                return web.json_response(
+                    {"ok": False, "error": "Application is not ready"}, status=503
+                )
+
+            await app.stop_listening_manual()
+            return web.json_response({"ok": True, "message": "Đã dừng lắng nghe"})
+        except Exception as e:
+            logger.error("/api/listen/stop failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "error": str(e)}, status=500)
 
     async def _handle_music_toggle(self, request) -> Any:
         result = await get_music_player_instance().play_pause()
