@@ -15,6 +15,11 @@ from src.utils.logging_config import get_logger
 from src.utils.resource_finder import get_project_root
 from src.utils.volume_controller import VolumeController
 
+try:
+    import pygame
+except Exception:
+    pygame = None
+
 logger = get_logger(__name__)
 
 
@@ -27,6 +32,7 @@ class WebControlPlugin(Plugin):
         self._runner: Any = None
         self._site: Any = None
         self._last_volume_before_mute = 70
+        self._last_effective_volume = 70
         self._host = os.environ.get("WEB_CONTROL_HOST", "0.0.0.0")
         self._port = int(os.environ.get("WEB_CONTROL_PORT", "8088"))
         default_html = Path(get_project_root()) / "assets" / "web" / "web_control.html"
@@ -240,16 +246,33 @@ class WebControlPlugin(Plugin):
 
     async def _handle_get_volume(self, request) -> Any:
         try:
-            if not VolumeController.check_dependencies():
-                return web.json_response(
-                    {"ok": False, "error": "Volume controller dependencies are missing"},
-                    status=503,
-                )
+            system_volume = None
+            if VolumeController.check_dependencies():
+                controller = await asyncio.to_thread(VolumeController)
+                system_volume = await asyncio.to_thread(controller.get_volume)
 
-            controller = await asyncio.to_thread(VolumeController)
-            volume = await asyncio.to_thread(controller.get_volume)
-            volume = max(0, min(100, int(volume)))
-            return web.json_response({"ok": True, "volume": volume})
+            music_volume = self._get_music_volume()
+
+            effective_volume = None
+            if music_volume is not None:
+                effective_volume = music_volume
+            elif system_volume is not None:
+                effective_volume = int(system_volume)
+            else:
+                effective_volume = self._last_effective_volume
+
+            effective_volume = max(0, min(100, int(effective_volume)))
+            self._last_effective_volume = effective_volume
+            return web.json_response(
+                {
+                    "ok": True,
+                    "volume": effective_volume,
+                    "system_volume": (
+                        None if system_volume is None else max(0, min(100, int(system_volume)))
+                    ),
+                    "music_volume": music_volume,
+                }
+            )
         except Exception as e:
             logger.error("/api/volume GET failed: %s", e, exc_info=True)
             return web.json_response({"ok": False, "error": str(e)}, status=500)
@@ -267,19 +290,52 @@ class WebControlPlugin(Plugin):
         volume = max(0, min(100, volume))
 
         try:
-            if not VolumeController.check_dependencies():
+            system_ok = False
+            system_volume = None
+
+            if VolumeController.check_dependencies():
+                controller = await asyncio.to_thread(VolumeController)
+                await asyncio.to_thread(controller.set_volume, volume)
+                system_volume = await asyncio.to_thread(controller.get_volume)
+                system_volume = max(0, min(100, int(system_volume)))
+                system_ok = True
+
+            music_ok = self._set_music_volume(volume)
+            music_volume = self._get_music_volume()
+
+            if music_volume is not None:
+                effective_volume = music_volume
+            elif system_volume is not None:
+                effective_volume = system_volume
+            else:
+                effective_volume = volume
+
+            effective_volume = max(0, min(100, int(effective_volume)))
+            self._last_effective_volume = effective_volume
+
+            if effective_volume > 0:
+                self._last_volume_before_mute = effective_volume
+
+            if not system_ok and not music_ok:
                 return web.json_response(
-                    {"ok": False, "error": "Volume controller dependencies are missing"},
+                    {
+                        "ok": False,
+                        "error": "Không thể điều khiển âm lượng hệ thống hoặc nhạc",
+                        "volume": effective_volume,
+                    },
                     status=503,
                 )
 
-            controller = await asyncio.to_thread(VolumeController)
-            await asyncio.to_thread(controller.set_volume, volume)
-            current_volume = await asyncio.to_thread(controller.get_volume)
-            current_volume = max(0, min(100, int(current_volume)))
-
             return web.json_response(
-                {"ok": True, "message": f"Đã đặt âm lượng: {current_volume}%", "volume": current_volume}
+                {
+                    "ok": True,
+                    "message": f"Đã đặt âm lượng: {effective_volume}%",
+                    "volume": effective_volume,
+                    "system_ok": system_ok,
+                    "music_ok": music_ok,
+                    "system_volume": system_volume,
+                    "music_volume": music_volume,
+                }
             )
         except Exception as e:
             logger.error("/api/volume POST failed: %s", e, exc_info=True)
@@ -287,25 +343,30 @@ class WebControlPlugin(Plugin):
 
     async def _handle_mute_volume(self, request) -> Any:
         try:
-            if not VolumeController.check_dependencies():
-                return web.json_response(
-                    {"ok": False, "error": "Volume controller dependencies are missing"},
-                    status=503,
-                )
+            current_volume = self._last_effective_volume
+            system_ok = False
 
-            controller = await asyncio.to_thread(VolumeController)
-            current_volume = await asyncio.to_thread(controller.get_volume)
-            current_volume = max(0, min(100, int(current_volume)))
+            if VolumeController.check_dependencies():
+                controller = await asyncio.to_thread(VolumeController)
+                current_volume = await asyncio.to_thread(controller.get_volume)
+                current_volume = max(0, min(100, int(current_volume)))
+                await asyncio.to_thread(controller.set_volume, 0)
+                system_ok = True
+
+            music_ok = self._set_music_volume(0)
+
             if current_volume > 0:
                 self._last_volume_before_mute = current_volume
+            self._last_effective_volume = 0
 
-            await asyncio.to_thread(controller.set_volume, 0)
             return web.json_response(
                 {
-                    "ok": True,
+                    "ok": bool(system_ok or music_ok),
                     "message": "Đã tắt tiếng",
                     "volume": 0,
                     "previous_volume": self._last_volume_before_mute,
+                    "system_ok": system_ok,
+                    "music_ok": music_ok,
                 }
             )
         except Exception as e:
@@ -314,24 +375,61 @@ class WebControlPlugin(Plugin):
 
     async def _handle_unmute_volume(self, request) -> Any:
         try:
-            if not VolumeController.check_dependencies():
-                return web.json_response(
-                    {"ok": False, "error": "Volume controller dependencies are missing"},
-                    status=503,
-                )
-
             target = max(1, min(100, int(self._last_volume_before_mute or 70)))
-            controller = await asyncio.to_thread(VolumeController)
-            await asyncio.to_thread(controller.set_volume, target)
-            current_volume = await asyncio.to_thread(controller.get_volume)
-            current_volume = max(0, min(100, int(current_volume)))
+            system_ok = False
+            current_volume = target
+
+            if VolumeController.check_dependencies():
+                controller = await asyncio.to_thread(VolumeController)
+                await asyncio.to_thread(controller.set_volume, target)
+                current_volume = await asyncio.to_thread(controller.get_volume)
+                current_volume = max(0, min(100, int(current_volume)))
+                system_ok = True
+
+            music_ok = self._set_music_volume(target)
+            music_volume = self._get_music_volume()
+            if music_volume is not None:
+                current_volume = music_volume
+
+            self._last_effective_volume = current_volume
 
             return web.json_response(
-                {"ok": True, "message": f"Đã bật tiếng: {current_volume}%", "volume": current_volume}
+                {
+                    "ok": bool(system_ok or music_ok),
+                    "message": f"Đã bật tiếng: {current_volume}%",
+                    "volume": current_volume,
+                    "system_ok": system_ok,
+                    "music_ok": music_ok,
+                }
             )
         except Exception as e:
             logger.error("/api/volume/unmute failed: %s", e, exc_info=True)
             return web.json_response({"ok": False, "error": str(e)}, status=500)
+
+    def _set_music_volume(self, volume: int) -> bool:
+        try:
+            if pygame is None:
+                return False
+            if not pygame.mixer.get_init():
+                return False
+            volume = max(0, min(100, int(volume)))
+            pygame.mixer.music.set_volume(volume / 100.0)
+            return True
+        except Exception:
+            return False
+
+    def _get_music_volume(self) -> int | None:
+        try:
+            if pygame is None:
+                return None
+            if not pygame.mixer.get_init():
+                return None
+            value = pygame.mixer.music.get_volume()
+            if value is None:
+                return None
+            return max(0, min(100, int(round(float(value) * 100))))
+        except Exception:
+            return None
 
     async def _handle_logs(self, request) -> Any:
         lines_param = request.query.get("lines", "200")
