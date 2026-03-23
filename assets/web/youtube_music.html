@@ -50,6 +50,7 @@
     (function () {
       const historyIds = [];
       let currentSeed = '';
+      let lastIsPlaying = false;
 
       async function callApi(url) {
         const res = await fetch(url);
@@ -214,6 +215,12 @@
           }
           if (typeof data.autoplay_enabled === 'boolean') {
             document.getElementById('autoplayToggle').checked = data.autoplay_enabled;
+          }
+
+          const shouldAutoNext = !!data.autoplay_enabled && !isPlaying && lastIsPlaying;
+          lastIsPlaying = isPlaying;
+          if (shouldAutoNext) {
+            await window.nextTrack();
           }
         } catch (e) {
           // ignore periodic status errors
