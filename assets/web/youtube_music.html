@@ -229,6 +229,7 @@
         await callApiPost('/api/youtube/player/play', { videoId });
 
         if (videoId) addHistory(videoId);
+        loadRecommendations(videoId);
         currentSeed = query;
         document.getElementById('nowPlaying').textContent = artists ? `${title} - ${artists}` : title;
       };
