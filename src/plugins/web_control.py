@@ -341,8 +341,13 @@ class WebControlPlugin(Plugin):
             f"{base}/play?videoId={quote(videoId)}",
             timeout=15,
         )
-
         payload = resp.json() if resp else {}
+        
+        logger.info(
+            "YouTube play api response: status=%s body=%s",
+            resp.status_code,
+            payload if isinstance(payload, dict) else str(payload)[:500],
+        )
         if resp.status_code >= 400:
             message = payload.get("error") if isinstance(payload, dict) else "request failed"
             raise RuntimeError(message)
