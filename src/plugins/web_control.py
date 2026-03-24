@@ -79,7 +79,7 @@ class WebControlPlugin(Plugin):
                 web.post("/api/music/stop", self._handle_music_stop),
                 web.get("/api/youtube/recommendations", self._handle_youtube_recommendations),
                 web.get("/api/youtube/next", self._handle_youtube_next),
-                web.get("/api/youtube/stream", self._handle_youtube_stream),
+                web.get("/api/youtube/search", self._handle_youtube_search),
                 web.get("/api/youtube/status", self._handle_youtube_status),
                 web.post("/api/youtube/player/play", self._handle_youtube_player_play),
                 web.post("/api/youtube/player/toggle", self._handle_youtube_player_toggle),
