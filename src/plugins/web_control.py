@@ -554,7 +554,7 @@ class WebControlPlugin(Plugin):
             player.current_song = yt_data.get("title") or query
             player.total_duration = 0
 
-            success = await player._play_url(yt_data["audioUrl"])
+            success = await player._play_url(yt_data["url"])
             if not success:
                 return web.json_response({"ok": False, "status": "error", "message": "Phát thất bại"}, status=400)
 
