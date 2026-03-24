@@ -4,6 +4,7 @@ Cung cấp trình phát nhạc kiểu singleton, khởi tạo khi đăng ký, h�
 """
 
 import asyncio
+import hashlib
 import re
 import shutil
 import tempfile
@@ -527,6 +528,39 @@ class MusicPlayer:
         except Exception as e:
             logger.error(f"Tìm kiếm và phát thất bại: {e}")
             return {"status": "error", "message": f"Thao tác thất bại: {str(e)}"}
+
+    async def play_audio_url(self, audio_url: str, title: str = "") -> dict:
+        """
+        Phát trực tiếp từ URL audio.
+        """
+        url = str(audio_url or "").strip()
+        if not url:
+            return {"status": "error", "message": "audio_url không được để trống"}
+
+        parsed = urlparse(url)
+        if parsed.scheme not in {"http", "https"}:
+            return {"status": "error", "message": "audio_url phải bắt đầu bằng http/https"}
+
+        try:
+            file_name = Path(parsed.path).stem.strip()
+            fallback_title = file_name or "Audio URL"
+
+            self.song_id = f"url_{hashlib.md5(url.encode('utf-8')).hexdigest()[:16]}"
+            self.current_song = str(title or "").strip() or fallback_title
+            self.total_duration = 0
+
+            success = await self._play_url(url)
+            if not success:
+                return {"status": "error", "message": "Phát thất bại"}
+
+            return {
+                "status": "success",
+                "message": f"Đang phát: {self.current_song}",
+                "audio_url": url,
+            }
+        except Exception as e:
+            logger.error(f"Phát audio URL thất bại: {e}")
+            return {"status": "error", "message": f"Phát thất bại: {str(e)}"}
 
     async def play_pause(self) -> dict:
         """

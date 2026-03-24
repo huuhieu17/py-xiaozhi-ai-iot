@@ -334,16 +334,15 @@ class WebControlPlugin(Plugin):
         if len(self._yt_history) > 50:
             self._yt_history = self._yt_history[-50:]
 
-    async def _youtube_search_audio(self, query: str) -> dict:
+    async def _youtube_play_audio(self, videoId: str) -> dict:
         base = self._get_youtube_server_base()
         resp = await asyncio.to_thread(
             requests.get,
-            f"{base}/search",
-            params={"q": query},
+            f"{base}/play?videoId={quote(videoId)}",
             timeout=15,
         )
 
-        payload = resp.json() if resp.content else {}
+        payload = resp.json() if resp else {}
         if resp.status_code >= 400:
             message = payload.get("error") if isinstance(payload, dict) else "request failed"
             raise RuntimeError(message)
@@ -352,17 +351,14 @@ class WebControlPlugin(Plugin):
             raise RuntimeError("search api trả về không hợp lệ")
 
         audio_url = str(payload.get("url") or "").strip()
-        title = str(payload.get("title") or query).strip()
+        
+        title = str(payload.get("title") or videoId).strip()
         if not audio_url:
             raise RuntimeError("search api không có url audio")
-
-        return {
-            "title": title,
-            "audioUrl": audio_url,
-            "format": str(payload.get("format") or ""),
-            "source": str(payload.get("source") or ""),
-            "quality": str(payload.get("quality") or ""),
-        }
+        rs = await get_music_player_instance().play_audio_url(audio_url, title=title)
+        status_code = 200 if rs.get("status") == "success" else 400
+        return web.json_response({"ok": status_code == 200, **rs}, status=status_code)
+        
 
     async def _youtube_recommends(self, video_id: str, limit: int = 10) -> list[dict]:
         base = self._get_youtube_server_base()
@@ -372,7 +368,46 @@ class WebControlPlugin(Plugin):
             params={"videoId": video_id, "limit": max(1, min(int(limit), 20))},
             timeout=15,
         )
-        payload = resp.json() if resp.content else {}
+        payload = resp.json() if resp else {}
+        if resp.status_code >= 400:
+            message = payload.get("error") if isinstance(payload, dict) else "request failed"
+            raise RuntimeError(message)
+        if not isinstance(payload, dict) or not payload.get("success"):
+            return []
+
+        songs = payload.get("songs", [])
+        if not isinstance(songs, list):
+            return []
+
+        normalized = []
+        for item in songs:
+            if not isinstance(item, dict):
+                continue
+            vid = str(item.get("id") or "").strip()
+            title = str(item.get("title") or "").strip()
+            channel = str(item.get("channel") or "").strip()
+            url = str(item.get("url") or "").strip()
+            if not (vid or title or url):
+                continue
+            normalized.append(
+                {
+                    "videoId": vid,
+                    "title": title or vid or "Bài hát",
+                    "artists": channel,
+                    "youtubeUrl": url,
+                }
+            )
+        return normalized
+    
+    async def _youtube_search(self, query: str, limit: int = 10) -> list[dict]:
+        base = self._get_youtube_server_base()
+        resp = await asyncio.to_thread(
+            requests.get,
+            f"{base}/search",
+            params={"q": query, "limit": max(1, min(int(limit), 20))},
+            timeout=15,
+        )
+        payload = resp.json() if resp else {}
         if resp.status_code >= 400:
             message = payload.get("error") if isinstance(payload, dict) else "request failed"
             raise RuntimeError(message)
@@ -408,9 +443,9 @@ class WebControlPlugin(Plugin):
         return web.json_response({"ok": True, "server": base})
 
     async def _handle_youtube_recommendations(self, request) -> Any:
-        query = str(request.query.get("q", "")).strip()
+        query = str(request.query.get("videoId", "")).strip()
         if not query:
-            raise web.HTTPBadRequest(reason="q is required")
+            raise web.HTTPBadRequest(reason="videoId is required")
 
         limit_raw = request.query.get("limit", "10")
         try:
@@ -419,53 +454,61 @@ class WebControlPlugin(Plugin):
             limit = 10
 
         try:
-            video_id = self._extract_youtube_video_id(query)
-            if video_id:
-                songs = await self._youtube_recommends(video_id, limit)
+            if query:
+                songs = await self._youtube_recommends(query, limit)
                 return web.json_response(
                     {
                         "ok": True,
                         "success": True,
-                        "sourceVideoId": video_id,
+                        "sourceVideoId": query,
                         "count": len(songs),
                         "tracks": songs,
                     }
                 )
-
-            # Query thường: dùng /search trả 1 kết quả playable
-            search_data = await self._youtube_search_audio(query)
-            track = {
-                "videoId": "",
-                "title": search_data.get("title") or query,
-                "artists": "YouTube",
-                "youtubeUrl": query,
-            }
-            return web.json_response(
-                {
-                    "ok": True,
-                    "success": True,
-                    "sourceVideoId": "",
-                    "count": 1,
-                    "tracks": [track],
-                }
-            )
+            else:
+                return web.json_response({"ok": False, "error": "videoId is required"}, status=400)
         except Exception as e:
             logger.error("/api/youtube/recommendations failed: %s", e, exc_info=True)
             return web.json_response({"ok": False, "error": str(e)}, status=500)
 
-    async def _handle_youtube_next(self, request) -> Any:
+    async def _handle_youtube_search(self, request) -> Any:
         query = str(request.query.get("q", "")).strip()
+        if not query:
+            raise web.HTTPBadRequest(reason="query is required")
+
+        limit_raw = request.query.get("limit", "10")
+        try:
+            limit = max(1, min(int(limit_raw), 20))
+        except Exception:
+            limit = 10
+
+        try:
+            if query:
+                songs = await self._youtube_search(query, limit)
+                return web.json_response(
+                    {
+                        "ok": True,
+                        "success": True,
+                        "sourceVideoId": query,
+                        "count": len(songs),
+                        "tracks": songs,
+                    }
+                )
+            else:
+                return web.json_response({"ok": False, "error": "videoId is required"}, status=400)
+        except Exception as e:
+            logger.error("/api/youtube/search failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "error": str(e)}, status=500)
+
+    async def _handle_youtube_next(self, request) -> Any:
+        query = str(request.query.get("videoId", "")).strip()
         if not query:
             query = self._yt_current_query
         if not query:
-            raise web.HTTPBadRequest(reason="q is required")
+            raise web.HTTPBadRequest(reason="videoId is required")
 
         try:
-            seed_video_id = self._extract_youtube_video_id(query) or self._yt_current_video_id
-            if not seed_video_id:
-                return web.json_response({"ok": False, "error": "Thiếu videoId để lấy gợi ý"}, status=400)
-
-            songs = await self._youtube_recommends(seed_video_id, limit=20)
+            songs = await self._youtube_recommends(query, limit=20)
             next_song = None
             for item in songs:
                 vid = str(item.get("videoId") or "").strip()
@@ -477,7 +520,7 @@ class WebControlPlugin(Plugin):
             if not next_song:
                 return web.json_response({"ok": False, "error": "Không có bài tiếp theo phù hợp"}, status=404)
 
-            return web.json_response({"ok": True, "seedVideoId": seed_video_id, "next": next_song})
+            return web.json_response({"ok": True, "seedVideoId": query, "next": next_song})
         except Exception as e:
             logger.error("/api/youtube/next failed: %s", e, exc_info=True)
             return web.json_response({"ok": False, "error": str(e)}, status=500)
@@ -493,9 +536,9 @@ class WebControlPlugin(Plugin):
 
     async def _handle_youtube_player_play(self, request) -> Any:
         payload = await self._read_json(request)
-        query = str(payload.get("q", "")).strip()
+        query = str(payload.get("videoId", "")).strip()
         if not query:
-            raise web.HTTPBadRequest(reason="q is required")
+            raise web.HTTPBadRequest(reason="videoId is required")
 
         try:
             yt_data = await self._youtube_search_audio(query)

@@ -4,51 +4,79 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>YouTube Music - Xiaozhi</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; max-width: 900px; }
-    h2 { margin-top: 24px; }
-    .row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    input[type=text] { flex: 1; min-width: 260px; padding: 8px; }
-    button { padding: 8px 14px; cursor: pointer; }
-    select { width: 100%; min-height: 220px; }
-    .card { background: #f6f6f6; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
-    .muted { color: #555; font-size: 13px; }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>YouTube Music UI (Riêng)</h1>
-  <div class="card">
-    <div><strong>Server:</strong> <span id="serverInfo">Đang kiểm tra...</span></div>
-    <div class="muted">UI này gọi API riêng qua các endpoint /api/youtube/*</div>
-  </div>
+<body class="min-h-screen bg-slate-100 text-slate-900">
+    <main class="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
+      <div class="rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+        <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+          <h1 class="text-2xl font-semibold tracking-tight">YouTube Music UI (Riêng)</h1>
+          <p class="mt-1 text-sm text-slate-500">Điều khiển phát nhạc qua API backend /api/youtube/*</p>
+        </div>
 
-  <h2>Tìm và phát</h2>
-  <div class="row">
-    <input id="queryInput" type="text" placeholder="Nhập tên bài / link YouTube / videoId" />
-    <button onclick="searchTracks()">Search</button>
-    <button onclick="playSelected()">Start (loa thiết bị)</button>
-    <button onclick="togglePlayback()">Pause/Resume</button>
-    <button onclick="stopPlayback()">Stop</button>
-    <button onclick="nextTrack()">Next</button>
-  </div>
-  <div class="row">
-    <label style="display:flex; align-items:center; gap:6px;">
-      <input id="autoplayToggle" type="checkbox" checked />
-      Auto next
-    </label>
-  </div>
+        <div class="space-y-6 px-5 py-5 sm:px-6 sm:py-6">
+          <div class="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
+            <div class="text-sm"><span class="font-medium">Server:</span> <span id="serverInfo" class="text-slate-700">Đang kiểm tra...</span></div>
+            <div class="mt-1 text-xs text-slate-500">UI này gọi API riêng qua các endpoint /api/youtube/*</div>
+          </div>
 
-  <div class="row">
-    <select id="resultList" size="10"></select>
-  </div>
+          <section>
+            <h2 class="mb-3 text-lg font-semibold">Tìm và phát</h2>
+            <div class="flex flex-col gap-3 lg:flex-row">
+              <input
+                id="queryInput"
+                type="text"
+                placeholder="Nhập tên bài / link YouTube / videoId"
+                class="w-full flex-1 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              />
+              <button
+                onclick="searchTracks()"
+                class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+              >
+                Search
+              </button>
+            </div>
 
-  <h2>Đang phát</h2>
-  <div class="card" id="nowPlaying">Chưa phát bài nào</div>
-  <div class="muted">Phát bằng backend pygame ra loa thiết bị (không dùng audio trình duyệt)</div>
+            <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              <button onclick="playSelected()" class="rounded-lg bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-700">Start (loa thiết bị)</button>
+              <button onclick="togglePlayback()" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-amber-600">Pause/Resume</button>
+              <button onclick="stopPlayback()" class="rounded-lg bg-rose-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-rose-700">Stop</button>
+              <button onclick="nextTrack()" class="rounded-lg bg-violet-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-violet-700">Next</button>
+            </div>
+
+            <label class="mt-3 inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+              <input id="autoplayToggle" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+              <span>Auto next</span>
+            </label>
+          </section>
+
+          <section>
+            <h2 class="mb-3 text-lg font-semibold">Kết quả tìm kiếm</h2>
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <div>
+                <label for="resultList" class="mb-1 block text-sm font-medium text-slate-600">Danh sách bài hát</label>
+                <select id="resultList" size="10" class="h-64 w-full rounded-lg border border-slate-300 bg-white p-2 text-sm shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"></select>
+              </div>
+              <div>
+                <label for="recommendationsList" class="mb-1 block text-sm font-medium text-slate-600">Gợi ý</label>
+                <select id="recommendationsList" size="10" class="h-64 w-full rounded-lg border border-slate-300 bg-white p-2 text-sm shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"></select>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 class="mb-3 text-lg font-semibold">Đang phát</h2>
+            <div class="rounded-xl bg-slate-50 p-4 text-sm ring-1 ring-slate-200" id="nowPlaying">Chưa phát bài nào</div>
+            <div class="mt-2 text-xs text-slate-500">Phát bằng backend pygame ra loa thiết bị (không dùng audio trình duyệt)</div>
+          </section>
+        </div>
+      </div>
+    </main>
 
   <script>
     (function () {
       const historyIds = [];
+      const recommends = [];
       let currentSeed = '';
       let lastIsPlaying = false;
 
@@ -121,13 +149,52 @@
         }
       }
 
+      async function loadRecommendations(videoId) {
+        try {
+          const history = historyIds.join(',');
+          const data = await callApi('/api/youtube/recommendations?videoId=' + encodeURIComponent(videoId));
+          const recs = Array.isArray(data.tracks) ? data.tracks : [];
+          recommends.length = 0;
+          recommends.push(...recs);
+          renderRecommendations(recommends);
+        } catch (e) {
+          // ignore recommendation errors
+        }
+      }
+
+      const renderRecommendations = (items) => {
+        const list = document.getElementById('recommendationsList');
+        list.innerHTML = '';
+        if (!Array.isArray(items) || !items.length) {
+          const opt = document.createElement('option');
+          opt.textContent = 'Không có gợi ý';
+          opt.value = '';
+          list.appendChild(opt);
+          return;
+        }
+
+        for (const item of items) {
+          const title = String(item.title || 'Bài hát').trim();
+          const youtubeUrl = String(item.url || '').trim();
+          const videoId = item.id;
+          const label = title;
+
+          const opt = document.createElement('option');
+          opt.value = videoId;
+          opt.dataset.videoId = videoId;
+          opt.dataset.title = title;
+          opt.textContent = label;
+          list.appendChild(opt);
+        }
+      };
+
       window.searchTracks = async function () {
         const query = document.getElementById('queryInput').value.trim();
         if (!query) return;
 
         try {
           const history = historyIds.join(',');
-          const url = '/api/youtube/recommendations?q=' + encodeURIComponent(query) + '&limit=20&history=' + encodeURIComponent(history);
+          const url = '/api/youtube/search?q=' + encodeURIComponent(query) + '&limit=20&history=' + encodeURIComponent(history);
           const data = await callApi(url);
           renderResults(data.tracks || []);
           currentSeed = query;
@@ -149,7 +216,7 @@
         const title = selected.dataset.title || query;
         const artists = selected.dataset.artists || '';
 
-        await callApiPost('/api/youtube/player/play', { q: query });
+        await callApiPost('/api/youtube/player/play', { videoId });
 
         if (videoId) addHistory(videoId);
         currentSeed = query;
@@ -191,8 +258,8 @@
           const title = String(next.title || 'Bài tiếp theo').trim();
           const artists = String(next.artists || '').trim();
 
-          const q = next.youtubeUrl || next.videoId || title;
-          await callApiPost('/api/youtube/player/play', { q });
+          const q =  next.videoId || next.youtubeUrl || title;
+          await callApiPost('/api/youtube/player/play', { videoId: q });
 
           if (videoId) addHistory(videoId);
           currentSeed = next.youtubeUrl || next.videoId || seed;
