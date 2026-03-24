@@ -546,32 +546,8 @@ class WebControlPlugin(Plugin):
             raise web.HTTPBadRequest(reason="videoId is required")
 
         try:
-            yt_data = await self._youtube_play_audio(query)
-            player = get_music_player_instance()
+            await self._youtube_play_audio(query)
 
-            video_id = self._extract_youtube_video_id(query)
-            player.song_id = video_id or f"yt_{int(time.time())}"
-            player.current_song = yt_data.get("title") or query
-            player.total_duration = 0
-
-            success = await player._play_url(yt_data["url"])
-            if not success:
-                return web.json_response({"ok": False, "status": "error", "message": "Phát thất bại"}, status=400)
-
-            self._yt_current_query = query
-            self._yt_current_video_id = video_id
-            if video_id:
-                self._append_yt_history(video_id)
-
-            return web.json_response(
-                {
-                    "ok": True,
-                    "status": "success",
-                    "message": f"Đang phát: {player.current_song}",
-                    "title": yt_data.get("title") or query,
-                    "videoId": video_id,
-                }
-            )
         except Exception as e:
             logger.error("/api/youtube/player/play failed: %s", e, exc_info=True)
             return web.json_response({"ok": False, "status": "error", "message": str(e)}, status=500)
