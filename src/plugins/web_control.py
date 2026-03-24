@@ -544,9 +544,8 @@ class WebControlPlugin(Plugin):
         query = str(payload.get("videoId", "")).strip()
         if not query:
             raise web.HTTPBadRequest(reason="videoId is required")
-
         try:
-            await self._youtube_play_audio(query)
+            return await self._youtube_play_audio(query)
 
         except Exception as e:
             logger.error("/api/youtube/player/play failed: %s", e, exc_info=True)
@@ -586,17 +585,10 @@ class WebControlPlugin(Plugin):
             if not play_query:
                 return web.json_response({"ok": False, "status": "error", "message": "Bài next không hợp lệ"}, status=400)
 
-            yt_data = await self._youtube_play_audio(play_query)
             player = get_music_player_instance()
             next_vid = str(next_song.get("videoId") or "").strip()
-            player.song_id = next_vid or f"yt_{int(time.time())}"
-            player.current_song = str(next_song.get("title") or yt_data.get("title") or "Bài tiếp theo")
-            player.total_duration = 0
-
-            success = await player._play_url(yt_data["audioUrl"])
-            if not success:
-                return web.json_response({"ok": False, "status": "error", "message": "Phát bài tiếp theo thất bại"}, status=400)
-
+            player.song_id = next_vid or f"yt_{int(time.time())}"   
+            await self._youtube_play_audio(play_query)
             if next_vid:
                 self._append_yt_history(next_vid)
                 self._yt_current_video_id = next_vid
