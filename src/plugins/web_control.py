@@ -541,7 +541,7 @@ class WebControlPlugin(Plugin):
             raise web.HTTPBadRequest(reason="videoId is required")
 
         try:
-            yt_data = await self._youtube_search_audio(query)
+            yt_data = await self._youtube_play_audio(query)
             player = get_music_player_instance()
 
             video_id = self._extract_youtube_video_id(query)
@@ -605,7 +605,7 @@ class WebControlPlugin(Plugin):
             if not play_query:
                 return web.json_response({"ok": False, "status": "error", "message": "Bài next không hợp lệ"}, status=400)
 
-            yt_data = await self._youtube_search_audio(play_query)
+            yt_data = await self._youtube_play_audio(play_query)
             player = get_music_player_instance()
             next_vid = str(next_song.get("videoId") or "").strip()
             player.song_id = next_vid or f"yt_{int(time.time())}"
