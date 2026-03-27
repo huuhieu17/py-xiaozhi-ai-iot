@@ -51,7 +51,6 @@ class WebControlPlugin(Plugin):
         self._yt_current_video_id = ""
         self._yt_history: list[str] = []
         self._yt_pending_recommends: list[dict] = []  # Cache recommendations for auto-next
-        self._yt_search_cache: dict[str, list[dict]] = {}  # Cache search results
         self._yt_recommends_cache: dict[str, list[dict]] = {}  # Cache recommendations by video ID
 
     async def setup(self, app: Any) -> None:
@@ -348,27 +347,6 @@ class WebControlPlugin(Plugin):
             logger.warning("Failed to fetch recommendations for %s: %s", video_id, e)
             self._yt_pending_recommends = []
 
-    async def _fetch_and_cache_search(self, query: str, limit: int = 10) -> None:
-        """Fetch search results in background without blocking"""
-        try:
-            results = await self._youtube_search(query, limit)
-            self._yt_search_cache[query] = results
-            logger.debug("Cached %d search results for query '%s'", len(results), query)
-        except Exception as e:
-            logger.warning("Failed to fetch search results for '%s': %s", query, e)
-
-    async def _get_cached_or_fetch_search(self, query: str, limit: int = 10) -> list[dict]:
-        """Get search results from cache or fetch fresh, trigger background update"""
-        if query in self._yt_search_cache:
-            # Return cached results, trigger background refresh
-            asyncio.create_task(self._fetch_and_cache_search(query, limit))
-            return self._yt_search_cache[query]
-        else:
-            # No cache, fetch now (blocking this once)
-            results = await self._youtube_search(query, limit)
-            self._yt_search_cache[query] = results
-            return results
-
     async def _get_cached_or_fetch_recommends(self, video_id: str, limit: int = 20) -> list[dict]:
         """Get recommendations from cache or fetch fresh, trigger background update"""
         if video_id in self._yt_recommends_cache:
@@ -552,8 +530,7 @@ class WebControlPlugin(Plugin):
 
         try:
             if query:
-                # Use cache-first strategy to avoid blocking
-                songs = await self._get_cached_or_fetch_search(query, limit)
+                songs = await self._youtube_search(query, limit)
                 return web.json_response(
                     {
                         "ok": True,
