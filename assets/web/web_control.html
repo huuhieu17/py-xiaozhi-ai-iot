@@ -4,63 +4,162 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Xiaozhi Web Control</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#0f172a",
+            coral: "#f97316",
+            mint: "#14b8a6",
+          },
+          boxShadow: {
+            lift: "0 12px 40px -12px rgba(15, 23, 42, 0.35)",
+          },
+          fontFamily: {
+            display: ["Space Grotesk", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; max-width: 820px; }
-    h2 { margin-top: 24px; }
-    .row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    input[type=text], input[type=number] { flex: 1; padding: 8px; min-width: 260px; }
-    button { padding: 8px 14px; cursor: pointer; }
-    pre { background: #111; color: #ddd; padding: 12px; border-radius: 6px; overflow: auto; max-height: 360px; }
-    #status { background: #f6f6f6; padding: 10px; border-radius: 6px; white-space: pre-wrap; }
+    .pattern-bg {
+      background-image:
+        radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.12) 1px, transparent 0),
+        linear-gradient(120deg, #fff6de 0%, #e8fff6 45%, #ecf8ff 100%);
+      background-size: 22px 22px, auto;
+    }
+
+    .float-in {
+      animation: floatIn 0.45s ease-out both;
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
-<body>
-  <h1>Xiaozhi Web Control</h1>
-  <div class="row">
-    <a href="/youtube-music" target="_blank" rel="noopener noreferrer">Mở UI YouTube Music (riêng)</a>
-  </div>
-  <div id="status">Đang tải trạng thái...</div>
+<body class="pattern-bg min-h-screen text-ink font-display">
+  <div class="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+    <header class="float-in mb-6 rounded-3xl bg-ink px-6 py-6 text-white shadow-lift">
+      <p class="mb-2 inline-flex rounded-full bg-white/10 px-3 py-1 text-xs tracking-wide">Xiaozhi Control Center</p>
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">Web Control Dashboard</h1>
+          <p class="mt-1 text-sm text-white/80">Dieu khien AI, nhac va thiet bi ngay trong mot trang.</p>
+        </div>
+        <a
+          href="/youtube-music"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-xl bg-coral px-4 py-2 text-sm font-semibold text-white transition hover:brightness-95"
+        >
+          Mo YouTube Music UI
+        </a>
+      </div>
+    </header>
 
-  <h2>Hỏi AI</h2>
-  <div class="row">
-    <input id="askText" type="text" placeholder="Nhập câu hỏi..." />
-    <button onclick="askAI()">Gửi</button>
-    <button onclick="startListen()">Listen</button>
-    <button onclick="stopListen()">Stop Listen</button>
+    <section class="float-in mb-6 rounded-2xl border border-white/70 bg-white/85 p-4 shadow-lift backdrop-blur sm:p-5">
+      <div class="mb-3 flex items-center justify-between">
+        <h2 class="text-lg font-bold">Trang thai he thong</h2>
+        <span class="rounded-full bg-mint/15 px-2 py-1 text-xs font-semibold text-mint">Live</span>
+      </div>
+      <pre id="status" class="max-h-72 overflow-auto rounded-xl bg-ink p-4 font-mono text-xs text-slate-100">Dang tai trang thai...</pre>
+    </section>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <section class="float-in rounded-2xl border border-white/70 bg-white/85 p-5 shadow-lift backdrop-blur">
+        <h2 class="mb-4 text-lg font-bold">Hoi AI</h2>
+        <div class="space-y-3">
+          <input id="askText" type="text" placeholder="Nhap cau hoi..." class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none ring-coral/40 transition focus:ring" />
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <button onclick="askAI()" class="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Gui</button>
+            <button onclick="startListen()" class="rounded-xl bg-mint px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Listen</button>
+            <button onclick="stopListen()" class="rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">Stop Listen</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="float-in rounded-2xl border border-white/70 bg-white/85 p-5 shadow-lift backdrop-blur">
+        <h2 class="mb-4 text-lg font-bold">Mo nhac</h2>
+        <div class="space-y-3">
+          <input id="songName" type="text" placeholder="Ten bai hat" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none ring-coral/40 transition focus:ring" />
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <button onclick="playMusic()" class="rounded-xl bg-coral px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Mo nhac</button>
+            <button onclick="toggleMusic()" class="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Play/Pause</button>
+            <button onclick="stopMusic()" class="rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">Stop</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="float-in rounded-2xl border border-white/70 bg-white/85 p-5 shadow-lift backdrop-blur lg:col-span-2">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+          <h2 class="text-lg font-bold">Am luong</h2>
+          <span id="volumeLabel" class="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white">70%</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-5">
+          <button onclick="changeVolume(-10)" class="rounded-xl bg-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">-10</button>
+          <button onclick="changeVolume(10)" class="rounded-xl bg-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">+10</button>
+          <button onclick="muteVolume()" class="rounded-xl bg-ink px-3 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Mute</button>
+          <button onclick="unmuteVolume()" class="rounded-xl bg-mint px-3 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Unmute</button>
+          <button onclick="refreshVolume()" class="rounded-xl bg-coral px-3 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Refresh</button>
+        </div>
+        <div class="mt-4">
+          <input id="volumeSlider" type="range" min="0" max="100" value="70" class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-coral" oninput="onVolumeSliderInput(this.value)" onchange="setVolume(this.value)" />
+        </div>
+      </section>
+
+      <section class="float-in rounded-2xl border border-white/70 bg-white/85 p-5 shadow-lift backdrop-blur lg:col-span-2">
+        <div class="mb-3 flex flex-wrap items-end gap-2">
+          <div>
+            <h2 class="text-lg font-bold">Logs</h2>
+            <p class="text-xs text-slate-500">Theo doi nhat ky realtime tu service.</p>
+          </div>
+          <div class="ml-auto flex w-full flex-wrap items-center gap-2 sm:w-auto">
+            <input id="logLines" type="number" min="10" max="2000" value="200" class="w-28 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-coral/40 focus:ring" />
+            <button onclick="loadLogs()" class="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90">Tai log</button>
+            <button onclick="restartApp()" class="rounded-xl bg-coral px-4 py-2 text-sm font-semibold text-white transition hover:brightness-95">Restart ung dung</button>
+          </div>
+        </div>
+        <pre id="logs" class="max-h-80 overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">Chua tai logs...</pre>
+      </section>
+    </div>
   </div>
 
-  <h2>Mở nhạc</h2>
-  <div class="row">
-    <input id="songName" type="text" placeholder="Tên bài hát" />
-    <button onclick="playMusic()">Mở nhạc</button>
-    <button onclick="toggleMusic()">Play/Pause</button>
-    <button onclick="stopMusic()">Stop</button>
-  </div>
-
-  <h2>Âm lượng</h2>
-  <div class="row">
-    <button onclick="changeVolume(-10)">-10</button>
-    <input id="volumeSlider" type="range" min="0" max="100" value="70" style="flex: 1; min-width: 220px;" oninput="onVolumeSliderInput(this.value)" onchange="setVolume(this.value)" />
-    <button onclick="changeVolume(10)">+10</button>
-    <button onclick="muteVolume()">Mute</button>
-    <button onclick="unmuteVolume()">Unmute</button>
-    <span id="volumeLabel">70%</span>
-  </div>
-
-  <h2>Logs</h2>
-  <div class="row">
-    <input id="logLines" type="number" min="10" max="2000" value="200" />
-    <button onclick="loadLogs()">Tải log</button>
-  </div>
-  <pre id="logs">Chưa tải logs...</pre>
-
-  <h2>Restart</h2>
-  <div class="row">
-    <button onclick="restartApp()">Restart ứng dụng</button>
-  </div>
+  <div id="toast" class="pointer-events-none fixed bottom-4 right-4 z-50 hidden max-w-sm rounded-xl bg-ink px-4 py-3 text-sm text-white shadow-lift"></div>
 
   <script>
     (function () {
+      let toastTimer = null;
+
+      function notify(message, isError = false) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = String(message || 'Hoan tat');
+        toast.classList.remove('hidden', 'bg-ink', 'bg-red-600');
+        toast.classList.add(isError ? 'bg-red-600' : 'bg-ink');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 2200);
+      }
+
       async function callApi(url, method = 'GET', body = null) {
         const options = { method, headers: { 'Content-Type': 'application/json' } };
         if (body) options.body = JSON.stringify(body);
@@ -76,7 +175,7 @@
           document.getElementById('status').innerText = JSON.stringify(data, null, 2);
           await window.refreshVolume();
         } catch (e) {
-          document.getElementById('status').innerText = 'Lỗi status: ' + e.message;
+          document.getElementById('status').innerText = 'Loi status: ' + e.message;
         }
       };
 
@@ -93,7 +192,7 @@
             window.onVolumeSliderInput(volume);
           }
         } catch (e) {
-          // Không chặn UI nếu thiết bị không hỗ trợ điều khiển âm lượng
+          // Khong chan UI neu thiet bi khong ho tro dieu khien am luong
         }
       };
 
@@ -109,7 +208,7 @@
             window.onVolumeSliderInput(volume);
           }
         } catch (e) {
-          alert('Lỗi chỉnh âm lượng: ' + e.message);
+          notify('Loi chinh am luong: ' + e.message, true);
           await window.refreshVolume();
         }
       };
@@ -131,7 +230,7 @@
             window.onVolumeSliderInput(data.volume);
           }
         } catch (e) {
-          alert('Lỗi mute: ' + e.message);
+          notify('Loi mute: ' + e.message, true);
         }
       };
 
@@ -143,7 +242,7 @@
             window.onVolumeSliderInput(data.volume);
           }
         } catch (e) {
-          alert('Lỗi unmute: ' + e.message);
+          notify('Loi unmute: ' + e.message, true);
         }
       };
 
@@ -152,29 +251,29 @@
         if (!text) return;
         try {
           const data = await callApi('/api/ask', 'POST', { text });
-          alert(data.message || 'Đã gửi câu hỏi');
+          notify(data.message || 'Da gui cau hoi');
         } catch (e) {
-          alert('Lỗi hỏi AI: ' + e.message);
+          notify('Loi hoi AI: ' + e.message, true);
         }
       };
 
       window.startListen = async function () {
         try {
           const data = await callApi('/api/listen/start', 'POST');
-          alert(data.message || 'Đã bắt đầu lắng nghe');
+          notify(data.message || 'Da bat dau lang nghe');
           await window.refreshStatus();
         } catch (e) {
-          alert('Lỗi start listen: ' + e.message);
+          notify('Loi start listen: ' + e.message, true);
         }
       };
 
       window.stopListen = async function () {
         try {
           const data = await callApi('/api/listen/stop', 'POST');
-          alert(data.message || 'Đã dừng lắng nghe');
+          notify(data.message || 'Da dung lang nghe');
           await window.refreshStatus();
         } catch (e) {
-          alert('Lỗi stop listen: ' + e.message);
+          notify('Loi stop listen: ' + e.message, true);
         }
       };
 
@@ -183,30 +282,30 @@
         if (!song_name) return;
         try {
           const data = await callApi('/api/music/play', 'POST', { song_name });
-          alert(data.message || 'Đã xử lý mở nhạc');
+          notify(data.message || 'Da xu ly mo nhac');
           await window.refreshStatus();
         } catch (e) {
-          alert('Lỗi mở nhạc: ' + e.message);
+          notify('Loi mo nhac: ' + e.message, true);
         }
       };
 
       window.toggleMusic = async function () {
         try {
           const data = await callApi('/api/music/toggle', 'POST');
-          alert(data.message || 'Đã toggle nhạc');
+          notify(data.message || 'Da toggle nhac');
           await window.refreshStatus();
         } catch (e) {
-          alert('Lỗi toggle nhạc: ' + e.message);
+          notify('Loi toggle nhac: ' + e.message, true);
         }
       };
 
       window.stopMusic = async function () {
         try {
           const data = await callApi('/api/music/stop', 'POST');
-          alert(data.message || 'Đã dừng nhạc');
+          notify(data.message || 'Da dung nhac');
           await window.refreshStatus();
         } catch (e) {
-          alert('Lỗi dừng nhạc: ' + e.message);
+          notify('Loi dung nhac: ' + e.message, true);
         }
       };
 
@@ -216,17 +315,17 @@
           const data = await callApi('/api/logs?lines=' + encodeURIComponent(lines));
           document.getElementById('logs').innerText = (data.lines || []).join('\n');
         } catch (e) {
-          document.getElementById('logs').innerText = 'Lỗi tải logs: ' + e.message;
+          document.getElementById('logs').innerText = 'Loi tai logs: ' + e.message;
         }
       };
 
       window.restartApp = async function () {
-        if (!confirm('Bạn chắc chắn muốn restart ứng dụng?')) return;
+        if (!confirm('Ban chac chan muon restart ung dung?')) return;
         try {
           const data = await callApi('/api/restart', 'POST');
-          alert(data.message || 'Đang restart');
+          notify(data.message || 'Dang restart');
         } catch (e) {
-          alert('Lỗi restart: ' + e.message);
+          notify('Loi restart: ' + e.message, true);
         }
       };
 
