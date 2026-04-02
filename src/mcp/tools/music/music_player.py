@@ -8,6 +8,7 @@ import hashlib
 import re
 import shutil
 import tempfile
+import threading
 import time
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -165,6 +166,12 @@ class MusicPlayer:
         # Cache danh sách nhạc cục bộ
         self._local_playlist = None
         self._last_scan_time = 0
+
+        # Trạng thái phát stream URL (ghi nền vào file tạm rồi phát ngay khi đủ đệm)
+        self._stream_download_task: Optional[asyncio.Task] = None
+        self._stream_stop_event = threading.Event()
+        self._stream_temp_file: Optional[Path] = None
+        self._is_stream_url = False
 
         logger.info("Khởi tạo singleton trình phát nhạc hoàn tất")
 
@@ -562,6 +569,87 @@ class MusicPlayer:
             logger.error(f"Phát audio URL thất bại: {e}")
             return {"status": "error", "message": f"Phát thất bại: {str(e)}"}
 
+    async def play_stream_url(self, audio_url: str, title: str = "") -> dict:
+        """
+        Phát stream từ URL mà không cần tải xong toàn bộ tệp trước.
+        """
+        url = str(audio_url or "").strip()
+        if not url:
+            return {"status": "error", "message": "audio_url không được để trống"}
+
+        parsed = urlparse(url)
+        if parsed.scheme not in {"http", "https"}:
+            return {"status": "error", "message": "audio_url phải bắt đầu bằng http/https"}
+
+        try:
+            file_name = Path(parsed.path).stem.strip()
+            fallback_title = file_name or "Audio Stream"
+
+            self.song_id = (
+                f"stream_{hashlib.md5(url.encode('utf-8')).hexdigest()[:16]}"
+            )
+            self.current_song = str(title or "").strip() or fallback_title
+            self.total_duration = 0
+            self.lyrics = []
+
+            # Dừng phát hiện tại và dọn luồng stream cũ nếu có
+            if self.is_playing:
+                pygame.mixer.music.stop()
+            await self._stop_stream_download(cleanup_file=True)
+
+            stream_path = self.temp_cache_dir / f"{self.song_id}.stream.mp3"
+            if stream_path.exists():
+                try:
+                    stream_path.unlink()
+                except Exception:
+                    pass
+
+            self._stream_stop_event.clear()
+            self._stream_temp_file = stream_path
+            self._stream_download_task = asyncio.create_task(
+                asyncio.to_thread(
+                    self._stream_download_worker,
+                    url,
+                    stream_path,
+                    self._stream_stop_event,
+                )
+            )
+
+            buffered = await self._wait_for_stream_buffer(
+                stream_path,
+                min_bytes=256 * 1024,
+                timeout=12,
+            )
+            if not buffered:
+                await self._stop_stream_download(cleanup_file=True)
+                return {"status": "error", "message": "Không thể đệm đủ dữ liệu để phát"}
+
+            pygame.mixer.music.load(str(stream_path))
+            pygame.mixer.music.play()
+
+            self.current_url = url
+            self.is_playing = True
+            self.paused = False
+            self.current_position = 0
+            self.start_play_time = time.time()
+            self.current_lyric_index = -1
+            self._is_stream_url = True
+
+            logger.info(f"Bắt đầu phát stream: {self.current_song}")
+
+            if self.app and hasattr(self.app, "set_chat_message"):
+                await self._safe_update_ui(f"Đang phát stream: {self.current_song}")
+
+            return {
+                "status": "success",
+                "message": f"Đang phát stream: {self.current_song}",
+                "audio_url": url,
+            }
+        except Exception as e:
+            await self._stop_stream_download(cleanup_file=True)
+            logger.error(f"Phát stream URL thất bại: {e}")
+            return {"status": "error", "message": f"Phát stream thất bại: {str(e)}"}
+
     async def play_pause(self) -> dict:
         """
         Chuyển đổi phát/tạm dừng.
@@ -569,7 +657,11 @@ class MusicPlayer:
         try:
             if not self.is_playing and self.current_url:
                 # Phát lại
-                success = await self._play_url(self.current_url)
+                if self._is_stream_url:
+                    result = await self.play_stream_url(self.current_url, title=self.current_song)
+                    success = result.get("status") == "success"
+                else:
+                    success = await self._play_url(self.current_url)
                 return {
                     "status": "success" if success else "error",
                     "message": (
@@ -625,6 +717,7 @@ class MusicPlayer:
 
             pygame.mixer.music.stop()
             current_song = self.current_song
+            await self._stop_stream_download(cleanup_file=True)
             self.is_playing = False
             self.paused = False
             self.current_position = 0
@@ -826,6 +919,10 @@ class MusicPlayer:
             if self.is_playing:
                 pygame.mixer.music.stop()
 
+            # Nếu đang ở chế độ stream URL thì dừng và dọn trạng thái stream trước
+            await self._stop_stream_download(cleanup_file=False)
+            self._is_stream_url = False
+
             # Kiểm tra cache hoặc tải về
             file_path = await self._get_or_download_file(url)
             if not file_path:
@@ -856,6 +953,82 @@ class MusicPlayer:
         except Exception as e:
             logger.error(f"Phát thất bại: {e}")
             return False
+
+    def _stream_download_worker(
+        self,
+        url: str,
+        stream_path: Path,
+        stop_event: threading.Event,
+    ) -> None:
+        """Tải stream nền vào file tạm để pygame có thể phát sớm khi đủ dữ liệu."""
+        try:
+            response = requests.get(
+                url,
+                headers=self.config["HEADERS"],
+                stream=True,
+                timeout=30,
+            )
+            response.raise_for_status()
+
+            with open(stream_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=16 * 1024):
+                    if stop_event.is_set():
+                        break
+                    if not chunk:
+                        continue
+                    f.write(chunk)
+                    f.flush()
+
+            response.close()
+        except Exception as e:
+            if not stop_event.is_set():
+                logger.error(f"Tải stream nền thất bại: {e}")
+
+    async def _wait_for_stream_buffer(
+        self,
+        stream_path: Path,
+        min_bytes: int,
+        timeout: float,
+    ) -> bool:
+        """Chờ file stream đạt ngưỡng đệm tối thiểu trước khi bắt đầu phát."""
+        end_time = time.time() + timeout
+        while time.time() < end_time:
+            if stream_path.exists() and stream_path.stat().st_size >= min_bytes:
+                return True
+
+            if self._stream_download_task and self._stream_download_task.done():
+                break
+
+            await asyncio.sleep(0.15)
+
+        return stream_path.exists() and stream_path.stat().st_size > 0
+
+    async def _stop_stream_download(self, cleanup_file: bool) -> None:
+        """Dừng tác vụ tải stream nền và dọn file tạm nếu cần."""
+        self._stream_stop_event.set()
+
+        if self._stream_download_task is not None:
+            if not self._stream_download_task.done():
+                self._stream_download_task.cancel()
+            try:
+                await self._stream_download_task
+            except asyncio.CancelledError:
+                pass
+            except Exception as e:
+                logger.debug(f"Kết thúc tác vụ stream có cảnh báo: {e}")
+            self._stream_download_task = None
+
+        self._stream_stop_event.clear()
+
+        if cleanup_file and self._stream_temp_file and self._stream_temp_file.exists():
+            try:
+                self._stream_temp_file.unlink()
+            except Exception:
+                pass
+
+        if cleanup_file:
+            self._stream_temp_file = None
+            self._is_stream_url = False
 
     async def _get_or_download_file(self, url: str) -> Optional[Path]:
         """Lấy hoặc tải tệp.

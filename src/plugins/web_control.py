@@ -388,7 +388,7 @@ class WebControlPlugin(Plugin):
         stream_mp3_url = f"{base}/stream/mp3?videoId={quote(resolved_video_id)}"
 
         player = get_music_player_instance()
-        rs = await player.play_audio_url(stream_mp3_url, title=title)
+        rs = await player.play_stream_url(stream_mp3_url, title=title)
 
         if rs.get("status") == "success":
             self._yt_current_video_id = resolved_video_id
