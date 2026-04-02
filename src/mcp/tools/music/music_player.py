@@ -169,6 +169,7 @@ class MusicPlayer:
 
         # Trạng thái phát stream URL (ghi nền vào file tạm rồi phát ngay khi đủ đệm)
         self._stream_download_task: Optional[asyncio.Task] = None
+        self._stream_monitor_task: Optional[asyncio.Task] = None
         self._stream_stop_event = threading.Event()
         self._stream_temp_file: Optional[Path] = None
         self._is_stream_url = False
@@ -635,6 +636,9 @@ class MusicPlayer:
             self.current_lyric_index = -1
             self._is_stream_url = True
 
+            # Giám sát phát stream để tự nối tiếp khi file tạm chưa tải xong.
+            self._stream_monitor_task = asyncio.create_task(self._monitor_stream_playback())
+
             logger.info(f"Bắt đầu phát stream: {self.current_song}")
 
             if self.app and hasattr(self.app, "set_chat_message"):
@@ -1003,9 +1007,66 @@ class MusicPlayer:
 
         return stream_path.exists() and stream_path.stat().st_size > 0
 
+    async def _monitor_stream_playback(self) -> None:
+        """Giữ phát stream liên tục bằng cách tự resume khi còn đang tải nền."""
+        try:
+            while self._is_stream_url and self.is_playing:
+                await asyncio.sleep(0.5)
+
+                if self.paused or self._stream_stop_event.is_set():
+                    continue
+
+                if pygame.mixer.music.get_busy():
+                    continue
+
+                downloading = (
+                    self._stream_download_task is not None
+                    and not self._stream_download_task.done()
+                )
+
+                if downloading and self._stream_temp_file and self._stream_temp_file.exists():
+                    resume_pos = max(0.0, time.time() - self.start_play_time)
+                    try:
+                        pygame.mixer.music.load(str(self._stream_temp_file))
+                        try:
+                            pygame.mixer.music.play(start=resume_pos)
+                        except TypeError:
+                            pygame.mixer.music.play()
+                            try:
+                                pygame.mixer.music.set_pos(resume_pos)
+                            except Exception:
+                                pass
+
+                        self.start_play_time = time.time() - resume_pos
+                        logger.debug(
+                            f"Stream tạm dừng do EOF, tiếp tục từ ~{resume_pos:.1f}s"
+                        )
+                    except Exception as e:
+                        logger.warning(f"Tiếp tục stream thất bại: {e}")
+                    continue
+
+                # Nếu không còn tải nền và cũng không còn busy, coi như phát xong.
+                await self._handle_playback_finished()
+                break
+        except asyncio.CancelledError:
+            pass
+        except Exception as e:
+            logger.error(f"Giám sát stream ngoại lệ: {e}")
+
     async def _stop_stream_download(self, cleanup_file: bool) -> None:
         """Dừng tác vụ tải stream nền và dọn file tạm nếu cần."""
         self._stream_stop_event.set()
+
+        if self._stream_monitor_task is not None:
+            if not self._stream_monitor_task.done():
+                self._stream_monitor_task.cancel()
+            try:
+                await self._stream_monitor_task
+            except asyncio.CancelledError:
+                pass
+            except Exception as e:
+                logger.debug(f"Kết thúc giám sát stream có cảnh báo: {e}")
+            self._stream_monitor_task = None
 
         if self._stream_download_task is not None:
             if not self._stream_download_task.done():
