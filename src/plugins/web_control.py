@@ -1,4 +1,7 @@
 import asyncio
+import base64
+import binascii
+import hmac
 import importlib
 import os
 import re
@@ -33,6 +36,7 @@ class WebControlPlugin(Plugin):
         self._last_effective_volume = 70
         self._host = os.environ.get("WEB_CONTROL_HOST", "0.0.0.0")
         self._port = int(os.environ.get("WEB_CONTROL_PORT", "8088"))
+        self._web_password = os.environ.get("WEB_CONTROL_PASSWORD", "Passwd2@")
         default_html = Path(get_project_root()) / "assets" / "web" / "web_control.html"
         self._html_path = Path(
             os.environ.get("WEB_CONTROL_HTML_PATH", str(default_html))
@@ -62,7 +66,34 @@ class WebControlPlugin(Plugin):
                 logger.warning("aiohttp is not available, web control is disabled")
                 return
 
-        web_app = web.Application()
+        @web.middleware
+        async def _basic_auth_middleware(request, handler):
+            password = str(self._web_password or "")
+            if not password:
+                return await handler(request)
+
+            auth_header = request.headers.get("Authorization", "")
+            if auth_header.startswith("Basic "):
+                token = auth_header[6:].strip()
+                try:
+                    decoded = base64.b64decode(token).decode("utf-8")
+                except (binascii.Error, UnicodeDecodeError):
+                    decoded = ""
+
+                if ":" in decoded:
+                    _, supplied_password = decoded.split(":", 1)
+                    if hmac.compare_digest(supplied_password, password):
+                        return await handler(request)
+
+            return web.Response(
+                status=401,
+                headers={
+                    "WWW-Authenticate": 'Basic realm="Xiaozhi Web Control", charset="UTF-8"'
+                },
+                text="Authentication required",
+            )
+
+        web_app = web.Application(middlewares=[_basic_auth_middleware])
         web_app.add_routes(
             [
                 web.get("/", self._handle_index),
