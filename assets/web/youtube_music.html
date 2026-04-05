@@ -64,12 +64,12 @@
             <h2 class="mb-3 text-lg font-semibold">Kết quả tìm kiếm</h2>
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
               <div>
-                <label for="resultList" class="mb-1 block text-sm font-medium text-slate-600">Danh sách bài hát</label>
-                <select id="resultList" size="10" class="h-64 w-full rounded-lg border border-slate-300 bg-white p-2 text-sm shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"></select>
+                <label class="mb-1 block text-sm font-medium text-slate-600">Danh sách bài hát</label>
+                <div id="resultCards" class="grid max-h-[28rem] grid-cols-1 gap-3 overflow-auto rounded-lg border border-slate-300 bg-white p-3 shadow-sm"></div>
               </div>
               <div>
-                <label for="recommendationsList" class="mb-1 block text-sm font-medium text-slate-600">Gợi ý</label>
-                <select id="recommendationsList" size="10" class="h-64 w-full rounded-lg border border-slate-300 bg-white p-2 text-sm shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"></select>
+                <label class="mb-1 block text-sm font-medium text-slate-600">Gợi ý</label>
+                <div id="recommendationCards" class="grid max-h-[28rem] grid-cols-1 gap-3 overflow-auto rounded-lg border border-slate-300 bg-white p-3 shadow-sm"></div>
               </div>
             </div>
           </section>
@@ -89,6 +89,7 @@
       const recommends = [];
       let currentSeed = '';
       let lastIsPlaying = false;
+      let selectedResult = null;
 
       async function callApi(url) {
         const res = await fetch(url);
@@ -121,15 +122,56 @@
         if (historyIds.length > 50) historyIds.shift();
       }
 
+      function updateSelectedResultCard() {
+        const cards = document.querySelectorAll('[data-result-card="1"]');
+        cards.forEach((card) => {
+          const cardVideoId = String(card.dataset.videoId || '').trim();
+          if (selectedResult && cardVideoId && cardVideoId === selectedResult.videoId) {
+            card.classList.remove('ring-slate-200', 'border-slate-200');
+            card.classList.add('ring-blue-300', 'border-blue-300', 'bg-blue-50');
+          } else {
+            card.classList.remove('ring-blue-300', 'border-blue-300', 'bg-blue-50');
+            card.classList.add('ring-slate-200', 'border-slate-200');
+          }
+        });
+      }
+
+      async function playTrack(track) {
+        const videoId = String(track?.videoId || '').trim();
+        const title = String(track?.title || 'Bài hát').trim();
+        const artists = String(track?.artists || '').trim();
+        if (!videoId) {
+          throw new Error('Không tìm thấy videoId hợp lệ');
+        }
+
+        await callApiPost('/api/youtube/player/play', { videoId });
+
+        addHistory(videoId);
+        loadRecommendations(videoId);
+        currentSeed = videoId;
+        document.getElementById('nowPlaying').textContent = artists ? `${title} - ${artists}` : title;
+      }
+
       function renderResults(items) {
-        const list = document.getElementById('resultList');
+        const list = document.getElementById('resultCards');
         list.innerHTML = '';
         if (!Array.isArray(items) || !items.length) {
-          const opt = document.createElement('option');
-          opt.textContent = 'Không có kết quả';
-          opt.value = '';
-          list.appendChild(opt);
+          const empty = document.createElement('div');
+          empty.className = 'rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-500';
+          empty.textContent = 'Không có kết quả';
+          list.appendChild(empty);
+          selectedResult = null;
           return;
+        }
+
+        if (!selectedResult) {
+          const first = items[0] || {};
+          selectedResult = {
+            videoId: String(first.videoId || '').trim(),
+            title: String(first.title || 'Bài hát').trim(),
+            artists: String(first.artists || '').trim(),
+            queryValue: String(first.youtubeUrl || first.videoId || first.title || '').trim(),
+          };
         }
 
         for (const item of items) {
@@ -138,16 +180,40 @@
           const videoId = String(item.videoId || '').trim();
           const youtubeUrl = String(item.youtubeUrl || '').trim();
           const queryValue = youtubeUrl || videoId || title;
-          const label = artists ? `${title} - ${artists}` : title;
+          const card = document.createElement('div');
+          card.className = 'rounded-xl border border-slate-200 bg-white p-3 ring-1 ring-slate-200 transition hover:border-blue-200 hover:ring-blue-200';
+          card.dataset.resultCard = '1';
+          card.dataset.videoId = videoId;
+          card.innerHTML = `
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <div class="line-clamp-2 text-sm font-semibold text-slate-900">${title}</div>
+                <div class="mt-1 text-xs text-slate-500">${artists || 'Không rõ nghệ sĩ'}</div>
+              </div>
+              <button class="play-result-btn rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-emerald-700">Play</button>
+            </div>
+          `;
 
-          const opt = document.createElement('option');
-          opt.value = queryValue;
-          opt.dataset.videoId = videoId;
-          opt.dataset.title = title;
-          opt.dataset.artists = artists;
-          opt.textContent = label;
-          list.appendChild(opt);
+          card.addEventListener('click', () => {
+            selectedResult = { videoId, title, artists, queryValue };
+            updateSelectedResultCard();
+          });
+
+          card.querySelector('.play-result-btn').addEventListener('click', async (ev) => {
+            ev.stopPropagation();
+            try {
+              selectedResult = { videoId, title, artists, queryValue };
+              updateSelectedResultCard();
+              await playTrack(selectedResult);
+            } catch (e) {
+              alert('Lỗi play: ' + e.message);
+            }
+          });
+
+          list.appendChild(card);
         }
+
+        updateSelectedResultCard();
       }
 
       async function loadServerInfo() {
@@ -173,28 +239,42 @@
       }
 
       const renderRecommendations = (items) => {
-        const list = document.getElementById('recommendationsList');
+        const list = document.getElementById('recommendationCards');
         list.innerHTML = '';
         if (!Array.isArray(items) || !items.length) {
-          const opt = document.createElement('option');
-          opt.textContent = 'Không có gợi ý';
-          opt.value = '';
-          list.appendChild(opt);
+          const empty = document.createElement('div');
+          empty.className = 'rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-500';
+          empty.textContent = 'Không có gợi ý';
+          list.appendChild(empty);
           return;
         }
 
         for (const item of items) {
           const title = String(item.title || 'Bài hát').trim();
-          const youtubeUrl = String(item.url || '').trim();
-          const videoId = item.id;
-          const label = title;
+          const artists = String(item.artists || '').trim();
+          const videoId = String(item.videoId || item.id || '').trim();
 
-          const opt = document.createElement('option');
-          opt.value = videoId;
-          opt.dataset.videoId = videoId;
-          opt.dataset.title = title;
-          opt.textContent = label;
-          list.appendChild(opt);
+          const card = document.createElement('div');
+          card.className = 'rounded-xl border border-slate-200 bg-white p-3 ring-1 ring-slate-200 transition hover:border-violet-200 hover:ring-violet-200';
+          card.innerHTML = `
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <div class="line-clamp-2 text-sm font-semibold text-slate-900">${title}</div>
+                <div class="mt-1 text-xs text-slate-500">${artists || 'Gợi ý cho bài đang phát'}</div>
+              </div>
+              <button class="play-rec-btn rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-violet-700">Play</button>
+            </div>
+          `;
+
+          card.querySelector('.play-rec-btn').addEventListener('click', async () => {
+            try {
+              await playTrack({ videoId, title, artists, queryValue: videoId || title });
+            } catch (e) {
+              alert('Lỗi play gợi ý: ' + e.message);
+            }
+          });
+
+          list.appendChild(card);
         }
       };
 
@@ -214,24 +294,16 @@
       };
 
       window.playSelected = async function () {
-        const list = document.getElementById('resultList');
-        const selected = list.options[list.selectedIndex];
-        if (!selected || !selected.value) {
+        if (!selectedResult || !selectedResult.videoId) {
           alert('Bạn chưa chọn bài hát');
           return;
         }
 
-        const query = selected.value;
-        const videoId = selected.dataset.videoId || '';
-        const title = selected.dataset.title || query;
-        const artists = selected.dataset.artists || '';
-
-        await callApiPost('/api/youtube/player/play', { videoId });
-
-        if (videoId) addHistory(videoId);
-        loadRecommendations(videoId);
-        currentSeed = query;
-        document.getElementById('nowPlaying').textContent = artists ? `${title} - ${artists}` : title;
+        try {
+          await playTrack(selectedResult);
+        } catch (e) {
+          alert('Lỗi play: ' + e.message);
+        }
       };
 
       window.togglePlayback = async function () {
