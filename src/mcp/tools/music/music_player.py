@@ -5,11 +5,15 @@ Cung cấp trình phát nhạc kiểu singleton, khởi tạo khi đăng ký, h�
 
 import asyncio
 import hashlib
+import json
+import os
 import re
 import shutil
+import socket
 import subprocess
 import tempfile
 import time
+import uuid
 from pathlib import Path
 from typing import List, Optional, Tuple
 from urllib.parse import parse_qs, urljoin, urlparse
@@ -169,6 +173,10 @@ class MusicPlayer:
         self._stream_player_backend: str = ""
         self._stream_monitor_task: Optional[asyncio.Task] = None
         self._is_stream_url = False
+
+        # MPV IPC socket support cho volume realtime
+        self._mpv_ipc_socket_path: Optional[str] = None
+        self._mpv_command_id = 0
 
         logger.info("Khởi tạo singleton trình phát nhạc hoàn tất")
 
@@ -760,6 +768,22 @@ class MusicPlayer:
 
         self._volume_percent = volume
 
+        # Nếu mpv IPC socket có sẵn, gửi lệnh realtime không cần restart player
+        if self._mpv_ipc_socket_path and self.is_playing and not self.paused:
+            success = await self._send_mpv_command(
+                "set_property",
+                "volume",
+                volume,
+            )
+            if success:
+                return {
+                    "status": "success",
+                    "message": f"Đã đặt âm lượng: {self._volume_percent}%",
+                    "volume": self._volume_percent,
+                    "method": "ipc_realtime",
+                }
+
+        # Fallback: restart player (ffplay/vlc hoặc mpv không có IPC)
         if self.is_playing and not self.paused:
             current_pos = max(self.current_position, time.time() - self.start_play_time)
             started = await self._start_external_playback(start_position=current_pos)
@@ -773,6 +797,7 @@ class MusicPlayer:
             "status": "success",
             "message": f"Đã đặt âm lượng: {self._volume_percent}%",
             "volume": self._volume_percent,
+            "method": "restart" if self.is_playing else "saved",
         }
 
     async def get_volume(self) -> dict:
@@ -940,7 +965,11 @@ class MusicPlayer:
 
         mpv_path = shutil.which("mpv")
         if mpv_path:
+            # MPV với IPC socket để điều khiển volume realtime
+            self._mpv_ipc_socket_path = self._get_mpv_ipc_socket_path()
             cmd = [mpv_path, "--no-video", "--really-quiet", "--force-window=no"]
+            if self._mpv_ipc_socket_path:
+                cmd.append(f"--input-ipc-server={self._mpv_ipc_socket_path}")
             if start_position > 0:
                 cmd.append(f"--start={start_position:.3f}")
             cmd.append(f"--volume={self._volume_percent}")
@@ -973,9 +1002,13 @@ class MusicPlayer:
                 return True
             except Exception as e:
                 logger.warning(f"Khởi chạy {backend} thất bại: {e}")
+                # Dọn dẹp IPC socket path nếu khởi chạy backend thất bại
+                if backend == "mpv":
+                    self._mpv_ipc_socket_path = None
 
         self._stream_player_process = None
         self._stream_player_backend = ""
+        self._mpv_ipc_socket_path = None
         return False
 
     async def _start_external_playback(self, start_position: float = 0.0) -> bool:
@@ -983,6 +1016,24 @@ class MusicPlayer:
         target = (self._playback_target or self.current_url or "").strip()
         if not target:
             return False
+
+        # Nếu muốn seek trên player đang hoạt động mà có IPC, dùng seek command
+        if (
+            self._mpv_ipc_socket_path
+            and self.is_playing
+            and not self.paused
+            and self._stream_player_backend == "mpv"
+            and start_position > 0
+        ):
+            success = await self._send_mpv_command(
+                "seek",
+                start_position,
+                "absolute",
+            )
+            if success:
+                self.current_position = start_position
+                self.start_play_time = time.time() - start_position
+                return True
 
         await self._stop_stream_download(cleanup_file=False)
         self.is_playing = False
@@ -1057,6 +1108,9 @@ class MusicPlayer:
                     pass
             self._stream_player_process = None
             self._stream_player_backend = ""
+
+        # Dọn dẹp MPV IPC socket
+        self._mpv_ipc_socket_path = None
 
         if cleanup_file:
             self._is_stream_url = False
@@ -1323,6 +1377,61 @@ class MusicPlayer:
         minutes = int(seconds) // 60
         seconds = int(seconds) % 60
         return f"{minutes:02d}:{seconds:02d}"
+
+    def _get_mpv_ipc_socket_path(self) -> Optional[str]:
+        """Tạo đường dẫn MPV IPC socket."""
+        if os.name == "nt":  # Windows
+            # Dùng pipe trên Windows
+            return f"\\\\.\\pipe\\mpv-ipc-{uuid.uuid4().hex[:8]}"
+        else:  # Linux/macOS
+            # Dùng Unix socket
+            temp_dir = tempfile.gettempdir()
+            return os.path.join(temp_dir, f"mpv-ipc-{uuid.uuid4().hex[:8]}.sock")
+
+    async def _send_mpv_command(self, *args: tuple) -> bool:
+        """Gửi lệnh tới MPV qua IPC socket.
+        
+        Args:
+            *args: lệnh và tham số (vd: "set_property", "volume", 70)
+            
+        Returns:
+            True nếu thành công, False nếu thất bại hay socket không sẵn
+        """
+        if not self._mpv_ipc_socket_path:
+            return False
+
+        try:
+            self._mpv_command_id += 1
+            payload = {
+                "command": list(args),
+                "request_id": self._mpv_command_id,
+            }
+            json_cmd = json.dumps(payload) + "\n"
+
+            # Gửi lệnh qua socket (non-blocking, timeout 2s)
+            def send_to_mpv():
+                try:
+                    if os.name == "nt":  # Windows - dùng named pipe
+                        import msvcrt
+
+                        handle = msvcrt.open(self._mpv_ipc_socket_path, os.O_WRONLY)
+                        os.write(handle, json_cmd.encode())
+                        os.close(handle)
+                    else:  # Unix - dùng socket
+                        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                        sock.settimeout(2)
+                        sock.connect(self._mpv_ipc_socket_path)
+                        sock.sendall(json_cmd.encode())
+                        sock.close()
+                    return True
+                except Exception:
+                    return False
+
+            result = await asyncio.to_thread(send_to_mpv)
+            return result
+        except Exception as e:
+            logger.debug(f"Gửi lệnh tới MPV thất bại: {e}")
+            return False
 
     async def _safe_update_ui(self, message: str):
         """
