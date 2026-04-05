@@ -14,10 +14,8 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 from urllib.parse import parse_qs, urljoin, urlparse
 
-import pygame
 import requests
 
-from src.constants.constants import AudioConfig
 from src.utils.logging_config import get_logger
 from src.utils.resource_finder import get_user_cache_dir
 
@@ -119,18 +117,17 @@ class MusicPlayer:
     """
 
     def __init__(self):
-        # Tối ưu hóa khởi tạo pygame music tùy theo loại máy chủ
-        self._init_pygame_mixer()
-
         # Trạng thái phát cốt lõi
         self.current_song = ""
         self.current_url = ""
+        self._playback_target = ""
         self.song_id = ""
         self.total_duration = 0
         self.is_playing = False
         self.paused = False
         self.current_position = 0
         self.start_play_time = 0
+        self._volume_percent = 70
 
         # Liên quan đến lời bài hát
         self.lyrics = []  # Danh sách lời bài hát, định dạng [(thời gian, văn bản), ...]
@@ -174,34 +171,6 @@ class MusicPlayer:
         self._is_stream_url = False
 
         logger.info("Khởi tạo singleton trình phát nhạc hoàn tất")
-
-    def _init_pygame_mixer(self):
-        """
-        Tối ưu hóa khởi tạo pygame music tùy theo loại máy chủ.
-        """
-        try:
-
-            # Khởi tạo trước mixer để thiết lập bộ đệm
-            pygame.mixer.pre_init(
-                frequency=AudioConfig.OUTPUT_SAMPLE_RATE,
-                size=-16,  # 16-bit có dấu
-                channels=AudioConfig.CHANNELS,
-                buffer=1024,
-            )
-
-            # Khởi tạo chính thức
-            pygame.mixer.init()
-
-            logger.info(
-                f"Khởi tạo pygame mixer hoàn tất - Tần số lấy mẫu: {AudioConfig.OUTPUT_SAMPLE_RATE}Hz"
-            )
-
-        except Exception as e:
-            logger.warning(f"Tối ưu hóa khởi tạo pygame thất bại, sử dụng cấu hình mặc định: {e}")
-            # Quay lại cấu hình mặc định
-            pygame.mixer.init(
-                frequency=AudioConfig.OUTPUT_SAMPLE_RATE, channels=AudioConfig.CHANNELS
-            )
 
     def _initialize_app_reference(self):
         """
@@ -424,17 +393,6 @@ class MusicPlayer:
             if MUTAGEN_AVAILABLE:
                 metadata.extract_metadata()
 
-            # Dừng phát hiện tại
-            if self.is_playing:
-                if self._is_stream_url:
-                    await self._stop_stream_download(cleanup_file=True)
-                else:
-                    pygame.mixer.music.stop()
-
-            # Tải và phát
-            pygame.mixer.music.load(str(file_path))
-            pygame.mixer.music.play()
-
             # Cập nhật trạng thái phát
             title = metadata.title or "Tiêu đề không xác định"
             artist = metadata.artist or "Nghệ sĩ không xác định"
@@ -442,12 +400,16 @@ class MusicPlayer:
             self.song_id = file_id
             self.total_duration = metadata.duration or 0
             self.current_url = str(file_path)  # Đường dẫn tệp cục bộ
-            self.is_playing = True
-            self.paused = False
-            self.current_position = 0
-            self.start_play_time = time.time()
+            self._playback_target = str(file_path)
             self.current_lyric_index = -1
             self.lyrics = []  # Tệp cục bộ tạm thời không hỗ trợ lời bài hát
+
+            started = await self._start_external_playback(start_position=0.0)
+            if not started:
+                return {
+                    "status": "error",
+                    "message": "Không tìm thấy ffplay/mpv/vlc để phát nhạc",
+                }
 
             logger.info(f"Bắt đầu phát nhạc cục bộ: {self.current_song}")
 
@@ -481,14 +443,12 @@ class MusicPlayer:
         if not self.is_playing or self.paused:
             return self.current_position
 
-        if self._is_stream_url:
-            return max(self.current_position, time.time() - self.start_play_time)
-
-        current_pos = min(self.total_duration, time.time() - self.start_play_time)
-
-        # Kiểm tra xem đã phát xong chưa
-        if current_pos >= self.total_duration and self.total_duration > 0:
-            await self._handle_playback_finished()
+        current_pos = max(self.current_position, time.time() - self.start_play_time)
+        if self.total_duration > 0:
+            if current_pos >= self.total_duration:
+                await self._handle_playback_finished()
+                return self.total_duration
+            return min(self.total_duration, current_pos)
 
         return current_pos
 
@@ -508,10 +468,7 @@ class MusicPlayer:
         if self.is_playing:
             logger.info(f"Bài hát đã phát xong: {self.current_song}")
 
-            if self._is_stream_url:
-                await self._stop_stream_download(cleanup_file=False)
-            else:
-                pygame.mixer.music.stop()
+            await self._stop_stream_download(cleanup_file=False)
 
             self.is_playing = False
             self.paused = False
@@ -604,28 +561,16 @@ class MusicPlayer:
             self.total_duration = 0
             self.lyrics = []
 
-            # Dừng phát hiện tại và dọn trạng thái stream cũ nếu có
-            if self.is_playing and not self._is_stream_url:
-                pygame.mixer.music.stop()
-            await self._stop_stream_download(cleanup_file=True)
+            self.current_url = url
+            self._playback_target = url
 
-            started = await self._start_stream_player(url, start_position=0.0)
+            started = await self._start_external_playback(start_position=0.0)
             if not started:
                 return {
                     "status": "error",
                     "message": "Không tìm thấy ffplay/mpv/vlc để phát stream",
                 }
-
-            self.current_url = url
-            self.is_playing = True
-            self.paused = False
-            self.current_position = 0
-            self.start_play_time = time.time()
             self.current_lyric_index = -1
-            self._is_stream_url = True
-
-            # Giám sát process phát stream để cập nhật trạng thái khi kết thúc.
-            self._stream_monitor_task = asyncio.create_task(self._monitor_stream_playback())
 
             logger.info(
                 f"Bắt đầu phát stream ({self._stream_player_backend}): {self.current_song}"
@@ -651,11 +596,8 @@ class MusicPlayer:
         try:
             if not self.is_playing and self.current_url:
                 # Phát lại
-                if self._is_stream_url:
-                    result = await self.play_stream_url(self.current_url, title=self.current_song)
-                    success = result.get("status") == "success"
-                else:
-                    success = await self._play_url(self.current_url)
+                start_position = self.current_position if self.paused else 0.0
+                success = await self._start_external_playback(start_position=start_position)
                 return {
                     "status": "success" if success else "error",
                     "message": (
@@ -665,21 +607,14 @@ class MusicPlayer:
 
             elif self.is_playing and self.paused:
                 # Tiếp tục phát
-                if self._is_stream_url:
-                    started = await self._start_stream_player(
-                        self.current_url,
-                        start_position=self.current_position,
-                    )
-                    if not started:
-                        return {
-                            "status": "error",
-                            "message": "Không thể tiếp tục stream: thiếu ffplay/mpv/vlc",
-                        }
-                    self._stream_monitor_task = asyncio.create_task(
-                        self._monitor_stream_playback()
-                    )
-                else:
-                    pygame.mixer.music.unpause()
+                started = await self._start_external_playback(
+                    start_position=self.current_position,
+                )
+                if not started:
+                    return {
+                        "status": "error",
+                        "message": "Không thể tiếp tục stream: thiếu ffplay/mpv/vlc",
+                    }
 
                 self.paused = False
                 self.start_play_time = time.time() - self.current_position
@@ -697,11 +632,7 @@ class MusicPlayer:
                 # Tạm dừng phát
                 self.paused = True
                 self.current_position = time.time() - self.start_play_time
-
-                if self._is_stream_url:
-                    await self._stop_stream_download(cleanup_file=False)
-                else:
-                    pygame.mixer.music.pause()
+                await self._stop_stream_download(cleanup_file=False)
 
                 # Cập nhật UI
                 if self.app and hasattr(self.app, "set_chat_message"):
@@ -728,10 +659,7 @@ class MusicPlayer:
             if not self.is_playing:
                 return {"status": "info", "message": "Không có bài hát đang phát"}
 
-            if self._is_stream_url:
-                await self._stop_stream_download(cleanup_file=True)
-            else:
-                pygame.mixer.music.stop()
+            await self._stop_stream_download(cleanup_file=True)
 
             current_song = self.current_song
             self.is_playing = False
@@ -764,27 +692,13 @@ class MusicPlayer:
             self.current_position = position
             self.start_play_time = time.time() - position
 
-            if self._is_stream_url:
-                if not self.paused:
-                    await self._stop_stream_download(cleanup_file=False)
-                    started = await self._start_stream_player(
-                        self.current_url,
-                        start_position=position,
-                    )
-                    if not started:
-                        return {
-                            "status": "error",
-                            "message": "Không thể tua stream: thiếu ffplay/mpv/vlc",
-                        }
-                    self._stream_monitor_task = asyncio.create_task(
-                        self._monitor_stream_playback()
-                    )
-            else:
-                pygame.mixer.music.rewind()
-                pygame.mixer.music.set_pos(position)
-
-                if self.paused:
-                    pygame.mixer.music.pause()
+            if not self.paused:
+                started = await self._start_external_playback(start_position=position)
+                if not started:
+                    return {
+                        "status": "error",
+                        "message": "Không thể tua stream: thiếu ffplay/mpv/vlc",
+                    }
 
             # Cập nhật UI
             pos_str = self._format_time(position)
@@ -832,7 +746,40 @@ class MusicPlayer:
             "duration": self.total_duration,
             "position": position,
             "progress": progress,
+            "volume": self._volume_percent,
+            "player_backend": self._stream_player_backend,
             "has_lyrics": len(self.lyrics) > 0,
+        }
+
+    async def set_volume(self, volume: int) -> dict:
+        """Đặt âm lượng phát nhạc (0-100)."""
+        try:
+            volume = max(0, min(100, int(volume)))
+        except (TypeError, ValueError):
+            return {"status": "error", "message": "volume phải là số nguyên 0-100"}
+
+        self._volume_percent = volume
+
+        if self.is_playing and not self.paused:
+            current_pos = max(self.current_position, time.time() - self.start_play_time)
+            started = await self._start_external_playback(start_position=current_pos)
+            if not started:
+                return {
+                    "status": "error",
+                    "message": "Không thể cập nhật âm lượng: thiếu ffplay/mpv/vlc",
+                }
+
+        return {
+            "status": "success",
+            "message": f"Đã đặt âm lượng: {self._volume_percent}%",
+            "volume": self._volume_percent,
+        }
+
+    async def get_volume(self) -> dict:
+        """Lấy âm lượng hiện tại của trình phát nhạc (0-100)."""
+        return {
+            "status": "success",
+            "volume": self._volume_percent,
         }
 
     # Phương thức nội bộ
@@ -951,29 +898,18 @@ class MusicPlayer:
         Phát URL chỉ định.
         """
         try:
-            # Dừng phát hiện tại
-            if self.is_playing:
-                pygame.mixer.music.stop()
-
-            # Nếu đang ở chế độ stream URL thì dừng và dọn trạng thái stream trước
-            await self._stop_stream_download(cleanup_file=False)
-            self._is_stream_url = False
-
             # Kiểm tra cache hoặc tải về
             file_path = await self._get_or_download_file(url)
             if not file_path:
                 return False
 
-            # Tải và phát
-            pygame.mixer.music.load(str(file_path))
-            pygame.mixer.music.play()
-
             self.current_url = url
-            self.is_playing = True
-            self.paused = False
-            self.current_position = 0
-            self.start_play_time = time.time()
+            self._playback_target = str(file_path)
             self.current_lyric_index = -1  # Đặt lại chỉ mục lời bài hát
+
+            started = await self._start_external_playback(start_position=0.0)
+            if not started:
+                return False
 
             logger.info(f"Bắt đầu phát: {self.current_song}")
 
@@ -991,13 +927,14 @@ class MusicPlayer:
             return False
 
     async def _start_stream_player(self, url: str, start_position: float) -> bool:
-        """Khởi chạy player ngoài để phát stream URL."""
+        """Khởi chạy player ngoài để phát audio bằng URL/đường dẫn local."""
         candidates = []
         ffplay_path = shutil.which("ffplay")
         if ffplay_path:
             cmd = [ffplay_path, "-nodisp", "-autoexit", "-loglevel", "error", "-vn"]
             if start_position > 0:
                 cmd.extend(["-ss", f"{start_position:.3f}"])
+            cmd.extend(["-volume", str(self._volume_percent)])
             cmd.append(url)
             candidates.append(("ffplay", cmd))
 
@@ -1006,6 +943,7 @@ class MusicPlayer:
             cmd = [mpv_path, "--no-video", "--really-quiet", "--force-window=no"]
             if start_position > 0:
                 cmd.append(f"--start={start_position:.3f}")
+            cmd.append(f"--volume={self._volume_percent}")
             cmd.append(url)
             candidates.append(("mpv", cmd))
 
@@ -1014,6 +952,7 @@ class MusicPlayer:
             cmd = [vlc_path, "--intf", "dummy", "--play-and-exit", "--no-video"]
             if start_position > 0:
                 cmd.append(f"--start-time={start_position:.3f}")
+            cmd.append(f"--gain={self._volume_percent / 100:.2f}")
             cmd.append(url)
             candidates.append(("vlc", cmd))
 
@@ -1038,6 +977,29 @@ class MusicPlayer:
         self._stream_player_process = None
         self._stream_player_backend = ""
         return False
+
+    async def _start_external_playback(self, start_position: float = 0.0) -> bool:
+        """Khởi động phát nhạc bằng backend ngoài với target hiện tại."""
+        target = (self._playback_target or self.current_url or "").strip()
+        if not target:
+            return False
+
+        await self._stop_stream_download(cleanup_file=False)
+        self.is_playing = False
+        self.paused = False
+        self._is_stream_url = False
+
+        started = await self._start_stream_player(target, start_position=start_position)
+        if not started:
+            return False
+
+        self.is_playing = True
+        self.paused = False
+        self.current_position = start_position
+        self.start_play_time = time.time() - start_position
+        self._is_stream_url = True
+        self._stream_monitor_task = asyncio.create_task(self._monitor_stream_playback())
+        return True
 
     async def _monitor_stream_playback(self) -> None:
         """Theo dõi tiến trình player ngoài và đồng bộ trạng thái phát."""

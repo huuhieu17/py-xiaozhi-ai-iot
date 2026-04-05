@@ -18,11 +18,6 @@ from src.utils.logging_config import get_logger
 from src.utils.resource_finder import get_project_root
 from src.utils.volume_controller import VolumeController
 
-try:
-    import pygame
-except Exception:
-    pygame = None
-
 logger = get_logger(__name__)
 
 
@@ -686,7 +681,7 @@ class WebControlPlugin(Plugin):
                 controller = await asyncio.to_thread(VolumeController)
                 system_volume = await asyncio.to_thread(controller.get_volume)
 
-            music_volume = self._get_music_volume()
+            music_volume = await self._get_music_volume()
 
             effective_volume = None
             if music_volume is not None:
@@ -735,8 +730,8 @@ class WebControlPlugin(Plugin):
                 system_volume = max(0, min(100, int(system_volume)))
                 system_ok = True
 
-            music_ok = self._set_music_volume(volume)
-            music_volume = self._get_music_volume()
+            music_ok = await self._set_music_volume(volume)
+            music_volume = await self._get_music_volume()
 
             if music_volume is not None:
                 effective_volume = music_volume
@@ -788,7 +783,7 @@ class WebControlPlugin(Plugin):
                 await asyncio.to_thread(controller.set_volume, 0)
                 system_ok = True
 
-            music_ok = self._set_music_volume(0)
+            music_ok = await self._set_music_volume(0)
 
             if current_volume > 0:
                 self._last_volume_before_mute = current_volume
@@ -821,8 +816,8 @@ class WebControlPlugin(Plugin):
                 current_volume = max(0, min(100, int(current_volume)))
                 system_ok = True
 
-            music_ok = self._set_music_volume(target)
-            music_volume = self._get_music_volume()
+            music_ok = await self._set_music_volume(target)
+            music_volume = await self._get_music_volume()
             if music_volume is not None:
                 current_volume = music_volume
 
@@ -841,28 +836,23 @@ class WebControlPlugin(Plugin):
             logger.error("/api/volume/unmute failed: %s", e, exc_info=True)
             return web.json_response({"ok": False, "error": str(e)}, status=500)
 
-    def _set_music_volume(self, volume: int) -> bool:
+    async def _set_music_volume(self, volume: int) -> bool:
         try:
-            if pygame is None:
-                return False
-            if not pygame.mixer.get_init():
-                return False
             volume = max(0, min(100, int(volume)))
-            pygame.mixer.music.set_volume(volume / 100.0)
-            return True
+            result = await get_music_player_instance().set_volume(volume)
+            return result.get("status") == "success"
         except Exception:
             return False
 
-    def _get_music_volume(self) -> int | None:
+    async def _get_music_volume(self) -> int | None:
         try:
-            if pygame is None:
+            result = await get_music_player_instance().get_volume()
+            if result.get("status") != "success":
                 return None
-            if not pygame.mixer.get_init():
-                return None
-            value = pygame.mixer.music.get_volume()
+            value = result.get("volume")
             if value is None:
                 return None
-            return max(0, min(100, int(round(float(value) * 100))))
+            return max(0, min(100, int(value)))
         except Exception:
             return None
 
