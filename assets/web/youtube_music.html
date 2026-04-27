@@ -88,7 +88,7 @@
       const historyIds = [];
       const recommends = [];
       let currentSeed = '';
-      let lastIsPlaying = false;
+      let lastSyncedVideoId = '';
       let selectedResult = null;
 
       async function callApi(url) {
@@ -327,25 +327,19 @@
       };
 
       window.nextTrack = async function () {
-        const seed = (currentSeed || document.getElementById('queryInput').value || '').trim();
-        if (!seed) {
-          alert('Bạn cần search hoặc phát bài trước');
-          return;
-        }
-
         try {
-          const history = historyIds.join(',');
-          const data = await callApi('/api/youtube/next?q=' + encodeURIComponent(seed) + '&history=' + encodeURIComponent(history));
+          const data = await callApiPost('/api/youtube/player/next', {});
           const next = data.next || {};
           const videoId = String(next.videoId || '').trim();
           const title = String(next.title || 'Bài tiếp theo').trim();
           const artists = String(next.artists || '').trim();
 
-          const q =  next.videoId || next.youtubeUrl || title;
-          await callApiPost('/api/youtube/player/play', { videoId: q });
-
           if (videoId) addHistory(videoId);
-          currentSeed = next.youtubeUrl || next.videoId || seed;
+          currentSeed = next.youtubeUrl || next.videoId || currentSeed;
+          if (videoId) {
+            lastSyncedVideoId = videoId;
+            loadRecommendations(videoId);
+          }
           document.getElementById('nowPlaying').textContent = artists ? `${title} - ${artists}` : title;
         } catch (e) {
           alert('Lỗi next: ' + e.message);
@@ -414,6 +408,7 @@
           const isPlaying = !!data.is_playing;
           const paused = !!data.paused;
           const song = String(data.current_song || '').trim();
+          const currentVideoId = String(data.youtube_video_id || '').trim();
           if (song) {
             document.getElementById('nowPlaying').textContent = isPlaying
               ? (paused ? ('Tạm dừng: ' + song) : ('Đang phát: ' + song))
@@ -423,10 +418,11 @@
             document.getElementById('autoplayToggle').checked = data.autoplay_enabled;
           }
 
-          const shouldAutoNext = !!data.autoplay_enabled && !isPlaying && lastIsPlaying;
-          lastIsPlaying = isPlaying;
-          if (shouldAutoNext) {
-            await window.nextTrack();
+          if (currentVideoId && currentVideoId !== lastSyncedVideoId) {
+            lastSyncedVideoId = currentVideoId;
+            currentSeed = currentVideoId;
+            addHistory(currentVideoId);
+            loadRecommendations(currentVideoId);
           }
         } catch (e) {
           // ignore periodic status errors

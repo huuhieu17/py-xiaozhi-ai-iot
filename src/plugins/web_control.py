@@ -51,6 +51,13 @@ class WebControlPlugin(Plugin):
         self._yt_history: list[str] = []
         self._yt_pending_recommends: list[dict] = []  # Cache recommendations for auto-next
         self._yt_recommends_cache: dict[str, list[dict]] = {}  # Cache recommendations by video ID
+        self._yt_autoplay_task: asyncio.Task | None = None
+        self._yt_autoplay_lock = asyncio.Lock()
+        self._yt_last_is_playing = False
+        self._yt_manual_stop_deadline = 0.0
+        self._yt_autoplay_poll_interval = max(
+            1.0, float(os.environ.get("YT_AUTOPLAY_POLL_INTERVAL", "2.0"))
+        )
 
     async def setup(self, app: Any) -> None:
         self.application = app
@@ -135,8 +142,12 @@ class WebControlPlugin(Plugin):
             self._port,
         )
 
+        if self._yt_autoplay_task is None or self._yt_autoplay_task.done():
+            self._yt_autoplay_task = asyncio.create_task(self._youtube_autoplay_worker())
+
     async def stop(self) -> None:
         try:
+            await self._stop_youtube_autoplay_worker()
             if self._site is not None:
                 await self._site.stop()
             if self._runner is not None:
@@ -144,6 +155,133 @@ class WebControlPlugin(Plugin):
         finally:
             self._site = None
             self._runner = None
+            self._yt_last_is_playing = False
+
+    async def _stop_youtube_autoplay_worker(self) -> None:
+        task = self._yt_autoplay_task
+        self._yt_autoplay_task = None
+        if task is None:
+            return
+        task.cancel()
+        try:
+            await task
+        except asyncio.CancelledError:
+            pass
+
+    async def _youtube_autoplay_worker(self) -> None:
+        logger.info("YouTube autoplay worker started")
+        try:
+            while True:
+                await asyncio.sleep(self._yt_autoplay_poll_interval)
+                await self._try_auto_next_if_needed()
+        except asyncio.CancelledError:
+            logger.debug("YouTube autoplay worker stopped")
+        except Exception as e:
+            logger.error("YouTube autoplay worker crashed: %s", e, exc_info=True)
+
+    async def _try_auto_next_if_needed(self) -> None:
+        player = get_music_player_instance()
+        status = await player.get_status()
+        is_playing = bool(status.get("is_playing"))
+        paused = bool(status.get("paused"))
+        was_playing = self._yt_last_is_playing
+        self._yt_last_is_playing = is_playing
+
+        if not self._yt_autoplay_enabled:
+            return
+        if not (was_playing and not is_playing and not paused):
+            return
+        if time.time() < self._yt_manual_stop_deadline:
+            return
+
+        seed_video_id = self._yt_current_video_id or self._extract_youtube_video_id(
+            self._yt_current_query
+        )
+        if not seed_video_id:
+            return
+
+        result = await self._play_next_youtube_track(auto_trigger=True)
+        if not result.get("ok"):
+            logger.warning(
+                "Auto-next skipped: %s",
+                result.get("message") or result.get("error") or "unknown",
+            )
+
+    async def _select_next_youtube_song(self, seed_video_id: str) -> dict | None:
+        songs = (
+            self._yt_pending_recommends
+            if self._yt_pending_recommends
+            else await self._get_cached_or_fetch_recommends(seed_video_id, limit=20)
+        )
+
+        for item in songs:
+            vid = str(item.get("videoId") or "").strip()
+            if vid and vid in self._yt_history:
+                continue
+            return item
+
+        # Fallback fetch mới nếu cache/pending không còn bài phù hợp.
+        fresh_songs = await self._youtube_recommends(seed_video_id, limit=20)
+        self._yt_pending_recommends = fresh_songs
+        self._yt_recommends_cache[seed_video_id] = fresh_songs
+        for item in fresh_songs:
+            vid = str(item.get("videoId") or "").strip()
+            if vid and vid in self._yt_history:
+                continue
+            return item
+
+        return None
+
+    async def _play_next_youtube_track(self, auto_trigger: bool) -> dict:
+        async with self._yt_autoplay_lock:
+            seed_video_id = self._yt_current_video_id or self._extract_youtube_video_id(
+                self._yt_current_query
+            )
+            if not seed_video_id:
+                return {
+                    "ok": False,
+                    "status": "error",
+                    "message": "Chưa có bài gốc để next",
+                }
+
+            next_song = await self._select_next_youtube_song(seed_video_id)
+            if not next_song:
+                return {
+                    "ok": False,
+                    "status": "error",
+                    "message": "Không có bài tiếp theo",
+                }
+
+            play_query = str(
+                next_song.get("youtubeUrl") or next_song.get("videoId") or ""
+            ).strip()
+            if not play_query:
+                return {
+                    "ok": False,
+                    "status": "error",
+                    "message": "Bài next không hợp lệ",
+                }
+
+            player = get_music_player_instance()
+            next_vid = str(next_song.get("videoId") or "").strip()
+            player.song_id = next_vid or f"yt_{int(time.time())}"
+            play_rs = await self._youtube_play_audio(play_query)
+            if not play_rs.get("ok"):
+                return {
+                    "ok": False,
+                    "status": "error",
+                    "message": play_rs.get("message") or "Phát bài tiếp theo thất bại",
+                }
+
+            self._yt_manual_stop_deadline = 0.0
+
+            return {
+                "ok": True,
+                "status": "success",
+                "message": f"Đang phát tiếp: {player.current_song}",
+                "next": next_song,
+                "trigger": "auto" if auto_trigger else "manual",
+            }
 
     async def _handle_index(self, request) -> Any:
         html = self._load_index_html()
@@ -614,6 +752,8 @@ class WebControlPlugin(Plugin):
             raise web.HTTPBadRequest(reason="videoId is required")
         try:
             rs = await self._youtube_play_audio(query)
+            if rs.get("ok"):
+                self._yt_manual_stop_deadline = 0.0
             status_code = 200 if rs.get("ok") else 400
             return web.json_response(rs, status=status_code)
 
@@ -630,51 +770,19 @@ class WebControlPlugin(Plugin):
     async def _handle_youtube_player_stop(self, request) -> Any:
         player = get_music_player_instance()
         result = await player.stop()
+        self._yt_manual_stop_deadline = time.time() + 6.0
+        self._yt_last_is_playing = False
         status_code = 200 if result.get("status") in {"success", "info"} else 400
         return web.json_response({"ok": status_code == 200, **result}, status=status_code)
 
     async def _handle_youtube_player_next(self, request) -> Any:
         try:
-            seed_video_id = self._yt_current_video_id or self._extract_youtube_video_id(self._yt_current_query)
-            if not seed_video_id:
-                return web.json_response({"ok": False, "status": "error", "message": "Chưa có bài gốc để next"}, status=400)
-
-            # Use cached recommendations if available, otherwise fetch fresh
-            songs = self._yt_pending_recommends if self._yt_pending_recommends else await self._youtube_recommends(seed_video_id, limit=20)
-            next_song = None
-            for item in songs:
-                vid = str(item.get("videoId") or "").strip()
-                if vid and vid in self._yt_history:
-                    continue
-                next_song = item
-                break
-
-            if not next_song:
-                return web.json_response({"ok": False, "status": "error", "message": "Không có bài tiếp theo"}, status=404)
-
-            play_query = str(next_song.get("youtubeUrl") or next_song.get("videoId") or "").strip()
-            if not play_query:
-                return web.json_response({"ok": False, "status": "error", "message": "Bài next không hợp lệ"}, status=400)
-
-            player = get_music_player_instance()
-            next_vid = str(next_song.get("videoId") or "").strip()
-            player.song_id = next_vid or f"yt_{int(time.time())}"   
-            play_rs = await self._youtube_play_audio(play_query)
-            if not play_rs.get("ok"):
-                return web.json_response({"ok": False, "status": "error", "message": play_rs.get("message") or "Phát bài tiếp theo thất bại"}, status=400)
-            if next_vid:
-                self._append_yt_history(next_vid)
-                self._yt_current_video_id = next_vid
-            self._yt_current_query = play_query
-
-            return web.json_response(
-                {
-                    "ok": True,
-                    "status": "success",
-                    "message": f"Đang phát tiếp: {player.current_song}",
-                    "next": next_song,
-                }
-            )
+            result = await self._play_next_youtube_track(auto_trigger=False)
+            if not result.get("ok"):
+                message = str(result.get("message") or "").lower()
+                status_code = 404 if "không có bài" in message else 400
+                return web.json_response(result, status=status_code)
+            return web.json_response(result)
         except Exception as e:
             logger.error("/api/youtube/player/next failed: %s", e, exc_info=True)
             return web.json_response({"ok": False, "status": "error", "message": str(e)}, status=500)
@@ -696,6 +804,8 @@ class WebControlPlugin(Plugin):
         payload = await self._read_json(request)
         enabled = bool(payload.get("enabled", True))
         self._yt_autoplay_enabled = enabled
+        if not enabled:
+            self._yt_last_is_playing = False
         return web.json_response(
             {
                 "ok": True,
