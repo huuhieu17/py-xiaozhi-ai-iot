@@ -80,10 +80,7 @@
           <div>Có lời: <span id="has-lyrics">--</span></div>
         </div>
       </pre>
-      <div id="listen-status-container"
-        class="mt-4 float-in overflow-auto rounded-xl bg-slate-950 p-2 font-mono text-xs text-slate-200">
-        <div>Đang nghe qua mic: <span id="listen-status">--</span></div>
-      </div>
+      
       <pre id="status"
         class="hidden mt-4 max-h-40 overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">Đang tải trạng thái...</pre>
     </header>
@@ -152,6 +149,10 @@
       <!-- App Chat AI -->
       <div class="application hidden float-in w-full" id="chat_ai">
         <h2 class="mb-4 text-lg font-bold app-description"></h2>
+        <div id="listen-status-container"
+          class="mb-4 float-in overflow-auto rounded-xl bg-slate-950 p-2 font-mono text-xs text-slate-200">
+          <div>Đang nghe qua mic: <span id="listen-status">--</span></div>
+        </div>
         <div class="space-y-3">
           <input id="askText" type="text" placeholder="Nhập câu hỏi..."
             class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none ring-coral/40 transition focus:ring" />
