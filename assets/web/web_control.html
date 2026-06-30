@@ -72,11 +72,13 @@
         </div>
       </div>
       <pre id="music-status" 
-        class="hidden mt-4 float-in overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">
+        class="hidden flex flex-col mt-4 float-in overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">
         <div>Bài hát: <span id="current-track">--</span></div>
-        <div>Trạng thái: <span id="playback-status">--</span></div>
-        <div>Âm lượng: <span id="volumeLabel">--</span></div>
-        <div>Có lời: <span id="has-lyrics">--</span></div>
+        <div class="flex items-center justify-between">
+          <div>Trạng thái: <span id="playback-status">--</span></div>
+          <div>Âm lượng: <span id="volumeLabel">--</span></div>
+          <div>Có lời: <span id="has-lyrics">--</span></div>
+        </div>
       </pre>
       <div id="listen-status-container"
         class="mt-4 float-in overflow-auto rounded-xl bg-slate-950 p-2 font-mono text-xs text-slate-200">
@@ -308,7 +310,7 @@
           const musicStatusElement = document.getElementById('music-status');
           if (musicStatusElement &&  dataMusic.success !== false) {
             musicStatusElement.classList.remove('hidden');
-            document.getElementById('current-track').innerText = dataMusic.current_track || '--';
+            document.getElementById('current-track').innerText = dataMusic.current_song || '--';
             document.getElementById('playback-status').innerText = dataMusic.playback_status || '--';
             document.getElementById('volumeLabel').innerText = (typeof dataMusic.volume === 'number' ? dataMusic.volume : '--') + '%';
             document.getElementById('has-lyrics').innerText = (dataMusic.has_lyrics ? 'Có' : 'Không');
