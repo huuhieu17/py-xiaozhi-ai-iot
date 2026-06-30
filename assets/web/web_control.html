@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Xiaozhi Web Control</title>
+  <title>Steve Speaker Web Control</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap"
-    rel="stylesheet"
-  />
+    rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -48,6 +48,7 @@
         opacity: 0;
         transform: translateY(10px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -55,98 +56,227 @@
     }
   </style>
 </head>
+
 <body class="pattern-bg min-h-screen text-ink font-display">
   <div class="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
     <header class="float-in mb-6 rounded-3xl bg-ink px-6 py-6 text-white shadow-lift">
-      <p class="mb-2 inline-flex rounded-full bg-white/10 px-3 py-1 text-xs tracking-wide">Xiaozhi Control Center</p>
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 class="text-2xl font-bold tracking-tight sm:text-3xl">Web Control Dashboard</h1>
-          <p class="mt-1 text-sm text-white/80">Dieu khien AI, nhac va thiet bi ngay trong mot trang.</p>
+          <p class="mb-2 inline-flex rounded-full bg-white/10 px-3 py-1 text-xs tracking-wide">Steve Speaker Control
+            Center</p>
+          <h1 class="text-2xl font-bold">Xin chào, Steve!</h1>
         </div>
-        <a
-          href="/youtube-music"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center justify-center rounded-xl bg-coral px-4 py-2 text-sm font-semibold text-white transition hover:brightness-95"
-        >
-          Mo YouTube Music UI
-        </a>
+        <div>
+          <span>Trạng thái: </span>
+          <span class="rounded-full bg-mint/15 px-2 py-1 text-xs font-semibold text-mint">Live</span>
+        </div>
       </div>
+      <pre id="music-status" 
+        class="hidden mt-4 float-in overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">
+        <div>Bài hát: <span id="current-track">--</span></div>
+        <div>Trạng thái: <span id="playback-status">--</span></div>
+        <div>Âm lượng: <span id="volumeLabel">--</span></div>
+        <div>Có lời: <span id="has-lyrics">--</span></div>
+      </pre>
+      <div id="listen-status-container"
+        class="mt-4 float-in overflow-auto rounded-xl bg-slate-950 p-2 font-mono text-xs text-slate-200">
+        <div>Đang nghe qua mic: <span id="listen-status">--</span></div>
+      </div>
+      <pre id="status"
+        class="hidden mt-4 max-h-40 overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">Đang tải trạng thái...</pre>
     </header>
 
-    <section class="float-in mb-6 rounded-2xl border border-white/70 bg-white/85 p-4 shadow-lift backdrop-blur sm:p-5">
+    <section id="menu-section"
+      class="float-in mb-6 rounded-2xl border border-white/70 bg-white/85 p-4 shadow-lift backdrop-blur sm:p-5">
       <div class="mb-3 flex items-center justify-between">
-        <h2 class="text-lg font-bold">Trang thai he thong</h2>
-        <span class="rounded-full bg-mint/15 px-2 py-1 text-xs font-semibold text-mint">Live</span>
+        <h2 class="text-lg font-bold">Danh sách chức năng</h2>
       </div>
-      <pre id="status" class="max-h-72 overflow-auto rounded-xl bg-ink p-4 font-mono text-xs text-slate-100">Dang tai trang thai...</pre>
+      <pre id="application"
+        class="min-h-72 flex flex-wrap overflow-auto rounded-xl bg-white p-4 font-mono text-xs text-slate-100">
+        <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.chat_ai)">
+          <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
+            <img src="https://marketplace.canva.com/m6hSQ/MAHGckm6hSQ/1/tl/canva-ai-chip-icon-MAHGckm6hSQ.png" alt="AI Icon" class="w-full h-full object-contain" />
+          </div>
+          <div>Chat AI</div>
+        </div>
+        <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.youtube_music)">
+          <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Youtube_Music_icon.svg/960px-Youtube_Music_icon.svg.png" alt="YT Music Icon" class="w-full h-full object-contain" />
+          </div>
+          <div>YT Music</div>
+        </div>
+        <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.zing_mp3)">
+          <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
+            <img src="https://play-lh.googleusercontent.com/5XUtbpRLPs6dcNCgPG3lM7oVb4cd1xf15qGijPM8fQnbAzyO0RpQLDV91sLZb3NO6oK_PqCR_GsN_epTbDHhZKU" alt="Zing Mp3 Icon" class="w-full h-full object-contain" />
+          </div>
+          <div>Zing Mp3</div>
+        </div>
+        <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.logs_app)">
+          <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNddeBvMEMxrBnB8_JojkjjepHgzALwv0dwyGocLFHug&s=10" alt="Logs Icon" class="w-full h-full object-contain" />
+          </div>
+          <div>Nhật ký</div>
+        </div>
+        <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.settings)">
+          <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKKVeysz0ceDm4K1pifv-RRPd6DKlu4HmxgGlbOBdLaL9V_J7ZD6myZkw6&s=10" alt="Zing Mp3 Icon" class="w-full h-full object-contain" />
+          </div>
+          <div>Cài đặt</div>
+        </div>
+      </pre>
     </section>
 
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <section class="float-in rounded-2xl border border-white/70 bg-white/85 p-5 shadow-lift backdrop-blur">
-        <h2 class="mb-4 text-lg font-bold">Hoi AI</h2>
+    <section id="application-section"
+      class="hidden h-content float-in mb-6 rounded-2xl border border-white/70 bg-white/85 p-4 shadow-lift backdrop-blur sm:p-5">
+      <div class="mb-3 flex items-center justify-between">
+        <h2 id="opening-app-name" class="text-lg font-bold">Ứng dụng</h2>
+        <button onclick="closeApplication()"
+          class="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90">Quay
+          lại</button>
+      </div>
+      <!-- Base Application -->
+      <div class="application hidden float-in w-full" id="base-app">
+        <h2 class="mb-4 text-lg font-bold app-description"></h2>
         <div class="space-y-3">
-          <input id="askText" type="text" placeholder="Nhap cau hoi..." class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none ring-coral/40 transition focus:ring" />
+          content
+        </div>
+      </div>
+      <!-- YouTube Music -->
+      <div class="application hidden float-in w-full" id="youtube_music">
+        <iframe 
+          src="https://loa.imsteve.dev/youtube-music"
+          id="youtube_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe>
+      </div>
+      <!-- App Chat AI -->
+      <div class="application hidden float-in w-full" id="chat_ai">
+        <h2 class="mb-4 text-lg font-bold app-description"></h2>
+        <div class="space-y-3">
+          <input id="askText" type="text" placeholder="Nhập câu hỏi..."
+            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none ring-coral/40 transition focus:ring" />
           <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            <button onclick="askAI()" class="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Gui</button>
-            <button onclick="startListen()" class="rounded-xl bg-mint px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Listen</button>
-            <button onclick="stopListen()" class="rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">Stop Listen</button>
+            <button onclick="askAI()"
+              class="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Gửi</button>
+            <button onclick="startListen()"
+              class="rounded-xl bg-mint px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Nghe qua mic</button>
+            <button onclick="stopListen()"
+              class="rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">Dừng
+              Nghe</button>
           </div>
         </div>
-      </section>
-
-      <section class="float-in rounded-2xl border border-white/70 bg-white/85 p-5 shadow-lift backdrop-blur">
-        <h2 class="mb-4 text-lg font-bold">Mo nhac</h2>
+      </div>
+      <!-- Zing MP3 -->
+      <div class="application hidden float-in w-full" id="zing_mp3">
+        <h2 class="mb-4 text-lg font-bold app-description"></h2>
         <div class="space-y-3">
-          <input id="songName" type="text" placeholder="Ten bai hat" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none ring-coral/40 transition focus:ring" />
+          <input id="songName" type="text" placeholder="Tên bài hát"
+            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none ring-coral/40 transition focus:ring" />
           <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
-            <button onclick="playMusic()" class="rounded-xl bg-coral px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Mo nhac</button>
-            <button onclick="toggleMusic()" class="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Play/Pause</button>
-            <button onclick="stopMusic()" class="rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">Stop</button>
+            <button onclick="playMusic()"
+              class="rounded-xl bg-coral px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Tìm
+              & Phát</button>
+            <button onclick="toggleMusic()"
+              class="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Phát/Tạm
+              dừng</button>
+            <button onclick="stopMusic()"
+              class="rounded-xl bg-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">Dừng</button>
           </div>
         </div>
-      </section>
-
-      <section class="float-in rounded-2xl border border-white/70 bg-white/85 p-5 shadow-lift backdrop-blur lg:col-span-2">
-        <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
-          <h2 class="text-lg font-bold">Am luong</h2>
-          <span id="volumeLabel" class="rounded-full bg-ink px-3 py-1 text-xs font-semibold text-white">70%</span>
-        </div>
-        <div class="grid grid-cols-2 gap-2 sm:grid-cols-5">
-          <button onclick="changeVolume(-10)" class="rounded-xl bg-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">-10</button>
-          <button onclick="changeVolume(10)" class="rounded-xl bg-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">+10</button>
-          <button onclick="muteVolume()" class="rounded-xl bg-ink px-3 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Mute</button>
-          <button onclick="unmuteVolume()" class="rounded-xl bg-mint px-3 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Unmute</button>
-          <button onclick="refreshVolume()" class="rounded-xl bg-coral px-3 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Refresh</button>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-5 mt-4">
+          <button onclick="changeVolume(-10)"
+            class="rounded-xl bg-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">-10
+            Âm lượng</button>
+          <button onclick="changeVolume(10)"
+            class="rounded-xl bg-slate-200 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-300">+10
+            Âm lượng</button>
+          <button onclick="muteVolume()"
+            class="rounded-xl bg-ink px-3 py-2.5 text-sm font-semibold text-white transition hover:opacity-90">Tắt Âm
+            lượng</button>
+          <button onclick="unmuteVolume()"
+            class="rounded-xl bg-mint px-3 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Bật
+            Âm
+            lượng</button>
+          <button onclick="refreshVolume()"
+            class="rounded-xl bg-coral px-3 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Làm
+            mới</button>
         </div>
         <div class="mt-4">
-          <input id="volumeSlider" type="range" min="0" max="100" value="70" class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-coral" oninput="onVolumeSliderInput(this.value)" onchange="setVolume(this.value)" />
+          <input id="volumeSlider" type="range" min="0" max="100" value="70"
+            class="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-coral"
+            oninput="onVolumeSliderInput(this.value)" onchange="setVolume(this.value)" />
         </div>
-      </section>
-
-      <section class="float-in rounded-2xl border border-white/70 bg-white/85 p-5 shadow-lift backdrop-blur lg:col-span-2">
-        <div class="mb-3 flex flex-wrap items-end gap-2">
+      </div>
+      <!-- Logs -->
+      <div class="application hidden float-in w-full" id="logs_app">
+        <h2 class="mb-4 text-lg font-bold app-description"></h2>
+        <div class="space-y-3">
           <div>
-            <h2 class="text-lg font-bold">Logs</h2>
-            <p class="text-xs text-slate-500">Theo doi nhat ky realtime tu service.</p>
+            <label for="logLines" class="mr-2 text-sm font-semibold">Số dòng log:</label>
+            <input id="logLines" type="number" min="10" max="2000" value="200"
+              class="w-28 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-coral/40 focus:ring" />
           </div>
-          <div class="ml-auto flex w-full flex-wrap items-center gap-2 sm:w-auto">
-            <input id="logLines" type="number" min="10" max="2000" value="200" class="w-28 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-coral/40 focus:ring" />
-            <button onclick="loadLogs()" class="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90">Tai log</button>
-            <button onclick="restartApp()" class="rounded-xl bg-coral px-4 py-2 text-sm font-semibold text-white transition hover:brightness-95">Restart ung dung</button>
+          <div>
+            <button onclick="loadLogs()"
+              class="rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90">Tải
+              log</button>
+          </div>
+          <pre id="logs"
+            class="max-h-80 overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">Chưa tải logs...</pre>
+        </div>
+      </div>
+      <!-- Settings -->
+      <div class="application hidden float-in w-full" id="settings">
+        <h2 class="mb-4 text-lg font-bold app-description"></h2>
+        <div class="space-y-3">
+          <hr class="my-4 border-slate-300" />
+          <div>
+            <button onclick="restartApp()"
+              class="rounded-xl bg-coral px-4 py-2 text-sm font-semibold text-white transition hover:brightness-95">
+              Restart Ứng dụng
+            </button>
+            <button onclick="restartApp()"
+              class="rounded-xl bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:brightness-95">
+              Restart Hệ thống
+            </button>
           </div>
         </div>
-        <pre id="logs" class="max-h-80 overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">Chua tai logs...</pre>
-      </section>
-    </div>
+      </div>
+    </section>
   </div>
 
-  <div id="toast" class="pointer-events-none fixed bottom-4 right-4 z-50 hidden max-w-sm rounded-xl bg-ink px-4 py-3 text-sm text-white shadow-lift"></div>
+  <div id="toast"
+    class="pointer-events-none fixed bottom-4 right-4 z-50 hidden max-w-sm rounded-xl bg-ink px-4 py-3 text-sm text-white shadow-lift">
+  </div>
 
   <script>
     (function () {
       let toastTimer = null;
+      window.application = {
+        chat_ai: {
+          id: 'chat_ai',
+          name: 'Chat AI',
+          description: 'Trò chuyện với AI.',
+        },
+        youtube_music: {
+          id: 'youtube_music',
+          name: 'YouTube Music',
+          description: 'Mở nhạc từ YouTube Music.',
+        },
+        zing_mp3: {
+          id: 'zing_mp3',
+          name: 'Zing Mp3',
+          description: 'Mở nhạc từ Zing Mp3.',
+        },
+        logs_app: {
+          id: 'logs_app',
+          name: 'Nhật ký',
+          description: 'Xem nhật ký hệ thống và ứng dụng.',
+        },
+        settings: {
+          id: 'settings',
+          name: 'Cài đặt',
+          description: 'Cấu hình và cài đặt hệ thống.',
+        },
+      }
 
       function notify(message, isError = false) {
         const toast = document.getElementById('toast');
@@ -173,6 +303,28 @@
         try {
           const data = await callApi('/api/status');
           document.getElementById('status').innerText = JSON.stringify(data, null, 2);
+          const dataMusic = data.music || {};
+  
+          const musicStatusElement = document.getElementById('music-status');
+          if (musicStatusElement &&  dataMusic.success !== false) {
+            musicStatusElement.classList.remove('hidden');
+            document.getElementById('current-track').innerText = dataMusic.current_track || '--';
+            document.getElementById('playback-status').innerText = dataMusic.playback_status || '--';
+            document.getElementById('volumeLabel').innerText = (typeof dataMusic.volume === 'number' ? dataMusic.volume : '--') + '%';
+            document.getElementById('has-lyrics').innerText = (dataMusic.has_lyrics ? 'Có' : 'Không');
+          }else{
+            musicStatusElement.classList.add('hidden');
+          }
+
+          const dataApp = data.app || {};
+          const listenStatusElement = document.getElementById('listen-status');
+          if (listenStatusElement) {
+            listenStatusElement.classList.remove('hidden');
+            document.getElementById('listen-status').innerText = JSON.stringify(dataApp || {}, null, 2);
+          } else {
+            listenStatusElement.classList.add('hidden');
+          }
+
           await window.refreshVolume();
         } catch (e) {
           document.getElementById('status').innerText = 'Loi status: ' + e.message;
@@ -333,7 +485,46 @@
       window.refreshVolume();
       window.loadLogs();
       setInterval(window.refreshStatus, 4000);
+
+      window.openApplication = function (application) {
+        const menuSection = document.getElementById('menu-section');
+        menuSection.classList.add('hidden');
+
+        const applicationSection = document.getElementById('application-section');
+        applicationSection.classList.remove('hidden');
+
+        const appid = application.id;
+        const appDescription = application.description || '';
+
+        const appDescriptionElement = document.querySelectorAll('.app-description');
+        if (appDescriptionElement) {
+          appDescriptionElement.forEach(el => {
+            el.innerText = appDescription;
+          });
+        }
+        const appElements = document.querySelectorAll('.application');
+        appElements.forEach(el => {
+          if (el.id === appid) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        });
+
+        document.getElementById('opening-app-name').innerText = application.name || 'Ứng dụng';
+        document.getElementById('application-section').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      window.closeApplication = function () {
+        const menuSection = document.getElementById('menu-section');
+        menuSection.classList.remove('hidden');
+
+        const applicationSection = document.getElementById('application-section');
+        applicationSection.classList.add('hidden');
+      }
+      
     })();
   </script>
 </body>
+
 </html>
