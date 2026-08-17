@@ -23,6 +23,7 @@ from src.plugins.web_control import WebControlPlugin
 from src.plugins.wake_word import WakeWordPlugin
 from src.protocols.mqtt_protocol import MqttProtocol
 from src.protocols.websocket_protocol import WebsocketProtocol
+from src.server.server_manager import LocalWebSocketServerManager
 from src.utils.config_manager import ConfigManager
 from src.utils.logging_config import get_logger
 from src.utils.opus_loader import setup_opus
@@ -96,6 +97,13 @@ class Application:
             self.running = True
             self._main_loop = asyncio.get_running_loop()
             self._initialize_async_objects()
+            
+            # Khởi động local WebSocket server nếu được cấu hình
+            ws_server_manager = await LocalWebSocketServerManager.get_instance()
+            if await ws_server_manager.initialize():
+                self.spawn(ws_server_manager.start(), "local-ws-server")
+                logger.info("✨ Local WebSocket Server sẽ khởi động trong background")
+            
             self._set_protocol(protocol)
             self._setup_protocol_callbacks()
             # Plugin: setup (hoãn nhập AudioPlugin, đảm bảo setup_opus đã thực thi)
@@ -504,6 +512,13 @@ class Application:
             self._shutdown_event.set()
 
         try:
+            # Dừng local WebSocket server nếu đang chạy
+            try:
+                ws_server_manager = await LocalWebSocketServerManager.get_instance()
+                await ws_server_manager.stop()
+            except Exception as e:
+                logger.warning(f"Lỗi dừng local WebSocket server: {e}")
+
             # Hủy tất cả nhiệm vụ đã đăng ký
             if self._tasks:
                 for t in list(self._tasks):

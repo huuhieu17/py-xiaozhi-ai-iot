@@ -5,11 +5,14 @@
     "LANGUAGE": "vi-VN",
     "NETWORK": {
       "OTA_VERSION_URL": "https://xiaozhi-ai-iot.vn/api/v1/ota",
-      "WEBSOCKET_URL": "wss://xiaozhi-ai-iot.vn/api/v1/ws",
+      "WEBSOCKET_URL": "ws://localhost:8765",
       "WEBSOCKET_ACCESS_TOKEN": null,
       "MQTT_INFO": null,
       "ACTIVATION_VERSION": "v2",
-      "AUTHORIZATION_URL": "https://xiaozhi-ai-iot.vn/"
+      "AUTHORIZATION_URL": null,
+      "USE_LOCAL_WEBSOCKET_SERVER": true,
+      "LOCAL_WEBSOCKET_HOST": "0.0.0.0",
+      "LOCAL_WEBSOCKET_PORT": 8765
     },
     "WINDOW_SIZE_MODE": "screen_75"
   },

@@ -49,12 +49,19 @@ class WebsocketProtocol(Protocol):
         device_id = self.config.get_config("SYSTEM_OPTIONS.DEVICE_ID")
         client_id = self.config.get_config("SYSTEM_OPTIONS.CLIENT_ID")
 
+        # Xây dựng headers, bỏ qua Authorization nếu token là None
         self.HEADERS = {
-            "Authorization": f"Bearer {access_token}",
             "Protocol-Version": "1",
-            "Device-Id": device_id,  # Lấy địa chỉ MAC thiết bị
-            "Client-Id": client_id,
         }
+        
+        if access_token:
+            self.HEADERS["Authorization"] = f"Bearer {access_token}"
+        
+        if device_id:
+            self.HEADERS["Device-Id"] = device_id
+            
+        if client_id:
+            self.HEADERS["Client-Id"] = client_id
 
     async def connect(self) -> bool:
         """
