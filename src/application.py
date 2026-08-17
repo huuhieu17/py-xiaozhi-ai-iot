@@ -101,8 +101,8 @@ class Application:
             # Khởi động local WebSocket server nếu được cấu hình
             ws_server_manager = await LocalWebSocketServerManager.get_instance()
             if await ws_server_manager.initialize():
-                self.spawn(ws_server_manager.start(), "local-ws-server")
-                logger.info("✨ Local WebSocket Server sẽ khởi động trong background")
+                await ws_server_manager.start()  # Chờ khởi động xong
+                logger.info("✨ Local WebSocket Server đã khởi động tại ws://localhost:8765")
             
             self._set_protocol(protocol)
             self._setup_protocol_callbacks()

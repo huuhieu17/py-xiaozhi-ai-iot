@@ -171,6 +171,7 @@ class LocalWebSocketServer:
             "version": 1,
             "session_id": session_id,
             "server": "xiaozhi-local-websocket-server",
+            "transport": "websocket",  # ⚠️ Bắt buộc, client kiểm tra
             "features": {
                 "audio": True,
                 "mcp": True,
