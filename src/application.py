@@ -142,6 +142,11 @@ class Application:
         """
         # Nếu đã mở thì trả về ngay
         try:
+            # Kiểm tra xem protocol có được khởi tạo không
+            if not self.protocol:
+                logger.error("Protocol chưa được khởi tạo")
+                return False
+                
             if self.is_audio_channel_opened():
                 return True
             if not self._connect_lock:
@@ -171,6 +176,9 @@ class Application:
         except asyncio.TimeoutError:
             logger.error("Kết nối giao thức bị timeout")
             return False
+        except Exception as e:
+            logger.error("Lỗi khi kết nối giao thức: %s", e, exc_info=True)
+            return False
 
     def _initialize_async_objects(self) -> None:
         logger.debug("Khởi tạo đối tượng bất đồng bộ")
@@ -192,6 +200,7 @@ class Application:
         try:
             ok = await self.connect_protocol()
             if not ok:
+                logger.warning("Không thể bắt đầu nghe thủ công: kết nối giao thức thất bại")
                 return
             self.keep_listening = False
 
@@ -202,15 +211,15 @@ class Application:
                 await self.set_device_state(DeviceState.IDLE)
             await self.protocol.send_start_listening(ListeningMode.MANUAL)
             await self.set_device_state(DeviceState.LISTENING)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error("Lỗi khi bắt đầu nghe thủ công: %s", e, exc_info=True)
 
     async def stop_listening_manual(self) -> None:
         try:
             await self.protocol.send_stop_listening()
             await self.set_device_state(DeviceState.IDLE)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error("Lỗi khi dừng nghe thủ công: %s", e, exc_info=True)
 
     # -------------------------
     # Đối thoại tự động/thực thời: chọn chế độ dựa trên AEC và cấu hình hiện tại, mở giữ phiên
@@ -219,6 +228,7 @@ class Application:
         try:
             ok = await self.connect_protocol()
             if not ok:
+                logger.warning("Không thể bắt đầu hội thoại tự động: kết nối giao thức thất bại")
                 return
 
             # Force REALTIME mode for continuous listening
@@ -227,8 +237,8 @@ class Application:
             self.keep_listening = True
             await self.protocol.send_start_listening(mode)
             await self.set_device_state(DeviceState.LISTENING)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error("Lỗi khi bắt đầu hội thoại tự động: %s", e, exc_info=True)
 
     def _setup_protocol_callbacks(self) -> None:
         self.protocol.on_network_error(self._on_network_error)

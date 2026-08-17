@@ -346,13 +346,23 @@ class WebControlPlugin(Plugin):
 
             ok = await app.connect_protocol()
             if not ok:
+                logger.warning("/api/ask: Protocol connection failed")
                 return web.json_response(
-                    {"ok": False, "error": "Protocol is not connected"}, status=503
+                    {
+                        "ok": False,
+                        "error": "Không thể kết nối giao thức - vui lòng kiểm tra kết nối mạng và thử lại"
+                    },
+                    status=503,
                 )
 
             if not getattr(app, "protocol", None):
+                logger.warning("/api/ask: Protocol object is None after connection attempt")
                 return web.json_response(
-                    {"ok": False, "error": "Protocol is unavailable"}, status=503
+                    {
+                        "ok": False,
+                        "error": "Giao thức không khả dụng - hệ thống chưa sẵn sàng"
+                    },
+                    status=503,
                 )
 
             app.set_chat_message("user", text)
@@ -436,11 +446,25 @@ class WebControlPlugin(Plugin):
                     {"ok": False, "error": "Application is not ready"}, status=503
                 )
 
+            # Ensure protocol is connected before starting to listen
+            ok = await app.connect_protocol()
+            if not ok:
+                logger.warning("/api/listen/start: Protocol connection failed")
+                return web.json_response(
+                    {
+                        "ok": False,
+                        "error": "Không thể kết nối giao thức - vui lòng kiểm tra kết nối mạng và thử lại"
+                    },
+                    status=503,
+                )
+
             await app.start_listening_manual()
             return web.json_response({"ok": True, "message": "Đã bắt đầu lắng nghe"})
         except Exception as e:
             logger.error("/api/listen/start failed: %s", e, exc_info=True)
-            return web.json_response({"ok": False, "error": str(e)}, status=500)
+            return web.json_response(
+                {"ok": False, "error": f"Lỗi khi bắt đầu lắng nghe: {str(e)}"}, status=500
+            )
 
     async def _handle_listen_stop(self, request) -> Any:
         try:
@@ -454,7 +478,9 @@ class WebControlPlugin(Plugin):
             return web.json_response({"ok": True, "message": "Đã dừng lắng nghe"})
         except Exception as e:
             logger.error("/api/listen/stop failed: %s", e, exc_info=True)
-            return web.json_response({"ok": False, "error": str(e)}, status=500)
+            return web.json_response(
+                {"ok": False, "error": f"Lỗi khi dừng lắng nghe: {str(e)}"}, status=500
+            )
 
     async def _handle_music_toggle(self, request) -> Any:
         result = await get_music_player_instance().play_pause()
