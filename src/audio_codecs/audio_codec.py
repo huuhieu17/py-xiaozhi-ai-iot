@@ -489,11 +489,11 @@ class AudioCodec:
             now = time.time()
             if now - self._last_log_time > 3.0:
                 self._last_log_time = now
-                if len(audio_data) > 0:
-                    max_val = np.max(np.abs(audio_data))
-                    logger.info(f"Audio Input Check - Max Amplitude: {max_val} (Type: {audio_data.dtype})")
-                else:
-                    logger.info("Audio Input Check - No data")
+                # if len(audio_data) > 0:
+                #     max_val = np.max(np.abs(audio_data))
+                #     # logger.info(f"Audio Input Check - Max Amplitude: {max_val} (Type: {audio_data.dtype})")
+                # else:
+                #     logger.info("Audio Input Check - No data")
 
             # Áp dụng xử lý AEC (chỉ macOS cần)
             if (
