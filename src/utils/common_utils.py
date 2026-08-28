@@ -63,7 +63,6 @@ def synthesize_text_custom_tts(text_content: str, output_filename: str, voice_ge
         logger.error(f"❌ TTS Error: {e}")
         return None
 
-
 def _play_custom_tts(text: str) -> bool:
     temp_file_path = None
     try:

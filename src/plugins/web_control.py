@@ -416,11 +416,12 @@ class WebControlPlugin(Plugin):
 
             # Gọi AI plugin
             await ai_chat_plugin.handle_ai_query(text)
+            
 
             return web.json_response(
                 {
                     "ok": True,
-                    "message": "Đang xử lý câu hỏi",
+                    "message": "Đang xử lý",
                     "text": text
                 }
             )

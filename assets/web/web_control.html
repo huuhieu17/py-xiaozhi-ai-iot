@@ -405,7 +405,7 @@
         const text = document.getElementById('askText').value.trim();
         if (!text) return;
         try {
-          const data = await callApi('/api/ask', 'POST', { text });
+          const data = await callApi('/api/ai', 'POST', { text });
           notify(data.message || 'Da gui cau hoi');
         } catch (e) {
           notify('Loi hoi AI: ' + e.message, true);

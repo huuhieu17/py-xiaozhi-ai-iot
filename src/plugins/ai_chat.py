@@ -14,6 +14,7 @@ import httpx
 
 from src.plugins.base import Plugin
 from src.utils.config_manager import ConfigManager
+from src.utils.common_utils import _play_custom_tts
 from src.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -62,9 +63,11 @@ class AIChatPlugin(Plugin):
             return
             
         # Tạo HTTP client
-        self.http_client = httpx.AsyncClient(timeout=30.0)
+        self.http_client = httpx.AsyncClient(timeout=9999)
         logger.info(f"AI Chat plugin started (API: {self.api_url})")
-
+        await asyncio.sleep(2)  # Đảm bảo async context
+        await self.handle_ai_query("Bạn hãy hỏi tôi chào tôi, và hỏi 1 câu ngắn gọn được không, ví dụ bạn có khoẻ không, hoặc thời tiết hay gì đó, hãy trả lời tôi bằng tiếng Việt nhé ngắn gọn thôi, không dài dòng random chủ đề câu hỏi")
+                      
     async def stop(self) -> None:
         """Dừng plugin"""
         if self.http_client:
@@ -89,6 +92,10 @@ class AIChatPlugin(Plugin):
         # Nếu nhận được audio từ wake word detection
         # Có thể xử lý speech-to-text ở đây
         pass
+    
+    async def test_api_connection(self) -> bool:
+        logger.info(f"Testing AI API connection to {self.api_url}")
+        return True
 
     async def handle_ai_query(self, query: str) -> None:
         """Xử lý câu hỏi từ AI"""
@@ -124,20 +131,32 @@ class AIChatPlugin(Plugin):
         try:
             # Tạo payload - hỗ trợ định dạng chuẩn OpenAI
             payload = {
-                "model": self.model,
-                "messages": [
-                    {"role": "system", "content": self.system_prompt},
-                    *self._conversation_history,
-                    {"role": "user", "content": query}
-                ],
-                "max_tokens": self.max_tokens,
-                "temperature": self.temperature,
+                # "model": self.model,
+                # "messages": [
+                #     {"role": "system", "content": self.system_prompt},
+                #     *self._conversation_history,
+                #     {"role": "user", "content": query}
+                # ],
+                "contents": [
+                    {
+                        "parts": [
+                        {
+                            "text": query
+                        }
+                        ]
+                    }
+                ]
+                # "max_tokens": self.max_tokens,
+                # "temperature": self.temperature,
             }
             
             # Thêm API key nếu có
-            headers = {"Content-Type": "application/json"}
-            if self.api_key:
-                headers["Authorization"] = f"Bearer {self.api_key}"
+            headers = {
+                "Content-Type": "application/json",
+                "X-goog-api-key": self.api_key if self.api_key else "",
+            }
+            # if self.api_key:
+            #     headers["Authorization"] = f"Bearer {self.api_key}"
             
             logger.debug(f"Calling API: {self.api_url}")
             response = await self.http_client.post(
@@ -150,7 +169,15 @@ class AIChatPlugin(Plugin):
             
             # Parse response - hỗ trợ định dạng OpenAI
             data = response.json()
-            
+            if "candidates" in data:
+                try:
+                    content = data["candidates"][0].get("content", {})
+                    parts = content.get("parts", [])
+                    if parts and isinstance(parts, list):
+                        return str(parts[0].get("text", "")).strip()
+                    return str(content.get("text", "")).strip()
+                except Exception:
+                    return str(data.get("candidates", [{}])[0]).strip()
             # Cách 1: Định dạng OpenAI
             if "choices" in data:
                 return data["choices"][0]["message"]["content"].strip()
@@ -168,36 +195,44 @@ class AIChatPlugin(Plugin):
                 return data["message"].strip()
             
             logger.warning(f"Unexpected API response format: {data}")
-            return None
+            return "Định dạng phản hồi từ API không hợp lệ."
             
         except httpx.TimeoutException:
             logger.error("API request timeout")
-            return None
+            return "Quá thời gian chờ phản hồi từ API."
         except httpx.HTTPError as e:
             logger.error(f"API request error: {e}")
-            return None
+            return "Có lỗi khi gọi API AI. Vui lòng thử lại sau."
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse API response: {e}")
-            return None
+            return "Phản hồi từ API không hợp lệ."
 
     async def _speak_response(self, text: str) -> None:
-        """Phát audio response"""
+        """Phát audio response qua TTS (audio plugin hoặc mcp)"""
         if not self.application or not self.use_audio_output:
             return
-        
         try:
-            # Lấy plugin MCP (có MCP TTS tools)
+            # Thử plugin audio trước
+            audio_plugin = self.application.plugins.get_plugin("audio") if self.application.plugins else None
+            if audio_plugin and hasattr(audio_plugin, "play_tts"):
+                await audio_plugin.play_tts(text)
+                logger.info(f"📢 TTS via audio plugin: {text}")
+                return
+            # Dùng custom TTS từ common_utils
+            try:
+                import asyncio
+                await asyncio.to_thread(_play_custom_tts, text)
+                logger.info(f"📢 TTS via custom_tts: {text}")
+                return
+            except Exception as e:
+                logger.warning(f"Custom TTS failed: {e}")
+            # Fallback qua mcp plugin
             mcp_plugin = self.application.plugins.get_plugin("mcp") if self.application.plugins else None
-            
-            if mcp_plugin:
-                # MCP có TTS tool, có thể dùng để phát audio
-                logger.info(f"📢 Speaking: {text}")
-                # TODO: Gọi MCP TTS tool để phát audio
-                # await mcp_plugin.call_tool("text_to_speech", text)
-            else:
-                # Fallback: Chỉ log
-                logger.info(f"📢 [Audio] {text}")
-                
+            if mcp_plugin and hasattr(mcp_plugin, "call_tool"):
+                await mcp_plugin.call_tool("text_to_speech", text)
+                logger.info(f"📢 TTS via mcp: {text}")
+                return
+            logger.info(f"📢 [Audio - no TTS plugin] {text}")
         except Exception as e:
             logger.error(f"Error speaking response: {e}")
 

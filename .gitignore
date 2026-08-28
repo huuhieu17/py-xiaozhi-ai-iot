@@ -41,3 +41,5 @@ venv/
 
 #venv
 .venv/
+
+config/config.json

@@ -133,6 +133,7 @@ class Application:
             self.spawn(self._auto_connect_protocol(), "auto-connect-protocol")
             # Chờ dừng
             await self._wait_shutdown()
+            
             return 0
 
         except Exception as e:

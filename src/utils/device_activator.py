@@ -85,7 +85,7 @@ class DeviceActivator:
         Init App 
         """
         try:
-            text = f"Xin chào mình là Ly, chúc bạn một ngày tốt lành"
+            text = f"Xin chào!"
             print("\n==================")
             print(text)
             print("==================\n")
