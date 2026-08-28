@@ -126,6 +126,7 @@ class WebControlPlugin(Plugin):
                 web.post("/api/volume", self._handle_set_volume),
                 web.post("/api/volume/mute", self._handle_mute_volume),
                 web.post("/api/volume/unmute", self._handle_unmute_volume),
+                web.post("/api/ai", self._handle_ai_query),
                 web.get("/api/logs", self._handle_logs),
                 web.post("/api/restart", self._handle_restart),
             ]
@@ -376,6 +377,59 @@ class WebControlPlugin(Plugin):
                 {"ok": False, "error": f"ask failed: {str(e)}"}, status=500
             )
 
+    async def _handle_ai_query(self, request) -> Any:
+        """Xử lý /api/ai request - Gọi AI Chat plugin"""
+        try:
+            text = (await request.text()).strip()
+            if not text:
+                return web.json_response(
+                    {"ok": False, "error": "Câu hỏi không được để trống"},
+                    status=400,
+                )
+
+            app = self.application
+            if app is None:
+                return web.json_response(
+                    {"ok": False, "error": "Application is not ready"},
+                    status=503,
+                )
+
+            # Lấy AI Chat plugin
+            ai_chat_plugin = app.plugins.get_plugin("ai_chat") if app.plugins else None
+            if not ai_chat_plugin:
+                return web.json_response(
+                    {
+                        "ok": False,
+                        "error": "Plugin AI Chat không được kích hoạt"
+                    },
+                    status=503,
+                )
+
+            if not ai_chat_plugin.enabled or not ai_chat_plugin.api_url:
+                return web.json_response(
+                    {
+                        "ok": False,
+                        "error": "AI Chat plugin chưa được cấu hình"
+                    },
+                    status=503,
+                )
+
+            # Gọi AI plugin
+            await ai_chat_plugin.handle_ai_query(text)
+
+            return web.json_response(
+                {
+                    "ok": True,
+                    "message": "Đang xử lý câu hỏi",
+                    "text": text
+                }
+            )
+        except Exception as e:
+            logger.error("/api/ai failed: %s", e, exc_info=True)
+            return web.json_response(
+                {"ok": False, "error": f"AI query failed: {str(e)}"}, status=500
+            )
+
     async def _try_handle_local_command(self, text: str) -> dict | None:
         normalized = " ".join(str(text).strip().lower().split())
         if not normalized:
@@ -576,7 +630,7 @@ class WebControlPlugin(Plugin):
 
         title = str(payload.get("title") or resolved_video_id).strip()
         stream_mp3_url = f"{base}/stream/mp3?videoId={quote(resolved_video_id)}"
-
+        logger.info("Resolved YouTube videoId=%s title=%s stream_mp3_url=%s", resolved_video_id, title, stream_mp3_url)
         player = get_music_player_instance()
         rs = await player.play_stream_url(stream_mp3_url, title=title)
 

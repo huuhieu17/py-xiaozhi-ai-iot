@@ -85,11 +85,7 @@ class CLIActivation:
         """
         In thông tin đầu của quy trình kích hoạt CLI.
         """
-        print("\n" + "=" * 60)
-        print("Khách hàng AI nhỏ - Quy trình kích hoạt thiết bị")
-        print("=" * 60)
-        print("Đang khởi tạo thiết bị, vui lòng chờ...")
-        print()
+        print("Đang khởi tạo")
 
     def _update_device_info(self):
         """
@@ -147,9 +143,6 @@ class CLIActivation:
 
             self.activation_data = activation_data
 
-            # Hiển thị thông tin kích hoạt
-            self._show_activation_info(activation_data)
-
             # Khởi tạo thiết bị kích hoạt
             config_manager = self.system_initializer.get_config_manager()
             self.device_activator = DeviceActivator(config_manager)
@@ -158,9 +151,7 @@ class CLIActivation:
             self._log_and_print("\nBắt đầu quy trình kích hoạt thiết bị...")
             print("Đang kết nối với máy chủ kích hoạt, vui lòng giữ kết nối mạng...")
 
-            activation_success = await self.device_activator.process_activation(
-                activation_data
-            )
+            activation_success = await self.device_activator.process_activation()
 
             if activation_success:
                 self._log_and_print("\nThiết bị kích hoạt thành công!")
@@ -175,34 +166,6 @@ class CLIActivation:
             self.logger.error(f"Có ngoại lệ trong quy trình kích hoạt: {e}", exc_info=True)
             self._log_and_print(f"\nCó ngoại lệ trong kích hoạt: {e}")
             return False
-
-    def _show_activation_info(self, activation_data: dict):
-        """
-        Hiển thị thông tin kích hoạt.
-        """
-        code = activation_data.get("code", "------")
-        message = activation_data.get("message", "Vui lòng truy cập xiaozhi-ai-iot.vn nhập mã xác thực")
-
-        print("\n" + "=" * 60)
-        print("Thông tin kích hoạt thiết bị")
-        print("=" * 60)
-        print(f"Mã xác thực: {code}")
-        print(f"Hướng dẫn kích hoạt: {message}")
-        print("=" * 60)
-
-        # Định dạng hiển thị mã xác thực (thêm khoảng trống giữa các ký tự)
-        formatted_code = " ".join(code)
-        print(f"\nMã xác thực (vui lòng nhập trên trang web): {formatted_code}")
-        print("\nVui lòng thực hiện các bước sau để hoàn thành kích hoạt:")
-        print("1. Mở trình duyệt truy cập xiaozhi-ai-iot.vn")
-        print("2. Đăng nhập vào tài khoản của bạn")
-        print("3. Chọn thêm thiết bị")
-        print(f"4. Nhập mã xác thực: {formatted_code}")
-        print("5. Xác nhận thêm thiết bị")
-        print("\nĐang chờ xác nhận kích hoạt, vui lòng hoàn tất thao tác trên trang web...")
-
-        self._log_and_print(f"Mã xác thực: {code}")
-        self._log_and_print(f"Hướng dẫn kích hoạt: {message}")
 
     def _print_activation_success(self):
         """

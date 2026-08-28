@@ -84,18 +84,7 @@ async def start_app(mode: str, protocol: str, skip_activation: bool) -> int:
                 if not wifi_ok:
                     logger.error(f"WiFi Setup thất bại: {wifi_msg}")
                     # Hiển thị thông báo cho user nếu GUI
-                    if mode == "gui":
-                        try:
-                            from PyQt5.QtWidgets import QMessageBox
-                            QMessageBox.critical(
-                                None, 
-                                "Lỗi WiFi",
-                                f"Không thể thiết lập kết nối WiFi.\n{wifi_msg}\n\nỨng dụng sẽ thoát."
-                            )
-                        except Exception:
-                            pass
                     return 1
-                
                 logger.info(f"WiFi Setup hoàn tất: {wifi_msg}")
             else:
                 logger.info("Đã có kết nối WiFi ✓")
@@ -107,44 +96,7 @@ async def start_app(mode: str, protocol: str, skip_activation: bool) -> int:
     # =====================================
     # BƯỚC 1: First-run Settings (WiFi + Audio + Wakeword)
     # =====================================
-    if mode == "gui":
-        try:
-            from src.utils.resource_finder import resource_finder
-
-            config_dir = resource_finder.find_config_dir()
-            if not config_dir:
-                config_dir = resource_finder.get_project_root() / "config"
-
-            first_run_marker = Path(config_dir) / ".first_run_done"
-            if not first_run_marker.exists():
-                from src.views.settings.settings_window import SettingsWindow
-                from PyQt5.QtWidgets import QMessageBox
-
-                logger.info("Lần chạy đầu tiên: mở Settings trước khi kích hoạt")
-                
-                # Hiện thông báo chào mừng
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle("🎉 Chào mừng đến với Smart C!")
-                msg.setText(
-                    "Đây là lần đầu tiên bạn sử dụng ứng dụng.\n\n"
-                    "Vui lòng cấu hình các thiết lập cơ bản:\n"
-                    "• WiFi - Kết nối mạng Internet\n"
-                    "• Âm thanh - Chọn MIC và Loa\n"
-                    "• Wakeword - Từ đánh thức (alexa, hey lily...)\n\n"
-                    "Nhấn OK để tiếp tục."
-                )
-                msg.exec_()
-                
-                dlg = SettingsWindow()
-                result = dlg.exec_()
-                if result == 0:
-                    logger.warning("Người dùng đã đóng Settings. Thoát ứng dụng.")
-                    return 1
-        except Exception as e:
-            logger.error(f"Không thể mở Settings lần đầu: {e}", exc_info=True)
-            return 1
-
+    
     # =====================================
     # BƯỚC 2: Xử lý quy trình kích hoạt với Server
     # =====================================
@@ -201,36 +153,11 @@ if __name__ == "__main__":
             # Một số nền tảng/môi trường không hỗ trợ thiết lập các tín hiệu này, bỏ qua là được
             pass
 
-        if args.mode == "gui":
-            # Trong chế độ GUI, tạo QApplication và vòng lặp sự kiện qasync từ main
-            try:
-                import qasync
-                from PyQt5.QtWidgets import QApplication
-            except ImportError as e:
-                logger.error(f"Chế độ GUI yêu cầu thư viện qasync và PyQt5: {e}")
-                sys.exit(1)
-
-            qt_app = QApplication.instance() or QApplication(sys.argv)
-
-            loop = qasync.QEventLoop(qt_app)
-            asyncio.set_event_loop(loop)
-            logger.info("Đã tạo vòng lặp sự kiện qasync trong main")
-
-            # Đảm bảo việc đóng cửa sổ cuối cùng không tự động thoát ứng dụng, tránh vòng lặp sự kiện dừng trước
-            try:
-                qt_app.setQuitOnLastWindowClosed(False)
-            except Exception:
-                pass
-
-            with loop:
-                exit_code = loop.run_until_complete(
-                    start_app(args.mode, args.protocol, args.skip_activation)
-                )
-        else:
-            # Chế độ CLI sử dụng vòng lặp sự kiện asyncio tiêu chuẩn
-            exit_code = asyncio.run(
-                start_app(args.mode, args.protocol, args.skip_activation)
-            )
+       
+        # Chế độ CLI sử dụng vòng lặp sự kiện asyncio tiêu chuẩn
+        exit_code = asyncio.run(
+            start_app(args.mode, args.protocol, args.skip_activation)
+        )
 
     except KeyboardInterrupt:
         logger.info("Chương trình bị người dùng gián đoạn")

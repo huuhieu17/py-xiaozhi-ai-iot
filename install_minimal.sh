@@ -146,12 +146,6 @@ install_app() {
         if [ -d "$INSTALL_DIR" ]; then
             cd "$INSTALL_DIR"
             git pull origin main 2>/dev/null || true
-        else
-            git clone https://github.com/nguyenduchoai/py-xiaozhi-pi.git "$INSTALL_DIR" || {
-                echo -e "${RED}❌ Không thể clone repo${NC}"
-                return 1
-            }
-        fi
     fi
     
     # Tạo thư mục cần thiết

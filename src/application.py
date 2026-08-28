@@ -13,12 +13,12 @@ except Exception:
     pass
 
 from src.constants.constants import DeviceState, ListeningMode
+from src.plugins.ai_chat import AIChatPlugin
 from src.plugins.calendar import CalendarPlugin
 from src.plugins.iot import IoTPlugin
 from src.plugins.manager import PluginManager
 from src.plugins.mcp import McpPlugin
 from src.plugins.shortcuts import ShortcutsPlugin
-from src.plugins.ui import UIPlugin
 from src.plugins.web_control import WebControlPlugin
 from src.plugins.wake_word import WakeWordPlugin
 from src.protocols.mqtt_protocol import MqttProtocol
@@ -116,8 +116,8 @@ class Application:
                 AudioPlugin(),
                 WakeWordPlugin(),
                 CalendarPlugin(),
-                UIPlugin(mode=mode),
                 ShortcutsPlugin(),
+                AIChatPlugin(),
                 WebControlPlugin(),
             )
             await self.plugins.setup_all(self)

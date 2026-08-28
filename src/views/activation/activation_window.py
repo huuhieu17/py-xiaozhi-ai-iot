@@ -358,9 +358,6 @@ class ActivationWindow(BaseWindow, AsyncMixin):
 
                 self.activation_data = activation_data
 
-                # Hiển thị thông tin kích hoạt
-                self._show_activation_info(activation_data)
-
                 # Khởi tạo thiết bị kích hoạt
                 config_manager = self.system_initializer.get_config_manager()
                 self.device_activator = DeviceActivator(config_manager)
@@ -369,9 +366,7 @@ class ActivationWindow(BaseWindow, AsyncMixin):
                 self.signal_emitter.emit_status("Vui lòng nhập mã xác thực trên website...")
 
                 # Hàm này đã có cơ chế thử lại nội bộ (khoảng 5 phút)
-                activation_success = await self.device_activator.process_activation(
-                    activation_data
-                )
+                activation_success = await self.device_activator.process_activation()
 
                 # Kiểm tra xem có phải do cửa sổ đóng mà hủy không
                 if self.is_shutdown_requested():
@@ -407,18 +402,6 @@ class ActivationWindow(BaseWindow, AsyncMixin):
                 self.logger.error(f"Ngoại lệ trong quy trình kích hoạt: {e}", exc_info=True)
                 self.signal_emitter.emit_error(f"Lỗi kích hoạt: {e}. Thử lại sau 5s.")
                 await asyncio.sleep(5)
-
-    def _show_activation_info(self, activation_data: dict):
-        """
-        Hiển thị thông tin kích hoạt.
-        """
-        code = activation_data.get("code", "------")
-
-        # Cập nhật mã kích hoạt trong thông tin thiết bị
-        self.activation_model.update_activation_code(code)
-
-        # Thông tin đã được hiển thị trên giao diện UI, chỉ ghi lại nhật ký ngắn gọn
-        self.logger.info(f"Lấy mã kích hoạt: {code}")
 
     def _on_activation_success(self):
         """

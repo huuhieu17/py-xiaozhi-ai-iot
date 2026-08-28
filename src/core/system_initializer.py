@@ -305,7 +305,7 @@ class SystemInitializer:
         """
         return self.activation_status
 
-    async def handle_activation_process(self, mode: str = "gui") -> Dict:
+    async def handle_activation_process(self, mode: str = "cli") -> Dict:
         """Xử lý quy trình kích hoạt, tạo giao diện kích hoạt nếu cần.
 
         Args:
@@ -326,58 +326,7 @@ class SystemInitializer:
             }
 
         # Cần giao diện kích hoạt, tạo theo chế độ
-        if mode == "gui":
-            return await self._run_gui_activation()
-        else:
-            return await self._run_cli_activation()
-
-    async def _run_gui_activation(self) -> Dict:
-        """Chạy quy trình kích hoạt GUI.
-
-        Returns:
-            Dict: Kết quả kích hoạt
-        """
-        try:
-            from src.views.activation.activation_window import ActivationWindow
-
-            # Tạo cửa sổ kích hoạt
-            activation_window = ActivationWindow(self)
-
-            # Tạo Future để chờ kích hoạt hoàn thành
-            activation_future = asyncio.Future()
-
-            # Thiết lập callback khi kích hoạt hoàn thành
-            def on_activation_completed(success: bool):
-                if not activation_future.done():
-                    activation_future.set_result(success)
-
-            # Thiết lập callback khi cửa sổ đóng
-            def on_window_closed():
-                if not activation_future.done():
-                    activation_future.set_result(False)
-
-            # Kết nối tín hiệu
-            activation_window.activation_completed.connect(on_activation_completed)
-            activation_window.window_closed.connect(on_window_closed)
-
-            # Hiển thị cửa sổ kích hoạt
-            activation_window.show()
-
-            # Chờ kích hoạt hoàn thành
-            activation_success = await activation_future
-
-            # Đóng cửa sổ
-            activation_window.close()
-
-            return {
-                "is_activated": activation_success,
-                "device_fingerprint": self.device_fingerprint,
-                "config_manager": self.config_manager,
-            }
-
-        except Exception as e:
-            logger.error(f"Quy trình kích hoạt GUI xảy ra ngoại lệ: {e}", exc_info=True)
-            return {"is_activated": False, "error": str(e)}
+        return await self._run_cli_activation()
 
     async def _run_cli_activation(self) -> Dict:
         """Chạy quy trình kích hoạt CLI.

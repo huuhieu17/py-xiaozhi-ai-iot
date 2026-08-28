@@ -74,8 +74,6 @@ class WakeWordPlugin(Plugin):
         
         try:
             logger.info(f"🎤 WakeWordPlugin: Detected '{wake_word}' - '{full_text}'")
-            await self._play_wake_beep()
-            
             # Nếu đang nói, để logic ngắt/máy trạng thái của ứng dụng xử lý
             if hasattr(self.app, "device_state") and hasattr(
                 self.app, "start_auto_conversation"
@@ -94,50 +92,6 @@ class WakeWordPlugin(Plugin):
         except Exception as e:
             logger.error(f"Error handling wake word detection: {e}", exc_info=True)
 
-    async def _play_wake_beep(self) -> None:
-        try:
-            await asyncio.to_thread(self._play_wake_beep_sync)
-        except Exception:
-            pass
-
-    def _play_wake_beep_sync(self) -> None:
-        from src.utils.logging_config import get_logger
-        logger = get_logger(__name__)
-
-        try:
-            import pygame
-        except Exception:
-            return
-
-        try:
-            # Không tự khởi tạo/re-init mixer ở đây để tránh xung đột cấu hình âm thanh toàn cục.
-            # Chỉ phát beep nếu mixer đã được khởi tạo sẵn bởi luồng âm thanh chính.
-            if not pygame.mixer.get_init():
-                return
-
-            if self._wake_beep_sound is None:
-                sample_rate = 16000
-                duration_sec = 0.12
-                frequency_hz = 1100.0
-                amplitude = 0.18
-
-                sample_count = max(1, int(sample_rate * duration_sec))
-                samples = array("h")
-                for i in range(sample_count):
-                    t = i / sample_rate
-                    fade = min(1.0, i / 200.0, (sample_count - i) / 200.0)
-                    value = int(32767 * amplitude * fade * math.sin(2.0 * math.pi * frequency_hz * t))
-                    samples.append(value)
-
-                self._wake_beep_sound = pygame.mixer.Sound(buffer=samples.tobytes())
-
-            channel = pygame.mixer.find_channel(True)
-            if channel:
-                channel.play(self._wake_beep_sound)
-            else:
-                self._wake_beep_sound.play()
-        except Exception as e:
-            logger.debug(f"Wake beep playback skipped: {e}")
 
     def _on_error(self, error):
         try:

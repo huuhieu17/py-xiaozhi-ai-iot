@@ -38,3 +38,6 @@ venv/
 *.deb
 *.run
 ._*
+
+#venv
+.venv/

@@ -1,7 +1,7 @@
 {
   "SYSTEM_OPTIONS": {
-    "CLIENT_ID": null,
-    "DEVICE_ID": null,
+    "CLIENT_ID": "4b686a2f-5a84-4459-ba6a-5233cfb2e045",
+    "DEVICE_ID": "54:e1:ad:0b:f5:01",
     "LANGUAGE": "vi-VN",
     "NETWORK": {
       "OTA_VERSION_URL": "https://xiaozhi-ai-iot.vn/api/v1/ota",
@@ -18,8 +18,18 @@
   },
   "WAKE_WORD_OPTIONS": {
     "USE_WAKE_WORD": true,
+    "MODEL_PATH": "models",
+    "NUM_THREADS": 4,
+    "PROVIDER": "cpu",
+    "MAX_ACTIVE_PATHS": 2,
+    "KEYWORDS_SCORE": 1.8,
+    "KEYWORDS_THRESHOLD": 0.2,
+    "NUM_TRAILING_BLANKS": 1,
     "PICOVOICE_API_KEY": "+O7z1r9Q9TI5Gab+D4a4VbvDxda6alboY0+zOoDd23NRl82xvuoM5Q==",
-    "KEYWORDS": ["hey siri", "ok google"],
+    "KEYWORDS": [
+      "hey siri",
+      "ok google"
+    ],
     "SENSITIVITY": 0.5
   },
   "CAMERA": {
@@ -83,5 +93,16 @@
   "EMOTION_DISPLAY": {
     "DEFAULT_EMOTION": "😊",
     "USE_SYSTEM_EMOJI": true
+  },
+  "AI_CHAT_OPTIONS": {
+    "ENABLED": true,
+    "API_URL": "http://localhost:5000/v1/chat/completions",
+    "API_KEY": null,
+    "MODEL": "gpt-3.5-turbo",
+    "MAX_TOKENS": 2000,
+    "TEMPERATURE": 0.7,
+    "USE_AUDIO_INPUT": true,
+    "USE_AUDIO_OUTPUT": true,
+    "SYSTEM_PROMPT": "Bạn là một trợ lý AI hữu ích, thân thiện và lịch sự. Hãy trả lời câu hỏi một cách ngắn gọn và rõ ràng."
   }
 }
