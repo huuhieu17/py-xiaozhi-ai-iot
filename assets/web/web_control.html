@@ -76,6 +76,7 @@
         <div>Bài hát: <span id="current-track">--</span></div>
         <div class="flex items-center justify-between">
           <div>Trạng thái: <span id="playback-status">--</span></div>
+          <div>Player: <span id="player-backend">--</span></div>
           <div>Âm lượng: <span id="volumeLabel">--</span></div>
           <div>Có lời: <span id="has-lyrics">--</span></div>
         </div>
@@ -313,6 +314,7 @@
             musicStatusElement.classList.remove('hidden');
             document.getElementById('current-track').innerText = dataMusic.current_song || '--';
             document.getElementById('playback-status').innerText = dataMusic.playback_status || '--';
+            document.getElementById('player-backend').innerText = dataMusic.player_backend || '--';
             document.getElementById('volumeLabel').innerText = (typeof dataMusic.volume === 'number' ? dataMusic.volume : '--') + '%';
             document.getElementById('has-lyrics').innerText = (dataMusic.has_lyrics ? 'Có' : 'Không');
           }else{

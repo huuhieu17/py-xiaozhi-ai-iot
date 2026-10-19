@@ -954,14 +954,7 @@ class MusicPlayer:
     async def _start_stream_player(self, url: str, start_position: float) -> bool:
         """Khởi chạy player ngoài để phát audio bằng URL/đường dẫn local."""
         candidates = []
-        ffplay_path = shutil.which("ffplay")
-        if ffplay_path:
-            cmd = [ffplay_path, "-nodisp", "-autoexit", "-loglevel", "error", "-vn"]
-            if start_position > 0:
-                cmd.extend(["-ss", f"{start_position:.3f}"])
-            cmd.extend(["-volume", str(self._volume_percent)])
-            cmd.append(url)
-            candidates.append(("ffplay", cmd))
+        
 
         mpv_path = shutil.which("mpv")
         if mpv_path:
@@ -975,6 +968,15 @@ class MusicPlayer:
             cmd.append(f"--volume={self._volume_percent}")
             cmd.append(url)
             candidates.append(("mpv", cmd))
+
+        ffplay_path = shutil.which("ffplay")
+        if ffplay_path:
+            cmd = [ffplay_path, "-nodisp", "-autoexit", "-loglevel", "error", "-vn"]
+            if start_position > 0:
+                cmd.extend(["-ss", f"{start_position:.3f}"])
+            cmd.extend(["-volume", str(self._volume_percent)])
+            cmd.append(url)
+            candidates.append(("ffplay", cmd))
 
         vlc_path = shutil.which("cvlc") or shutil.which("vlc")
         if vlc_path:
