@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoundCloud Music</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#fff7f2] text-slate-900">
+  <main class="mx-auto max-w-7xl px-3 py-5 sm:px-6 lg:py-8">
+    <section class="mb-6 rounded-2xl bg-gradient-to-br from-[#ff5500] via-[#f04400] to-[#a82800] p-5 text-white shadow-lg sm:p-8">
+      <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-orange-100">SoundCloud</p>
+          <h1 class="mt-1 text-2xl font-bold sm:text-3xl">Khám phá âm nhạc</h1>
+        </div>
+        <div id="nowPlaying" class="rounded-xl bg-black/20 px-4 py-3 text-sm font-medium">Chưa có bài hát đang phát</div>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button onclick="playSelected()" class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-orange-700 transition hover:bg-orange-50">▶ Phát bài đã chọn</button>
+        <button onclick="togglePlayback()" class="rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold transition hover:bg-white/25">⏸ Tạm dừng / Tiếp tục</button>
+        <button onclick="stopPlayback()" class="rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold transition hover:bg-white/25">■ Dừng</button>
+      </div>
+    </section>
+
+    <section class="mb-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-orange-100 sm:p-6">
+      <div class="flex flex-col gap-2 sm:flex-row">
+        <input id="queryInput" type="text" placeholder="Tên bài hát hoặc link SoundCloud" class="min-w-0 flex-1 rounded-full border border-slate-300 px-5 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100" />
+        <button onclick="searchTracks()" class="rounded-full bg-[#ff5500] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#df4800]">Tìm kiếm</button>
+      </div>
+      <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-slate-600">
+        <label for="bitrate">Bitrate</label>
+        <select id="bitrate" class="rounded-lg border border-slate-300 bg-white px-3 py-2"><option>192k</option><option>128k</option><option>320k</option></select>
+        <span id="status" class="text-xs text-slate-500"></span>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div>
+        <div class="mb-3 flex items-center justify-between"><h2 class="text-lg font-bold">Kết quả tìm kiếm</h2><span class="text-xs text-slate-500">Chọn một bài để phát</span></div>
+        <div id="resultCards" class="grid max-h-[38rem] gap-3 overflow-auto rounded-2xl bg-white p-3 shadow-sm ring-1 ring-orange-100"></div>
+      </div>
+      <div>
+        <div class="mb-3 flex items-center justify-between"><h2 class="text-lg font-bold">Bài liên quan</h2><span class="text-xs text-slate-500">Từ bài đang chọn</span></div>
+        <div id="relatedCards" class="grid max-h-[38rem] gap-3 overflow-auto rounded-2xl bg-white p-3 shadow-sm ring-1 ring-orange-100"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      let selected = null;
+      const $ = (id) => document.getElementById(id);
+
+      async function api(method, path, body) {
+        const opts = { method, headers: { 'Content-Type': 'application/json' } };
+        if (body !== undefined) opts.body = JSON.stringify(body);
+        const response = await fetch(path, opts);
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || data.ok === false) throw new Error(data.error || data.message || response.statusText || 'Request failed');
+        return data;
+      }
+
+      function render(items, target, related) {
+        const list = $(target);
+        list.innerHTML = '';
+        if (!items || !items.length) {
+          list.innerHTML = '<div class="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-500">Không có kết quả</div>';
+          return;
+        }
+        items.forEach((item) => {
+          const card = document.createElement('div');
+          card.className = 'flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-orange-300 hover:shadow-sm cursor-pointer';
+          card.innerHTML = `${item.artwork ? `<img src="${item.artwork}" alt="" class="h-14 w-14 rounded-lg object-cover flex-shrink-0">` : '<div class="flex h-14 w-14 items-center justify-center rounded-lg bg-orange-100 text-xl flex-shrink-0">♪</div>'}<div class="min-w-0 flex-1"><div class="line-clamp-2 text-sm font-semibold">${item.title}</div><div class="mt-1 truncate text-xs text-slate-500">${item.artist}</div></div><button class="rounded-lg ${related ? 'bg-violet-600 hover:bg-violet-700' : 'bg-[#ff5500] hover:bg-[#df4800]'} px-3 py-1.5 text-xs font-semibold text-white flex-shrink-0">Play</button>`;
+          card.querySelector('button').addEventListener('click', (e) => { e.stopPropagation(); playTrack(item); });
+          card.addEventListener('click', () => { selected = item; highlight(); });
+          list.appendChild(card);
+        });
+      }
+
+      function highlight() {
+        document.querySelectorAll('#resultCards > div').forEach((card) => {
+          card.classList.toggle('ring-2', !!selected && card.textContent.includes(selected.title));
+        });
+      }
+
+      async function playTrack(track) {
+        if (!track?.url) return;
+        $('status').textContent = 'Đang gửi yêu cầu phát tới backend...';
+        try {
+          const data = await api('POST', '/api/soundcloud/player/play', {
+            url: track.url,
+            title: `${track.title} - ${track.artist}`,
+            bitrate: $('bitrate').value,
+          });
+          $('nowPlaying').textContent = `Đang phát: ${track.title} - ${track.artist}`;
+          $('status').textContent = data.message || 'Đã phát trên backend';
+          selected = track;
+          highlight();
+          loadRelated(track.url);
+        } catch (error) {
+          $('status').textContent = `Lỗi: ${error.message}`;
+        }
+      }
+
+      async function loadRelated(trackUrl) {
+        try {
+          const data = await api('GET', `/api/soundcloud/related?url=${encodeURIComponent(trackUrl)}&limit=10`);
+          render(data.tracks || [], 'relatedCards', true);
+        } catch (_) {}
+      }
+
+      window.searchTracks = async function () {
+        const query = $('queryInput').value.trim();
+        if (!query) return;
+        $('status').textContent = 'Đang tìm kiếm...';
+        try {
+          const data = await api('GET', `/api/soundcloud/search?q=${encodeURIComponent(query)}&limit=10`);
+          render(data.tracks || [], 'resultCards', false);
+          $('status').textContent = `Tìm thấy ${(data.tracks || []).length} kết quả`;
+        } catch (error) {
+          $('status').textContent = `Lỗi: ${error.message}`;
+        }
+      };
+
+      window.playSelected = () => {
+        if (selected) playTrack(selected);
+        else $('status').textContent = 'Bạn chưa chọn bài hát';
+      };
+
+      window.togglePlayback = async function () {
+        try {
+          const data = await api('POST', '/api/soundcloud/player/toggle');
+          $('status').textContent = data.message || 'Đã toggle';
+        } catch (error) {
+          $('status').textContent = `Lỗi: ${error.message}`;
+        }
+      };
+
+      window.stopPlayback = async function () {
+        try {
+          await api('POST', '/api/soundcloud/player/stop');
+          $('nowPlaying').textContent = 'Đã dừng phát';
+          $('status').textContent = 'Đã dừng';
+        } catch (error) {
+          $('status').textContent = `Lỗi: ${error.message}`;
+        }
+      };
+
+      // Cập nhật trạng thái từ backend mỗi 3 giây
+      async function pollStatus() {
+        try {
+          const data = await api('GET', '/api/soundcloud/player/status');
+          if (data.is_playing && data.current_song) {
+            $('nowPlaying').textContent = `Đang phát: ${data.current_song}`;
+          } else if (!data.is_playing && $('nowPlaying').textContent.startsWith('Đang phát:')) {
+            $('nowPlaying').textContent = 'Đã dừng phát';
+          }
+        } catch (_) {}
+      }
+
+      setInterval(pollStatus, 3000);
+
+      $('queryInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') searchTracks(); });
+    })();
+  </script>
+</body>
+</html>

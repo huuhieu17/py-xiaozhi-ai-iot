@@ -45,6 +45,10 @@ class WebControlPlugin(Plugin):
         self._yt_html_path = Path(
             os.environ.get("WEB_YOUTUBE_HTML_PATH", str(default_yt_html))
         )
+        default_sc_html = Path(get_project_root()) / "assets" / "web" / "soundcloud_music.html"
+        self._sc_html_path = Path(
+            os.environ.get("WEB_SOUNDCLOUD_HTML_PATH", str(default_sc_html))
+        )
         self._yt_autoplay_enabled = True
         self._yt_current_query = ""
         self._yt_current_video_id = ""
@@ -105,6 +109,13 @@ class WebControlPlugin(Plugin):
             [
                 web.get("/", self._handle_index),
                 web.get("/youtube-music", self._handle_youtube_music_index),
+                web.get("/soundcloud-music", self._handle_soundcloud_music_index),
+                web.get("/api/soundcloud/search", self._handle_soundcloud_search),
+                web.post("/api/soundcloud/player/play", self._handle_soundcloud_player_play),
+                web.post("/api/soundcloud/player/toggle", self._handle_soundcloud_player_toggle),
+                web.post("/api/soundcloud/player/stop", self._handle_soundcloud_player_stop),
+                web.get("/api/soundcloud/player/status", self._handle_soundcloud_player_status),
+                web.get("/api/soundcloud/related", self._handle_soundcloud_related),
                 web.get("/api/status", self._handle_status),
                 web.post("/api/ask", self._handle_ask),
                 web.post("/api/listen/start", self._handle_listen_start),
@@ -291,6 +302,167 @@ class WebControlPlugin(Plugin):
     async def _handle_youtube_music_index(self, request) -> Any:
         html = self._load_youtube_html()
         return web.Response(text=html, content_type="text/html")
+
+    async def _handle_soundcloud_music_index(self, request) -> Any:
+        try:
+            html = self._sc_html_path.read_text(encoding="utf-8")
+        except OSError as e:
+            logger.error("Cannot load SoundCloud page: %s", e)
+            return web.Response(status=500, text="SoundCloud UI is unavailable")
+        return web.Response(text=html, content_type="text/html")
+
+    def _get_soundcloud_server_base(self) -> str:
+        return os.environ.get("SC_MUSIC_SERVER_URL", "https://youtube-proxy.imsteve.dev").rstrip("/")
+
+    def _soundcloud_api_url(self, path: str) -> str:
+        return f"{self._get_soundcloud_server_base()}/soundcloud/{path.lstrip('/')}"
+
+    async def _soundcloud_search(self, query: str, limit: int = 10) -> list[dict]:
+        resp = await asyncio.to_thread(
+            requests.get,
+            self._soundcloud_api_url("search"),
+            params={"q": query, "limit": max(1, min(int(limit), 20))},
+            timeout=15,
+        )
+        payload = resp.json() if resp.content else {}
+        if resp.status_code >= 400:
+            raise RuntimeError(payload.get("error") if isinstance(payload, dict) else "request failed")
+        tracks = []
+        if isinstance(payload, dict):
+            tracks = payload.get("tracks") or payload.get("results") or payload.get("data") or []
+        if not isinstance(tracks, list):
+            return []
+        normalized = []
+        for item in tracks:
+            if not isinstance(item, dict):
+                continue
+            url = str(item.get("url") or item.get("permalink_url") or item.get("soundcloudUrl") or item.get("trackUrl") or "").strip()
+            title = str(item.get("title") or item.get("name") or "").strip()
+            artist = str(item.get("artist") or item.get("username") or item.get("user") or "").strip()
+            artwork = str(item.get("artwork_url") or item.get("artworkUrl") or item.get("thumbnail") or item.get("image") or "").strip()
+            if not url:
+                continue
+            normalized.append({"url": url, "title": title or "SoundCloud Track", "artist": artist or "Unknown", "artwork": artwork})
+        return normalized
+
+    async def _soundcloud_related(self, track_url: str, limit: int = 10) -> list[dict]:
+        resp = await asyncio.to_thread(
+            requests.get,
+            self._soundcloud_api_url("related"),
+            params={"url": track_url, "limit": max(1, min(int(limit), 20))},
+            timeout=15,
+        )
+        payload = resp.json() if resp.content else {}
+        if resp.status_code >= 400:
+            raise RuntimeError(payload.get("error") if isinstance(payload, dict) else "request failed")
+        tracks = []
+        if isinstance(payload, dict):
+            tracks = payload.get("tracks") or payload.get("results") or payload.get("data") or []
+        if not isinstance(tracks, list):
+            return []
+        normalized = []
+        for item in tracks:
+            if not isinstance(item, dict):
+                continue
+            url = str(item.get("url") or item.get("permalink_url") or item.get("soundcloudUrl") or "").strip()
+            title = str(item.get("title") or item.get("name") or "").strip()
+            artist = str(item.get("artist") or item.get("username") or item.get("user") or "").strip()
+            artwork = str(item.get("artwork_url") or item.get("artworkUrl") or item.get("thumbnail") or "").strip()
+            if not url:
+                continue
+            normalized.append({"url": url, "title": title or "SoundCloud Track", "artist": artist or "Unknown", "artwork": artwork})
+        return normalized
+
+    async def _soundcloud_play_audio(self, track_url: str, title: str = "", bitrate: str = "192k") -> dict:
+        url = str(track_url or "").strip()
+        if not url:
+            raise RuntimeError("track_url không hợp lệ")
+
+        stream_url = self._soundcloud_api_url("play") + f"?url={quote(url)}&bitrate={quote(bitrate)}"
+        # Lấy title từ proxy nếu chưa có
+        resolved_title = title
+        if not resolved_title:
+            try:
+                info_resp = await asyncio.to_thread(
+                    requests.get,
+                    self._soundcloud_api_url("info"),
+                    params={"url": url},
+                    timeout=10,
+                )
+                info = info_resp.json() if info_resp.content else {}
+                if isinstance(info, dict):
+                    resolved_title = str(info.get("title") or info.get("name") or "").strip()
+            except Exception:
+                pass
+            resolved_title = resolved_title or url.rstrip("/").split("/")[-1] or "SoundCloud"
+
+        player = get_music_player_instance()
+        rs = await player.play_stream_url(stream_url, title=resolved_title)
+        return {"ok": rs.get("status") == "success", **rs, "trackUrl": url, "title": resolved_title}
+
+    async def _handle_soundcloud_search(self, request) -> Any:
+        query = str(request.query.get("q", "")).strip()
+        if not query:
+            raise web.HTTPBadRequest(reason="q is required")
+        limit_raw = request.query.get("limit", "10")
+        try:
+            limit = max(1, min(int(limit_raw), 20))
+        except Exception:
+            limit = 10
+        try:
+            tracks = await self._soundcloud_search(query, limit)
+            return web.json_response({"ok": True, "count": len(tracks), "tracks": tracks})
+        except Exception as e:
+            logger.error("/api/soundcloud/search failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "error": str(e)}, status=500)
+
+    async def _handle_soundcloud_related(self, request) -> Any:
+        track_url = str(request.query.get("url", "")).strip()
+        if not track_url:
+            raise web.HTTPBadRequest(reason="url is required")
+        limit_raw = request.query.get("limit", "10")
+        try:
+            limit = max(1, min(int(limit_raw), 20))
+        except Exception:
+            limit = 10
+        try:
+            tracks = await self._soundcloud_related(track_url, limit)
+            return web.json_response({"ok": True, "count": len(tracks), "tracks": tracks})
+        except Exception as e:
+            logger.error("/api/soundcloud/related failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "error": str(e)}, status=500)
+
+    async def _handle_soundcloud_player_play(self, request) -> Any:
+        payload = await self._read_json(request)
+        track_url = str(payload.get("url", "")).strip()
+        title = str(payload.get("title", "")).strip()
+        bitrate = str(payload.get("bitrate", "192k")).strip()
+        if not track_url:
+            raise web.HTTPBadRequest(reason="url is required")
+        try:
+            rs = await self._soundcloud_play_audio(track_url, title=title, bitrate=bitrate)
+            status_code = 200 if rs.get("ok") else 400
+            return web.json_response(rs, status=status_code)
+        except Exception as e:
+            logger.error("/api/soundcloud/player/play failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "status": "error", "message": str(e)}, status=500)
+
+    async def _handle_soundcloud_player_toggle(self, request) -> Any:
+        player = get_music_player_instance()
+        result = await player.play_pause()
+        status_code = 200 if result.get("status") in {"success", "info"} else 400
+        return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    async def _handle_soundcloud_player_stop(self, request) -> Any:
+        player = get_music_player_instance()
+        result = await player.stop()
+        status_code = 200 if result.get("status") in {"success", "info"} else 400
+        return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    async def _handle_soundcloud_player_status(self, request) -> Any:
+        player = get_music_player_instance()
+        status = await player.get_status()
+        return web.json_response({"ok": True, **status})
 
     async def _handle_status(self, request) -> Any:
         snapshot = self.application.get_state_snapshot()

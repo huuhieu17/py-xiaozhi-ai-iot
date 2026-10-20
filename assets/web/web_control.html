@@ -105,6 +105,10 @@
           </div>
           <div>YT Music</div>
         </div>
+        <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.soundcloud_music)">
+          <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-[#ff5500] p-2 text-lg text-white font-bold">SC</div>
+          <div>SoundCloud</div>
+        </div>
         <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.zing_mp3)">
           <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
             <img src="https://play-lh.googleusercontent.com/5XUtbpRLPs6dcNCgPG3lM7oVb4cd1xf15qGijPM8fQnbAzyO0RpQLDV91sLZb3NO6oK_PqCR_GsN_epTbDHhZKU" alt="Zing Mp3 Icon" class="w-full h-full object-contain" />
@@ -143,9 +147,16 @@
       </div>
       <!-- YouTube Music -->
       <div class="application hidden float-in w-full" id="youtube_music">
-        <iframe 
+        <!-- <iframe 
           src="https://loa.imsteve.dev/youtube-music"
+          id="youtube_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe> -->
+           <iframe 
+          src="http://localhost:8088/youtube-music"
           id="youtube_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe>
+      </div>
+      <!-- SoundCloud Music -->
+      <div class="application hidden float-in w-full" id="soundcloud_music">
+        <iframe src="/soundcloud-music" id="soundcloud_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe>
       </div>
       <!-- App Chat AI -->
       <div class="application hidden float-in w-full" id="chat_ai">
@@ -264,6 +275,11 @@
           id: 'youtube_music',
           name: 'YouTube Music',
           description: 'Mở nhạc từ YouTube Music.',
+        },
+        soundcloud_music: {
+          id: 'soundcloud_music',
+          name: 'SoundCloud',
+          description: 'Tìm kiếm và phát nhạc từ SoundCloud.',
         },
         zing_mp3: {
           id: 'zing_mp3',
