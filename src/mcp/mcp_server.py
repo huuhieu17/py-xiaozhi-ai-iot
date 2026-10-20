@@ -278,6 +278,12 @@ class McpServer:
         youtube_manager = get_youtube_tools_manager()
         youtube_manager.init_tools(self.add_tool, PropertyList, Property, PropertyType)
 
+        # Thêm công cụ SoundCloud
+        from src.mcp.tools.soundcloud import get_soundcloud_tools_manager
+
+        soundcloud_manager = get_soundcloud_tools_manager()
+        soundcloud_manager.init_tools(self.add_tool, PropertyList, Property, PropertyType)
+
         # Thêm công cụ camera
         from src.mcp.tools.camera import take_photo
 

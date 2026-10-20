@@ -988,16 +988,21 @@ class MusicPlayer:
             candidates.append(("vlc", cmd))
 
         creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        is_windows = os.name == "nt"
 
         for backend, command in candidates:
             try:
-                process = await asyncio.to_thread(
-                    subprocess.Popen,
-                    command,
+                kwargs = dict(
                     stdin=subprocess.DEVNULL,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
-                    creationflags=creation_flags,
+                )
+                if is_windows:
+                    kwargs["creationflags"] = creation_flags
+                process = await asyncio.to_thread(
+                    subprocess.Popen,
+                    command,
+                    **kwargs,
                 )
                 self._stream_player_process = process
                 self._stream_player_backend = backend
@@ -1414,11 +1419,8 @@ class MusicPlayer:
             def send_to_mpv():
                 try:
                     if os.name == "nt":  # Windows - dùng named pipe
-                        import msvcrt
-
-                        handle = msvcrt.open(self._mpv_ipc_socket_path, os.O_WRONLY)
-                        os.write(handle, json_cmd.encode())
-                        os.close(handle)
+                        with open(self._mpv_ipc_socket_path, "wb") as pipe:
+                            pipe.write(json_cmd.encode())
                     else:  # Unix - dùng socket
                         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
                         sock.settimeout(2)

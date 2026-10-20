@@ -139,6 +139,7 @@ class WebControlPlugin(Plugin):
                 web.post("/api/volume/mute", self._handle_mute_volume),
                 web.post("/api/volume/unmute", self._handle_unmute_volume),
                 web.post("/api/ai", self._handle_ai_query),
+                web.post("/api/tts", self._handle_tts),
                 web.get("/api/logs", self._handle_logs),
                 web.post("/api/restart", self._handle_restart),
             ]
@@ -614,6 +615,52 @@ class WebControlPlugin(Plugin):
             return web.json_response(
                 {"ok": False, "error": f"AI query failed: {str(e)}"}, status=500
             )
+
+    async def _handle_tts(self, request) -> Any:
+        """Xử lý /api/tts - tổng hợp và phát âm thanh ra loa backend"""
+        try:
+            payload = await self._read_json(request)
+            text = str(payload.get("text", "")).strip()
+            if not text:
+                return web.json_response({"ok": False, "error": "text không được để trống"}, status=400)
+            voice_gender = str(payload.get("voice", "FEMALE")).upper()
+            if voice_gender not in ("FEMALE", "MALE"):
+                voice_gender = "FEMALE"
+
+            from src.utils.common_utils import synthesize_text_custom_tts, _play_custom_tts
+            import tempfile
+
+            def _synth_and_play():
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as f:
+                    tmp_path = f.name
+                try:
+                    output = synthesize_text_custom_tts(text, tmp_path, voice_gender)
+                    if not output:
+                        return False
+                    # Tái dùng _play_custom_tts nhưng với file đã tổng hợp sẵn
+                    import pygame
+                    if not pygame.mixer.get_init():
+                        pygame.mixer.init()
+                    pygame.mixer.music.load(output)
+                    pygame.mixer.music.play()
+                    import time
+                    while pygame.mixer.music.get_busy():
+                        time.sleep(0.05)
+                    return True
+                finally:
+                    try:
+                        Path(tmp_path).unlink(missing_ok=True)
+                    except Exception:
+                        pass
+
+            success = await asyncio.to_thread(_synth_and_play)
+            if not success:
+                return web.json_response({"ok": False, "error": "TTS synthesis failed"}, status=502)
+
+            return web.json_response({"ok": True, "message": "Đã phát âm thanh"})
+        except Exception as e:
+            logger.error("/api/tts failed: %s", e, exc_info=True)
+            return web.json_response({"ok": False, "error": str(e)}, status=500)
 
     async def _try_handle_local_command(self, text: str) -> dict | None:
         normalized = " ".join(str(text).strip().lower().split())

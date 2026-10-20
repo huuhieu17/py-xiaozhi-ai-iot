@@ -4,7 +4,7 @@
     "DEVICE_ID": "54:e1:ad:0b:f5:01",
     "LANGUAGE": "vi-VN",
     "NETWORK": {
-      "OTA_VERSION_URL": "https://xiaozhi-ai-iot.vn/api/v1/ota",
+      "OTA_VERSION_URL": "https://xiaozhi-ai-iot.vn/api/ota",
       "WEBSOCKET_URL": "ws://localhost:8765",
       "WEBSOCKET_ACCESS_TOKEN": null,
       "MQTT_INFO": null,
@@ -96,11 +96,10 @@
   },
   "AI_CHAT_OPTIONS": {
     "ENABLED": true,
-    "API_URL": "http://localhost:5000/v1/chat/completions",
-    "API_KEY": null,
-    "MODEL": "gpt-3.5-turbo",
+    "API_KEY": "AIzaSyDE5FMQT9fUdgLzdyVhtKTN0y11mWiJDQQ",
+    "MODEL": "gemini-3.5-flash-lite",
     "MAX_TOKENS": 2000,
-    "API_URL": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent",
+    "API_URL": "https://generativelanguage.googleapis.com/v1beta/interactions",
     "TEMPERATURE": 0.7,
     "USE_AUDIO_INPUT": true,
     "USE_AUDIO_OUTPUT": true,

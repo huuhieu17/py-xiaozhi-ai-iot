@@ -98,27 +98,24 @@ class AIChatPlugin(Plugin):
         return True
 
     async def handle_ai_query(self, query: str) -> None:
-        """Xử lý câu hỏi từ AI"""
+        """Xử lý câu hỏi từ AI — đi qua AIMcpHandler để có MCP tools"""
         if not self.enabled or not self.api_url:
             logger.warning("AI Chat not properly configured")
             return
-        
+
         try:
             logger.info(f"🤖 AI Query: {query}")
-            
-            # Gọi API
-            response_text = await self._call_api(query)
-            
+
+            from src.server.ai_mcp_handler import get_ai_mcp_handler
+            handler = get_ai_mcp_handler()
+            response_text = await handler.handle(query)
+
             if response_text:
                 logger.info(f"💬 AI Response: {response_text}")
-                
-                # Phát audio response
                 if self.use_audio_output and self.application:
                     await self._speak_response(response_text)
-                
-                # Thêm vào lịch sử conversation
                 self._add_to_history(query, response_text)
-                
+
         except Exception as e:
             logger.error(f"❌ Error handling AI query: {e}", exc_info=True)
 
@@ -131,21 +128,22 @@ class AIChatPlugin(Plugin):
         try:
             # Tạo payload - hỗ trợ định dạng chuẩn OpenAI
             payload = {
-                # "model": self.model,
+                "model": self.model,
+                "input": query,
                 # "messages": [
                 #     {"role": "system", "content": self.system_prompt},
                 #     *self._conversation_history,
                 #     {"role": "user", "content": query}
                 # ],
-                "contents": [
-                    {
-                        "parts": [
-                        {
-                            "text": query
-                        }
-                        ]
-                    }
-                ]
+                # "contents": [
+                #     {
+                #         "parts": [
+                #         {
+                #             "text": query
+                #         }
+                #         ]
+                #     }
+                # ]
                 # "max_tokens": self.max_tokens,
                 # "temperature": self.temperature,
             }
@@ -158,7 +156,7 @@ class AIChatPlugin(Plugin):
             # if self.api_key:
             #     headers["Authorization"] = f"Bearer {self.api_key}"
             
-            logger.debug(f"Calling API: {self.api_url}")
+            logger.info(f"Calling API: {self.api_url} with payload: {payload} and headers: {headers}")
             response = await self.http_client.post(
                 self.api_url,
                 json=payload,
@@ -178,6 +176,19 @@ class AIChatPlugin(Plugin):
                     return str(content.get("text", "")).strip()
                 except Exception:
                     return str(data.get("candidates", [{}])[0]).strip()
+
+            # Xiaozhi interaction format: {status, steps:[{type:"model_output", content:[{type:"text", text:"..."}]}]}
+            if "steps" in data:
+                texts = [
+                    c["text"]
+                    for step in data["steps"]
+                    if step.get("type") == "model_output"
+                    for c in step.get("content", [])
+                    if c.get("type") == "text" and c.get("text")
+                ]
+                if texts:
+                    return " ".join(texts).strip()
+
             # Cách 1: Định dạng OpenAI
             if "choices" in data:
                 return data["choices"][0]["message"]["content"].strip()

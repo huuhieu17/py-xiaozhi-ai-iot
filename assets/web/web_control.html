@@ -109,17 +109,15 @@
           <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-[#ff5500] p-2 text-lg text-white font-bold">SC</div>
           <div>SoundCloud</div>
         </div>
-        <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.zing_mp3)">
-          <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
-            <img src="https://play-lh.googleusercontent.com/5XUtbpRLPs6dcNCgPG3lM7oVb4cd1xf15qGijPM8fQnbAzyO0RpQLDV91sLZb3NO6oK_PqCR_GsN_epTbDHhZKU" alt="Zing Mp3 Icon" class="w-full h-full object-contain" />
-          </div>
-          <div>Zing Mp3</div>
-        </div>
         <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.logs_app)">
           <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNddeBvMEMxrBnB8_JojkjjepHgzALwv0dwyGocLFHug&s=10" alt="Logs Icon" class="w-full h-full object-contain" />
           </div>
           <div>Nhật ký</div>
+        </div>
+        <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.tts_app)">
+          <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-violet-500 p-2 text-lg text-white font-bold">TTS</div>
+          <div>Text to Speech</div>
         </div>
         <div class="w-24 h-20 flex flex-col items-center justify-center gap-1 hover:bg-[#eee] cursor-pointer rounded-lg p-2 text-sm text-black hover:shadow-lift transition" onclick="openApplication(application.settings)">
           <div class="w-12 h-12 flex items-center justify-center border rounded-lg bg-slate-200 p-2 text-lg text-black">
@@ -147,16 +145,17 @@
       </div>
       <!-- YouTube Music -->
       <div class="application hidden float-in w-full" id="youtube_music">
-        <iframe 
+        <!-- <iframe 
           src="https://loa.imsteve.dev/youtube-music"
-          id="youtube_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe>
-           <!-- <iframe 
-          src="http://localhost:8088/youtube-music"
           id="youtube_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe> -->
+           <iframe 
+          src="http://localhost:8088/youtube-music"
+          id="youtube_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe>
       </div>
       <!-- SoundCloud Music -->
       <div class="application hidden float-in w-full" id="soundcloud_music">
         <iframe src="https://loa.imsteve.dev/soundcloud-music" id="soundcloud_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe>
+        <iframe src="http://localhost:8088/soundcloud-music" id="soundcloud_music_iframe" class="w-full min-h-[150vh] bg-white p-2"></iframe>
       </div>
       <!-- App Chat AI -->
       <div class="application hidden float-in w-full" id="chat_ai">
@@ -238,6 +237,27 @@
             class="max-h-80 overflow-auto rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-200">Chưa tải logs...</pre>
         </div>
       </div>
+      <!-- TTS -->
+      <div class="application hidden float-in w-full" id="tts_app">
+        <h2 class="mb-4 text-lg font-bold app-description"></h2>
+        <div class="space-y-3">
+          <textarea id="ttsText" rows="4" placeholder="Nhập văn bản cần đọc..."
+            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none ring-violet-400/40 transition focus:ring resize-none"></textarea>
+          <div class="flex items-center gap-3">
+            <label class="text-sm font-semibold">Giọng đọc:</label>
+            <select id="ttsVoice"
+              class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-violet-400/40 focus:ring">
+              <option value="FEMALE">Nữ (HoaiMy)</option>
+              <option value="MALE">Nam (NamMinh)</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <button onclick="speakTTS()"
+              class="rounded-xl bg-violet-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95">Phát âm thanh</button>
+          </div>
+          <div id="tts-status" class="hidden rounded-xl bg-slate-950 px-4 py-2 font-mono text-xs text-slate-200">Đang xử lý...</div>
+        </div>
+      </div>
       <!-- Settings -->
       <div class="application hidden float-in w-full" id="settings">
         <h2 class="mb-4 text-lg font-bold app-description"></h2>
@@ -291,6 +311,11 @@
           name: 'Nhật ký',
           description: 'Xem nhật ký hệ thống và ứng dụng.',
         },
+        tts_app: {
+          id: 'tts_app',
+          name: 'Text to Speech',
+          description: 'Nhập văn bản và phát âm thanh qua loa.',
+        },
         settings: {
           id: 'settings',
           name: 'Cài đặt',
@@ -318,6 +343,38 @@
         if (!res.ok) throw new Error(data.error || res.statusText || 'Request failed');
         return data;
       }
+
+      let _ttsAbortController = null;
+
+      window.speakTTS = async function () {
+        const text = document.getElementById('ttsText').value.trim();
+        if (!text) { notify('Vui lòng nhập văn bản', true); return; }
+        const voice = document.getElementById('ttsVoice').value;
+        const statusEl = document.getElementById('tts-status');
+
+        statusEl.textContent = 'Đang tổng hợp và phát âm thanh qua loa...';
+        statusEl.classList.remove('hidden');
+
+        if (_ttsAbortController) _ttsAbortController.abort();
+        _ttsAbortController = new AbortController();
+
+        try {
+          const res = await fetch('/api/tts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, voice }),
+            signal: _ttsAbortController.signal,
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || res.statusText);
+          statusEl.textContent = 'Đã phát xong.';
+          notify(data.message || 'Đã phát âm thanh');
+        } catch (e) {
+          if (e.name === 'AbortError') return;
+          statusEl.textContent = 'Lỗi: ' + e.message;
+          notify('Lỗi TTS: ' + e.message, true);
+        }
+      };
 
       window.refreshStatus = async function () {
         try {

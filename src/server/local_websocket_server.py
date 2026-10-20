@@ -230,11 +230,14 @@ class LocalWebSocketServer:
             await self._send_mock_response(websocket, session_id, text)
 
     async def _send_mock_response(self, websocket: WebSocketServerProtocol, session_id: str, query: str) -> None:
-        """Gửi phản hồi mô phỏng từ AI"""
-        # Chờ một chút rồi gửi phản hồi
-        await asyncio.sleep(0.5)
-
-        response_text = f"Đây là phản hồi mô phỏng cho câu hỏi: '{query}'"
+        """Gọi LLM + MCP tools rồi gửi phản hồi về client."""
+        try:
+            from src.server.ai_mcp_handler import get_ai_mcp_handler
+            handler = get_ai_mcp_handler()
+            response_text = await handler.handle(query)
+        except Exception as e:
+            logger.error(f"[LocalWS] AI handler error: {e}", exc_info=True)
+            response_text = f"Lỗi xử lý AI: {e}"
 
         response = {
             "type": "response",
@@ -242,10 +245,9 @@ class LocalWebSocketServer:
             "text": response_text,
             "state": "text_response",
         }
-
         try:
             await websocket.send(json.dumps(response))
-            logger.info(f"📤 Gửi phản hồi: {response_text}")
+            logger.info(f"📤 AI response: {response_text[:80]}…")
         except Exception as e:
             logger.error(f"Lỗi gửi phản hồi: {e}")
 
