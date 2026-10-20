@@ -550,6 +550,10 @@ class WebControlPlugin(Plugin):
     def _get_youtube_server_base(self) -> str:
         return os.environ.get("YT_MUSIC_SERVER_URL", "https://youtube-proxy.imsteve.dev").rstrip("/")
 
+    def _youtube_api_url(self, path: str) -> str:
+        """Build URL for the current YouTube proxy API."""
+        return f"{self._get_youtube_server_base()}/youtube/{path.lstrip('/')}"
+
     def _extract_youtube_video_id(self, value: str) -> str:
         text = str(value or "").strip()
         if not text:
@@ -605,16 +609,22 @@ class WebControlPlugin(Plugin):
             return results
 
     async def _youtube_play_audio(self, videoId: str) -> dict:
-        base = self._get_youtube_server_base()
         resolved_video_id = self._extract_youtube_video_id(videoId) or str(videoId or "").strip()
         if not resolved_video_id:
             raise RuntimeError("videoId không hợp lệ")
 
-        resp = await asyncio.to_thread(
+        info_resp = await asyncio.to_thread(
             requests.get,
-            f"{base}/play?videoId={quote(resolved_video_id)}",
+            self._youtube_api_url("info"),
+            params={"videoId": resolved_video_id},
             timeout=15,
         )
+        info_payload = info_resp.json() if info_resp.content else {}
+        if info_resp.status_code >= 400:
+            message = info_payload.get("error") if isinstance(info_payload, dict) else "request failed"
+            raise RuntimeError(message)
+
+        resp = info_resp
         payload = resp.json() if resp.content else {}
         
         logger.info(
@@ -629,8 +639,14 @@ class WebControlPlugin(Plugin):
         if not isinstance(payload, dict) or not payload.get("success"):
             raise RuntimeError("search api trả về không hợp lệ")
 
-        title = str(payload.get("title") or resolved_video_id).strip()
-        stream_mp3_url = f"{base}/stream/mp3?videoId={quote(resolved_video_id)}"
+        title = str(
+            payload.get("title")
+            or (payload.get("data") or {}).get("title")
+            or resolved_video_id
+        ).strip()
+        stream_mp3_url = self._youtube_api_url("stream/mp3") + (
+            f"?videoId={quote(resolved_video_id)}&bitrate=192k"
+        )
         logger.info("Resolved YouTube videoId=%s title=%s stream_mp3_url=%s", resolved_video_id, title, stream_mp3_url)
         player = get_music_player_instance()
         rs = await player.play_stream_url(stream_mp3_url, title=title)
@@ -654,8 +670,8 @@ class WebControlPlugin(Plugin):
         base = self._get_youtube_server_base()
         resp = await asyncio.to_thread(
             requests.get,
-            f"{base}/recommends",
-            params={"videoId": video_id, "limit": max(1, min(int(limit), 20))},
+            self._youtube_api_url("search"),
+            params={"q": video_id, "limit": max(1, min(int(limit), 20))},
             timeout=15,
         )
         payload = resp.json() if resp.content else {}
@@ -665,7 +681,7 @@ class WebControlPlugin(Plugin):
         if not isinstance(payload, dict) or not payload.get("success"):
             return []
 
-        songs = payload.get("songs", [])
+        songs = payload.get("songs", []) if isinstance(payload, dict) else []
         if not isinstance(songs, list):
             return []
 
@@ -693,7 +709,7 @@ class WebControlPlugin(Plugin):
         base = self._get_youtube_server_base()
         resp = await asyncio.to_thread(
             requests.get,
-            f"{base}/search",
+            self._youtube_api_url("search"),
             params={"q": query, "limit": max(1, min(int(limit), 20))},
             timeout=15,
         )

@@ -272,11 +272,11 @@ class McpServer:
         timer_manager = get_timer_manager()
         timer_manager.init_tools(self.add_tool, PropertyList, Property, PropertyType)
 
-        # Thêm công cụ phát nhạc
-        from src.mcp.tools.music import get_music_tools_manager
+        # Thêm công cụ YouTube Music mới. Các tool music_player cũ không còn đăng ký.
+        from src.mcp.tools.youtube import get_youtube_tools_manager
 
-        music_manager = get_music_tools_manager()
-        music_manager.init_tools(self.add_tool, PropertyList, Property, PropertyType)
+        youtube_manager = get_youtube_tools_manager()
+        youtube_manager.init_tools(self.add_tool, PropertyList, Property, PropertyType)
 
         # Thêm công cụ camera
         from src.mcp.tools.camera import take_photo
