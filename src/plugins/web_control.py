@@ -114,6 +114,7 @@ class WebControlPlugin(Plugin):
                 web.post("/api/soundcloud/player/play", self._handle_soundcloud_player_play),
                 web.post("/api/soundcloud/player/toggle", self._handle_soundcloud_player_toggle),
                 web.post("/api/soundcloud/player/stop", self._handle_soundcloud_player_stop),
+                web.post("/api/soundcloud/player/volume", self._handle_soundcloud_player_volume),
                 web.get("/api/soundcloud/player/status", self._handle_soundcloud_player_status),
                 web.get("/api/soundcloud/related", self._handle_soundcloud_related),
                 web.get("/api/status", self._handle_status),
@@ -458,6 +459,17 @@ class WebControlPlugin(Plugin):
         result = await player.stop()
         status_code = 200 if result.get("status") in {"success", "info"} else 400
         return web.json_response({"ok": status_code == 200, **result}, status=status_code)
+
+    async def _handle_soundcloud_player_volume(self, request) -> Any:
+        payload = await self._read_json(request)
+        if "volume" not in payload:
+            raise web.HTTPBadRequest(reason="volume is required")
+        try:
+            volume = max(0, min(100, int(payload["volume"])))
+        except (TypeError, ValueError):
+            raise web.HTTPBadRequest(reason="volume must be an integer")
+        music_ok = await self._set_music_volume(volume)
+        return web.json_response({"ok": music_ok, "volume": volume})
 
     async def _handle_soundcloud_player_status(self, request) -> Any:
         player = get_music_player_instance()

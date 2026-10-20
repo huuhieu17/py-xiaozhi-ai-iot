@@ -21,6 +21,15 @@
         <button onclick="togglePlayback()" class="rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold transition hover:bg-white/25">⏸ Tạm dừng / Tiếp tục</button>
         <button onclick="stopPlayback()" class="rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold transition hover:bg-white/25">■ Dừng</button>
       </div>
+      <div class="mt-4 flex items-center gap-3">
+        <span class="text-sm text-orange-100">🔊</span>
+        <input id="volumeSlider" type="range" min="0" max="100" value="70" class="w-36 accent-white cursor-pointer" oninput="setVolume(this.value)" />
+        <span id="volumeLabel" class="text-sm font-medium text-orange-100 w-8">70</span>
+        <label class="flex items-center gap-1.5 text-sm text-orange-100 cursor-pointer select-none">
+          <input id="autoplayToggle" type="checkbox" checked class="accent-white" onchange="toggleAutoplay(this.checked)" />
+          Tự động next
+        </label>
+      </div>
     </section>
 
     <section class="mb-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-orange-100 sm:p-6">
@@ -50,6 +59,10 @@
   <script>
     (() => {
       let selected = null;
+      let relatedQueue = [];   // bài liên quan để auto-next
+      let autoplay = true;
+      let wasPlaying = false;  // trạng thái poll trước
+      let manualStop = false;  // đánh dấu người dùng bấm dừng thủ công
       const $ = (id) => document.getElementById(id);
 
       async function api(method, path, body) {
@@ -68,6 +81,7 @@
           list.innerHTML = '<div class="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-500">Không có kết quả</div>';
           return;
         }
+        if (related) relatedQueue = [...items]; // cập nhật queue auto-next
         items.forEach((item) => {
           const card = document.createElement('div');
           card.className = 'flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:border-orange-300 hover:shadow-sm cursor-pointer';
@@ -87,6 +101,7 @@
       async function playTrack(track) {
         if (!track?.url) return;
         $('status').textContent = 'Đang gửi yêu cầu phát tới backend...';
+        manualStop = false;
         try {
           const data = await api('POST', '/api/soundcloud/player/play', {
             url: track.url,
@@ -138,6 +153,7 @@
       };
 
       window.stopPlayback = async function () {
+        manualStop = true;
         try {
           await api('POST', '/api/soundcloud/player/stop');
           $('nowPlaying').textContent = 'Đã dừng phát';
@@ -147,19 +163,52 @@
         }
       };
 
-      // Cập nhật trạng thái từ backend mỗi 3 giây
+      window.setVolume = async function (val) {
+        $('volumeLabel').textContent = val;
+        try {
+          await api('POST', '/api/soundcloud/player/volume', { volume: parseInt(val, 10) });
+        } catch (_) {}
+      };
+
+      window.toggleAutoplay = function (enabled) {
+        autoplay = enabled;
+      };
+
+      async function autoNext() {
+        if (!relatedQueue.length) return;
+        const next = relatedQueue.shift();
+        $('status').textContent = `Tự động next: ${next.title}`;
+        await playTrack(next);
+      }
+
+      // Cập nhật trạng thái từ backend mỗi 3 giây, phát hiện hết bài để auto-next
       async function pollStatus() {
         try {
           const data = await api('GET', '/api/soundcloud/player/status');
-          if (data.is_playing && data.current_song) {
+          const isPlaying = !!data.is_playing;
+          if (isPlaying && data.current_song) {
             $('nowPlaying').textContent = `Đang phát: ${data.current_song}`;
-          } else if (!data.is_playing && $('nowPlaying').textContent.startsWith('Đang phát:')) {
-            $('nowPlaying').textContent = 'Đã dừng phát';
           }
+          // Hết bài: trước đó đang phát, bây giờ dừng, không phải do người dùng bấm dừng
+          if (wasPlaying && !isPlaying && !data.paused && !manualStop) {
+            $('nowPlaying').textContent = 'Đã dừng phát';
+            if (autoplay) await autoNext();
+          }
+          wasPlaying = isPlaying;
         } catch (_) {}
       }
 
       setInterval(pollStatus, 3000);
+
+      // Đồng bộ volume slider với backend khi tải trang
+      (async () => {
+        try {
+          const data = await api('GET', '/api/volume');
+          const vol = data.volume ?? 70;
+          $('volumeSlider').value = vol;
+          $('volumeLabel').textContent = vol;
+        } catch (_) {}
+      })();
 
       $('queryInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') searchTracks(); });
     })();
