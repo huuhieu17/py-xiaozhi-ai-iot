@@ -378,7 +378,7 @@ class WebControlPlugin(Plugin):
         if not url:
             raise RuntimeError("track_url không hợp lệ")
 
-        stream_url = self._soundcloud_api_url("play") + f"?url={quote(url)}&bitrate={quote(bitrate)}"
+        stream_url = self._soundcloud_api_url("stream/mp3") + f"?url={quote(url)}&bitrate={quote(bitrate)}"
         # Lấy title từ proxy nếu chưa có
         resolved_title = title
         if not resolved_title:
