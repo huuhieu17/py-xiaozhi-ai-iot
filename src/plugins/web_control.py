@@ -858,11 +858,6 @@ class WebControlPlugin(Plugin):
         resp = info_resp
         payload = resp.json() if resp.content else {}
         
-        logger.info(
-            "YouTube play api response: status=%s body=%s",
-            resp.status_code,
-            payload if isinstance(payload, dict) else str(payload)[:500],
-        )
         if resp.status_code >= 400:
             message = payload.get("error") if isinstance(payload, dict) else "request failed"
             raise RuntimeError(message)
@@ -871,7 +866,7 @@ class WebControlPlugin(Plugin):
             raise RuntimeError("search api trả về không hợp lệ")
 
         title = str(
-            payload.get("title")
+            payload.get("info", {}).get("title")
             or (payload.get("data") or {}).get("title")
             or resolved_video_id
         ).strip()
