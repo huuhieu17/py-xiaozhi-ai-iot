@@ -896,7 +896,7 @@ class WebControlPlugin(Plugin):
         base = self._get_youtube_server_base()
         resp = await asyncio.to_thread(
             requests.get,
-            self._youtube_api_url("search"),
+            self._youtube_api_url("recommends"),
             params={"q": video_id, "limit": max(1, min(int(limit), 20))},
             timeout=15,
         )
