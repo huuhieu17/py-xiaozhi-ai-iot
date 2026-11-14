@@ -111,14 +111,14 @@ def _warm_up_audio_device():
         if system == "Darwin":
             # Sử dụng giọng mặc định thay vì giọng Trung Quốc
             subprocess.run(
-                ["say", "Oh yes Daddy"],
+                ["say", "Hi Steve, How are you"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
         elif system == "Linux" and shutil.which("espeak"):
             # Sử dụng tiếng Anh hoặc mặc định
             subprocess.run(
-                ["espeak", "Oh yes Daddy"],
+                ["espeak", "Hi Steve, How are you"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
@@ -126,7 +126,7 @@ def _warm_up_audio_device():
             import win32com.client
 
             speaker = win32com.client.Dispatch("SAPI.SpVoice")
-            speaker.Speak("Oh yes Daddy")
+            speaker.Speak("Hi Steve, How are you")
 
         _audio_device_warmed_up = True
         logger.info("Đã làm nóng thiết bị âm thanh")
