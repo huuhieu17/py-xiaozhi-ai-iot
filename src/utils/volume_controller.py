@@ -2,6 +2,7 @@ import platform
 import re
 import shutil
 import subprocess
+import threading
 from functools import wraps
 from typing import Any, Callable, List, Optional
 
@@ -58,6 +59,7 @@ class VolumeController:
         self.is_arm = platform.machine().startswith(("arm", "aarch"))
         self.linux_tool = None
         self._module_cache = {}  # cache module
+        self._windows_com_thread_id: Optional[int] = None
 
         # Khởi tạo controller theo nền tảng
         init_method_name = self.PLATFORM_INIT.get(self.system)
@@ -129,6 +131,12 @@ class VolumeController:
         Khởi tạo điều khiển âm lượng Windows.
         """
         try:
+            # asyncio.to_thread có thể chạy mỗi thao tác trên một thread khác.
+            # COM và interface âm thanh phải được khởi tạo trong thread đang sử dụng.
+            comtypes = self._lazy_import("comtypes")
+            comtypes.CoInitialize()
+            self._windows_com_thread_id = threading.get_ident()
+
             # Lazy-load các module cần thiết
             POINTER = self._lazy_import("ctypes", "POINTER")
             cast = self._lazy_import("ctypes", "cast")
@@ -139,10 +147,16 @@ class VolumeController:
             )
 
             self.devices = AudioUtilities.GetSpeakers()
-            interface = self.devices.Activate(
-                IAudioEndpointVolume._iid_, CLSCTX_ALL, None
-            )
-            self.volume_control = cast(interface, POINTER(IAudioEndpointVolume))
+            endpoint_volume = getattr(self.devices, "EndpointVolume", None)
+            if endpoint_volume is not None:
+                # pycaw mới đã cung cấp interface trực tiếp trên AudioDevice.
+                self.volume_control = endpoint_volume
+            else:
+                # Tương thích với các phiên bản pycaw cũ.
+                interface = self.devices.Activate(
+                    IAudioEndpointVolume._iid_, CLSCTX_ALL, None
+                )
+                self.volume_control = cast(interface, POINTER(IAudioEndpointVolume))
             self.logger.debug("Khởi tạo điều khiển âm lượng Windows thành công")
         except Exception as e:
             self.logger.error(f"Khởi tạo điều khiển âm lượng Windows thất bại: {e}")
@@ -212,6 +226,8 @@ class VolumeController:
     def _get_windows_volume(self) -> Callable[[], int]:
         @self._safe_execute("Lấy âm lượng Windows", self.DEFAULT_VOLUME)
         def get_volume():
+            if self._windows_com_thread_id != threading.get_ident():
+                self._init_windows()
             volume_scalar = self.volume_control.GetMasterVolumeLevelScalar()
             return int(volume_scalar * 100)
 
@@ -221,6 +237,8 @@ class VolumeController:
     def _set_windows_volume(self) -> Callable[[int], None]:
         @self._safe_execute("Đặt âm lượng Windows")
         def set_volume(volume):
+            if self._windows_com_thread_id != threading.get_ident():
+                self._init_windows()
             self.volume_control.SetMasterVolumeLevelScalar(volume / 100.0, None)
 
         return set_volume

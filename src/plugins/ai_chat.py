@@ -66,7 +66,6 @@ class AIChatPlugin(Plugin):
         self.http_client = httpx.AsyncClient(timeout=9999)
         logger.info(f"AI Chat plugin started (API: {self.api_url})")
         await asyncio.sleep(2)  # Đảm bảo async context
-        await self.handle_ai_query("Bạn hãy hỏi tôi chào tôi, và hỏi 1 câu ngắn gọn được không, ví dụ bạn có khoẻ không, hoặc thời tiết hay gì đó, hãy trả lời tôi bằng tiếng Việt nhé ngắn gọn thôi, không dài dòng random chủ đề câu hỏi")
                       
     async def stop(self) -> None:
         """Dừng plugin"""
@@ -237,12 +236,12 @@ class AIChatPlugin(Plugin):
                 return
             except Exception as e:
                 logger.warning(f"Custom TTS failed: {e}")
-            # Fallback qua mcp plugin
-            mcp_plugin = self.application.plugins.get_plugin("mcp") if self.application.plugins else None
-            if mcp_plugin and hasattr(mcp_plugin, "call_tool"):
-                await mcp_plugin.call_tool("text_to_speech", text)
-                logger.info(f"📢 TTS via mcp: {text}")
-                return
+                # Fallback qua mcp plugin
+                mcp_plugin = self.application.plugins.get_plugin("mcp") if self.application.plugins else None
+                if mcp_plugin and hasattr(mcp_plugin, "call_tool"):
+                    await mcp_plugin.call_tool("text_to_speech", "Lỗi gọi API")
+                    logger.info(f"📢 TTS via mcp: {text}")
+                    return
             logger.info(f"📢 [Audio - no TTS plugin] {text}")
         except Exception as e:
             logger.error(f"Error speaking response: {e}")

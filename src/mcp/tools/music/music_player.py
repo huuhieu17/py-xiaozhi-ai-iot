@@ -35,6 +35,29 @@ except ImportError:
 logger = get_logger(__name__)
 
 
+def _find_player_executable(name: str) -> Optional[str]:
+    """Tìm player trong PATH và các thư mục cài đặt phổ biến trên Windows."""
+    executable = shutil.which(name)
+    if executable:
+        return executable
+
+    if os.name != "nt":
+        return None
+
+    candidates = [
+        Path(os.environ.get("ProgramFiles", "")) / name / f"{name}.exe",
+        Path(os.environ.get("ProgramFiles", "")) / "MPV Player" / f"{name}.exe",
+        Path(os.environ.get("LOCALAPPDATA", ""))
+        / "Programs"
+        / "mpv.net"
+        / "mpvnet.exe",
+    ]
+    for candidate in candidates:
+        if candidate.is_file():
+            return str(candidate)
+    return None
+
+
 class MusicMetadata:
     """
     Lớp metadata âm nhạc.
@@ -956,7 +979,7 @@ class MusicPlayer:
         candidates = []
         
 
-        mpv_path = shutil.which("mpv")
+        mpv_path = _find_player_executable("mpv")
         if mpv_path:
             # MPV với IPC socket để điều khiển volume realtime
             self._mpv_ipc_socket_path = self._get_mpv_ipc_socket_path()
@@ -969,7 +992,7 @@ class MusicPlayer:
             cmd.append(url)
             candidates.append(("mpv", cmd))
 
-        ffplay_path = shutil.which("ffplay")
+        ffplay_path = _find_player_executable("ffplay")
         if ffplay_path:
             cmd = [ffplay_path, "-nodisp", "-autoexit", "-loglevel", "error", "-vn"]
             if start_position > 0:
@@ -978,7 +1001,7 @@ class MusicPlayer:
             cmd.append(url)
             candidates.append(("ffplay", cmd))
 
-        vlc_path = shutil.which("cvlc") or shutil.which("vlc")
+        vlc_path = _find_player_executable("cvlc") or _find_player_executable("vlc")
         if vlc_path:
             cmd = [vlc_path, "--intf", "dummy", "--play-and-exit", "--no-video"]
             if start_position > 0:

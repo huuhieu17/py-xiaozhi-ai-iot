@@ -1,9 +1,36 @@
 import asyncio
-from typing import Optional
+import json
+import random
+from pathlib import Path
+from typing import Any, Optional
+
 from src.utils.device_fingerprint import DeviceFingerprint
 from src.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
+
+
+def _get_startup_quote() -> str:
+    """Đọc và chọn ngẫu nhiên một câu quote dùng khi khởi động."""
+    quote_file = Path(__file__).resolve().parents[2] / "assets" / "dao_ly.json"
+
+    try:
+        with quote_file.open(encoding="utf-8") as file:
+            quotes: Any = json.load(file)
+
+        valid_quotes = [
+            item["quote"]
+            for item in quotes
+            if isinstance(item, dict) and isinstance(item.get("quote"), str)
+        ]
+        if valid_quotes:
+            return random.choice(valid_quotes)
+
+        logger.warning("File quote không chứa câu quote hợp lệ: %s", quote_file)
+    except (OSError, json.JSONDecodeError, TypeError) as error:
+        logger.warning("Không thể đọc file quote %s: %s", quote_file, error)
+
+    return "Xin chào!"
 
 
 class DeviceActivator:
@@ -85,7 +112,7 @@ class DeviceActivator:
         Init App 
         """
         try:
-            text = f"Xin chào!"
+            text = _get_startup_quote()
             print("\n==================")
             print(text)
             print("==================\n")

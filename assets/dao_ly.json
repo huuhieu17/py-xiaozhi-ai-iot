@@ -1,0 +1,5002 @@
+[
+  {
+    "id": 1,
+    "quote": "Đừng xem thường ý chí bền bỉ làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 2,
+    "quote": "Hãy bắt đầu bằng sự nhẫn nại biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 3,
+    "quote": "Đừng vội phủ nhận lòng quyết tâm mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 4,
+    "quote": "Đừng xem thường ý chí bền bỉ biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 5,
+    "quote": "Đừng xem thường những bước đi nhỏ giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 6,
+    "quote": "Đừng vội phủ nhận niềm tin vào bản thân mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 7,
+    "quote": "Thành công thường được xây từ hành trình dài biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 8,
+    "quote": "Thành công thường được xây từ những bước đi nhỏ đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 9,
+    "quote": "Hãy trân trọng thói quen tốt biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 10,
+    "quote": "Mỗi ngày hãy nuôi dưỡng sự kiên trì giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 11,
+    "quote": "Đừng vội phủ nhận kỷ luật âm thầm tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 12,
+    "quote": "Đừng xem thường niềm tin vào bản thân giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 13,
+    "quote": "Hãy trân trọng niềm tin vào bản thân đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 14,
+    "quote": "Mỗi ngày hãy nuôi dưỡng sự kiên trì tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 15,
+    "quote": "Mỗi ngày hãy nuôi dưỡng thói quen tốt giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 16,
+    "quote": "Thành công thường được xây từ niềm tin vào bản thân giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 17,
+    "quote": "Mỗi ngày hãy nuôi dưỡng hành trình dài giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 18,
+    "quote": "Hãy bắt đầu bằng kỷ luật âm thầm biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 19,
+    "quote": "Thành công thường được xây từ sự kiên trì biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 20,
+    "quote": "Hãy trân trọng nỗ lực mỗi ngày tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 21,
+    "quote": "Hãy bắt đầu bằng sự kiên trì giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 22,
+    "quote": "Mỗi ngày hãy nuôi dưỡng lòng quyết tâm giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 23,
+    "quote": "Hãy trân trọng niềm tin vào bản thân biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 24,
+    "quote": "Đừng vội phủ nhận ý chí bền bỉ mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 25,
+    "quote": "Hãy bắt đầu bằng hành trình dài làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 26,
+    "quote": "Hãy bắt đầu bằng những bước đi nhỏ giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 27,
+    "quote": "Thành công thường được xây từ nỗ lực mỗi ngày biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 28,
+    "quote": "Đừng xem thường sự kiên trì đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 29,
+    "quote": "Đừng vội phủ nhận sự nhẫn nại tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 30,
+    "quote": "Đừng xem thường lòng quyết tâm mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 31,
+    "quote": "Đừng xem thường niềm tin vào bản thân mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 32,
+    "quote": "Thành công thường được xây từ thói quen tốt biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 33,
+    "quote": "Đừng xem thường hành trình dài tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 34,
+    "quote": "Hãy trân trọng những bước đi nhỏ mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 35,
+    "quote": "Hãy trân trọng những bước đi nhỏ tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 36,
+    "quote": "Mỗi ngày hãy nuôi dưỡng sự kiên trì đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 37,
+    "quote": "Đừng vội phủ nhận ý chí bền bỉ biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 38,
+    "quote": "Đừng xem thường hành trình dài tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 39,
+    "quote": "Đừng vội phủ nhận sự nhẫn nại giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 40,
+    "quote": "Hãy bắt đầu bằng những bước đi nhỏ tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 41,
+    "quote": "Thành công thường được xây từ niềm tin vào bản thân tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 42,
+    "quote": "Hãy bắt đầu bằng niềm tin vào bản thân làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 43,
+    "quote": "Đừng vội phủ nhận hành trình dài giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 44,
+    "quote": "Thành công thường được xây từ thói quen tốt mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 45,
+    "quote": "Mỗi ngày hãy nuôi dưỡng nỗ lực mỗi ngày tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 46,
+    "quote": "Đừng vội phủ nhận niềm tin vào bản thân biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 47,
+    "quote": "Hãy bắt đầu bằng niềm tin vào bản thân đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 48,
+    "quote": "Thành công thường được xây từ hành trình dài mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 49,
+    "quote": "Mỗi ngày hãy nuôi dưỡng ý chí bền bỉ tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 50,
+    "quote": "Thành công thường được xây từ thói quen tốt giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 51,
+    "quote": "Hãy bắt đầu bằng những bước đi nhỏ làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 52,
+    "quote": "Đừng vội phủ nhận sự kiên trì tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 53,
+    "quote": "Hãy bắt đầu bằng niềm tin vào bản thân biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 54,
+    "quote": "Mỗi ngày hãy nuôi dưỡng sự kiên trì giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 55,
+    "quote": "Đừng xem thường những bước đi nhỏ mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 56,
+    "quote": "Thành công thường được xây từ những bước đi nhỏ giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 57,
+    "quote": "Thành công thường được xây từ niềm tin vào bản thân biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 58,
+    "quote": "Thành công thường được xây từ sự kiên trì tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 59,
+    "quote": "Thành công thường được xây từ hành trình dài làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 60,
+    "quote": "Đừng vội phủ nhận sự nhẫn nại làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 61,
+    "quote": "Hãy trân trọng sự kiên trì mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 62,
+    "quote": "Mỗi ngày hãy nuôi dưỡng niềm tin vào bản thân biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 63,
+    "quote": "Hãy bắt đầu bằng nỗ lực mỗi ngày biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 64,
+    "quote": "Hãy bắt đầu bằng sự kiên trì biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 65,
+    "quote": "Đừng xem thường lòng quyết tâm giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 66,
+    "quote": "Hãy bắt đầu bằng nỗ lực mỗi ngày giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 67,
+    "quote": "Đừng xem thường thói quen tốt đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 68,
+    "quote": "Đừng vội phủ nhận ý chí bền bỉ đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 69,
+    "quote": "Đừng xem thường sự nhẫn nại tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 70,
+    "quote": "Đừng vội phủ nhận kỷ luật âm thầm biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 71,
+    "quote": "Đừng xem thường hành trình dài biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 72,
+    "quote": "Hãy trân trọng kỷ luật âm thầm tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 73,
+    "quote": "Đừng xem thường nỗ lực mỗi ngày biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 74,
+    "quote": "Mỗi ngày hãy nuôi dưỡng sự nhẫn nại đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 75,
+    "quote": "Hãy trân trọng sự nhẫn nại giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 76,
+    "quote": "Mỗi ngày hãy nuôi dưỡng niềm tin vào bản thân giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 77,
+    "quote": "Đừng xem thường lòng quyết tâm tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 78,
+    "quote": "Hãy bắt đầu bằng thói quen tốt làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 79,
+    "quote": "Đừng xem thường niềm tin vào bản thân tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 80,
+    "quote": "Mỗi ngày hãy nuôi dưỡng những bước đi nhỏ biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 81,
+    "quote": "Hãy bắt đầu bằng ý chí bền bỉ giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 82,
+    "quote": "Đừng vội phủ nhận sự kiên trì mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 83,
+    "quote": "Đừng xem thường lòng quyết tâm đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 84,
+    "quote": "Hãy bắt đầu bằng ý chí bền bỉ biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 85,
+    "quote": "Hãy trân trọng kỷ luật âm thầm biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 86,
+    "quote": "Thành công thường được xây từ sự nhẫn nại đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 87,
+    "quote": "Hãy bắt đầu bằng thói quen tốt giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 88,
+    "quote": "Thành công thường được xây từ nỗ lực mỗi ngày mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 89,
+    "quote": "Hãy trân trọng kỷ luật âm thầm giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 90,
+    "quote": "Hãy trân trọng lòng quyết tâm mở lối khi con đường tưởng như khép lại.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 91,
+    "quote": "Mỗi ngày hãy nuôi dưỡng lòng quyết tâm biến điều khó thành điều có thể.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 92,
+    "quote": "Hãy bắt đầu bằng lòng quyết tâm đưa ta đến gần mục tiêu.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 93,
+    "quote": "Đừng xem thường kỷ luật âm thầm tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 94,
+    "quote": "Hãy bắt đầu bằng ý chí bền bỉ làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 95,
+    "quote": "Hãy bắt đầu bằng sự nhẫn nại tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 96,
+    "quote": "Hãy bắt đầu bằng ý chí bền bỉ tạo nên thành quả bền vững.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 97,
+    "quote": "Thành công thường được xây từ kỷ luật âm thầm giúp ta không bỏ cuộc giữa chừng.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 98,
+    "quote": "Thành công thường được xây từ kỷ luật âm thầm giúp ta vượt qua giới hạn cũ.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 99,
+    "quote": "Mỗi ngày hãy nuôi dưỡng hành trình dài làm nên sức mạnh thật sự.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 100,
+    "quote": "Hãy bắt đầu bằng niềm tin vào bản thân tạo nên khác biệt theo thời gian.",
+    "category": "Kiên trì"
+  },
+  {
+    "id": 101,
+    "quote": "Trưởng thành không phải là sự điềm tĩnh dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 102,
+    "quote": "Đôi khi lớn lên nghĩa là sự điềm tĩnh làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 103,
+    "quote": "Sau mỗi biến cố, hãy nhớ sự trưởng thành cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 104,
+    "quote": "Đừng sợ sự trưởng thành dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 105,
+    "quote": "Đôi khi lớn lên nghĩa là trải nghiệm dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 106,
+    "quote": "Một người chín chắn biết rằng những lựa chọn khó khăn làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 107,
+    "quote": "Đừng sợ sự trưởng thành làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 108,
+    "quote": "Đôi khi lớn lên nghĩa là sự im lặng đúng lúc nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 109,
+    "quote": "Đừng sợ những lựa chọn khó khăn giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 110,
+    "quote": "Trưởng thành không phải là sự trưởng thành nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 111,
+    "quote": "Sau mỗi biến cố, hãy nhớ sự điềm tĩnh dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 112,
+    "quote": "Đôi khi lớn lên nghĩa là sự im lặng đúng lúc làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 113,
+    "quote": "Đừng sợ những lần vấp ngã giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 114,
+    "quote": "Trưởng thành không phải là khả năng nhận lỗi khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 115,
+    "quote": "Sau mỗi biến cố, hãy nhớ sự điềm tĩnh cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 116,
+    "quote": "Sau mỗi biến cố, hãy nhớ những lựa chọn khó khăn làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 117,
+    "quote": "Sau mỗi biến cố, hãy nhớ sự điềm tĩnh khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 118,
+    "quote": "Đừng sợ sự im lặng đúng lúc giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 119,
+    "quote": "Trưởng thành không phải là việc biết buông bỏ nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 120,
+    "quote": "Một người chín chắn biết rằng trải nghiệm cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 121,
+    "quote": "Đừng sợ sự im lặng đúng lúc giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 122,
+    "quote": "Sau mỗi biến cố, hãy nhớ những lựa chọn khó khăn khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 123,
+    "quote": "Sau mỗi biến cố, hãy nhớ khả năng nhận lỗi giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 124,
+    "quote": "Đừng sợ lòng tự trọng làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 125,
+    "quote": "Đôi khi lớn lên nghĩa là việc biết buông bỏ khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 126,
+    "quote": "Đừng sợ việc biết buông bỏ giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 127,
+    "quote": "Đôi khi lớn lên nghĩa là những lần vấp ngã giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 128,
+    "quote": "Một người chín chắn biết rằng sự trưởng thành giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 129,
+    "quote": "Một người chín chắn biết rằng sự điềm tĩnh nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 130,
+    "quote": "Một người chín chắn biết rằng những lựa chọn khó khăn khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 131,
+    "quote": "Đôi khi lớn lên nghĩa là sự trưởng thành cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 132,
+    "quote": "Sau mỗi biến cố, hãy nhớ lòng tự trọng dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 133,
+    "quote": "Sau mỗi biến cố, hãy nhớ những lựa chọn khó khăn nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 134,
+    "quote": "Một người chín chắn biết rằng việc biết buông bỏ giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 135,
+    "quote": "Một người chín chắn biết rằng việc biết buông bỏ giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 136,
+    "quote": "Sau mỗi biến cố, hãy nhớ những lần vấp ngã khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 137,
+    "quote": "Đôi khi lớn lên nghĩa là sự im lặng đúng lúc giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 138,
+    "quote": "Trưởng thành không phải là những lần vấp ngã khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 139,
+    "quote": "Một người chín chắn biết rằng trải nghiệm giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 140,
+    "quote": "Trưởng thành không phải là việc biết buông bỏ khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 141,
+    "quote": "Trưởng thành không phải là trải nghiệm nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 142,
+    "quote": "Đôi khi lớn lên nghĩa là sự trưởng thành giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 143,
+    "quote": "Sau mỗi biến cố, hãy nhớ sự im lặng đúng lúc giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 144,
+    "quote": "Sau mỗi biến cố, hãy nhớ lòng tự trọng khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 145,
+    "quote": "Sau mỗi biến cố, hãy nhớ sự trưởng thành khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 146,
+    "quote": "Một người chín chắn biết rằng sự điềm tĩnh khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 147,
+    "quote": "Trưởng thành không phải là khả năng nhận lỗi dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 148,
+    "quote": "Đừng sợ sự trưởng thành giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 149,
+    "quote": "Sau mỗi biến cố, hãy nhớ sự điềm tĩnh giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 150,
+    "quote": "Một người chín chắn biết rằng những lựa chọn khó khăn nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 151,
+    "quote": "Sau mỗi biến cố, hãy nhớ khả năng nhận lỗi giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 152,
+    "quote": "Sau mỗi biến cố, hãy nhớ khả năng nhận lỗi cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 153,
+    "quote": "Đôi khi lớn lên nghĩa là những lựa chọn khó khăn làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 154,
+    "quote": "Một người chín chắn biết rằng khả năng nhận lỗi làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 155,
+    "quote": "Đôi khi lớn lên nghĩa là việc biết buông bỏ làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 156,
+    "quote": "Đừng sợ sự điềm tĩnh giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 157,
+    "quote": "Đôi khi lớn lên nghĩa là sự điềm tĩnh nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 158,
+    "quote": "Một người chín chắn biết rằng những lựa chọn khó khăn cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 159,
+    "quote": "Đôi khi lớn lên nghĩa là việc biết buông bỏ cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 160,
+    "quote": "Sau mỗi biến cố, hãy nhớ sự im lặng đúng lúc cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 161,
+    "quote": "Đôi khi lớn lên nghĩa là sự im lặng đúng lúc giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 162,
+    "quote": "Đôi khi lớn lên nghĩa là cách ta đối diện sự thật giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 163,
+    "quote": "Một người chín chắn biết rằng sự im lặng đúng lúc nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 164,
+    "quote": "Đôi khi lớn lên nghĩa là sự điềm tĩnh giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 165,
+    "quote": "Đôi khi lớn lên nghĩa là cách ta đối diện sự thật cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 166,
+    "quote": "Một người chín chắn biết rằng lòng tự trọng giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 167,
+    "quote": "Sau mỗi biến cố, hãy nhớ lòng tự trọng giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 168,
+    "quote": "Trưởng thành không phải là sự im lặng đúng lúc làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 169,
+    "quote": "Trưởng thành không phải là những lựa chọn khó khăn cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 170,
+    "quote": "Đừng sợ những lần vấp ngã làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 171,
+    "quote": "Đôi khi lớn lên nghĩa là những lần vấp ngã làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 172,
+    "quote": "Đừng sợ sự im lặng đúng lúc dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 173,
+    "quote": "Trưởng thành không phải là lòng tự trọng giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 174,
+    "quote": "Trưởng thành không phải là sự im lặng đúng lúc giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 175,
+    "quote": "Trưởng thành không phải là sự trưởng thành giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 176,
+    "quote": "Đừng sợ lòng tự trọng nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 177,
+    "quote": "Một người chín chắn biết rằng việc biết buông bỏ dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 178,
+    "quote": "Đôi khi lớn lên nghĩa là trải nghiệm giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 179,
+    "quote": "Sau mỗi biến cố, hãy nhớ những lần vấp ngã giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 180,
+    "quote": "Một người chín chắn biết rằng cách ta đối diện sự thật khiến ta mạnh mẽ mà không chai sạn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 181,
+    "quote": "Sau mỗi biến cố, hãy nhớ khả năng nhận lỗi nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 182,
+    "quote": "Đừng sợ khả năng nhận lỗi cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 183,
+    "quote": "Trưởng thành không phải là sự điềm tĩnh cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 184,
+    "quote": "Một người chín chắn biết rằng trải nghiệm làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 185,
+    "quote": "Một người chín chắn biết rằng sự im lặng đúng lúc cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 186,
+    "quote": "Đừng sợ khả năng nhận lỗi giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 187,
+    "quote": "Sau mỗi biến cố, hãy nhớ những lựa chọn khó khăn giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 188,
+    "quote": "Trưởng thành không phải là trải nghiệm giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 189,
+    "quote": "Sau mỗi biến cố, hãy nhớ cách ta đối diện sự thật giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 190,
+    "quote": "Trưởng thành không phải là lòng tự trọng giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 191,
+    "quote": "Đôi khi lớn lên nghĩa là lòng tự trọng giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 192,
+    "quote": "Trưởng thành không phải là việc biết buông bỏ giúp ta sống có trách nhiệm.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 193,
+    "quote": "Trưởng thành không phải là cách ta đối diện sự thật giúp ta bớt phán xét.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 194,
+    "quote": "Sau mỗi biến cố, hãy nhớ trải nghiệm làm ta biết quý trọng hiện tại.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 195,
+    "quote": "Sau mỗi biến cố, hãy nhớ những lựa chọn khó khăn dạy ta nhìn người bằng sự tỉnh táo.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 196,
+    "quote": "Một người chín chắn biết rằng cách ta đối diện sự thật cho ta góc nhìn sâu sắc hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 197,
+    "quote": "Đôi khi lớn lên nghĩa là trải nghiệm nhắc ta biết điều gì thật sự quan trọng.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 198,
+    "quote": "Trưởng thành không phải là sự trưởng thành giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 199,
+    "quote": "Một người chín chắn biết rằng những lựa chọn khó khăn giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 200,
+    "quote": "Một người chín chắn biết rằng sự im lặng đúng lúc giúp ta hiểu mình hơn.",
+    "category": "Trưởng thành"
+  },
+  {
+    "id": 201,
+    "quote": "Hãy sống sao để tuổi trẻ không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 202,
+    "quote": "Hãy nhớ rằng thời gian được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 203,
+    "quote": "Đừng đợi đến khi ngày mai đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 204,
+    "quote": "Đừng đợi đến khi tuổi trẻ chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 205,
+    "quote": "Hãy nhớ rằng cơ hội đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 206,
+    "quote": "Hãy sống sao để những năm tháng đã qua không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 207,
+    "quote": "Đừng đánh đổi sự chờ đợi đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 208,
+    "quote": "Đừng đợi đến khi mỗi buổi sáng không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 209,
+    "quote": "Đừng đợi đến khi khoảnh khắc bên người thân không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 210,
+    "quote": "Hãy nhớ rằng những ngày bình thường được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 211,
+    "quote": "Đừng đợi đến khi sự chờ đợi được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 212,
+    "quote": "Hãy nhớ rằng khoảnh khắc bên người thân không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 213,
+    "quote": "Hãy sống sao để cơ hội không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 214,
+    "quote": "Mỗi ngày là dịp để tuổi trẻ chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 215,
+    "quote": "Mỗi ngày là dịp để sự chờ đợi không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 216,
+    "quote": "Đừng đợi đến khi những ngày bình thường cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 217,
+    "quote": "Đừng đánh đổi những ngày bình thường không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 218,
+    "quote": "Đừng đợi đến khi mỗi buổi sáng đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 219,
+    "quote": "Hãy nhớ rằng cơ hội nhắc ta đừng trì hoãn điều tốt đẹp.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 220,
+    "quote": "Hãy nhớ rằng cơ hội được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 221,
+    "quote": "Hãy nhớ rằng tuổi trẻ đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 222,
+    "quote": "Hãy sống sao để cơ hội không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 223,
+    "quote": "Mỗi ngày là dịp để sự chờ đợi nhắc ta đừng trì hoãn điều tốt đẹp.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 224,
+    "quote": "Hãy sống sao để cơ hội chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 225,
+    "quote": "Mỗi ngày là dịp để mỗi buổi sáng được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 226,
+    "quote": "Mỗi ngày là dịp để cơ hội được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 227,
+    "quote": "Đừng đánh đổi khoảnh khắc bên người thân không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 228,
+    "quote": "Hãy nhớ rằng hiện tại chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 229,
+    "quote": "Đừng đợi đến khi sự chờ đợi không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 230,
+    "quote": "Hãy nhớ rằng những ngày bình thường nhắc ta đừng trì hoãn điều tốt đẹp.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 231,
+    "quote": "Hãy sống sao để hiện tại chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 232,
+    "quote": "Đừng đợi đến khi những năm tháng đã qua cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 233,
+    "quote": "Mỗi ngày là dịp để thời gian cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 234,
+    "quote": "Hãy nhớ rằng hiện tại không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 235,
+    "quote": "Hãy sống sao để những năm tháng đã qua không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 236,
+    "quote": "Mỗi ngày là dịp để sự chờ đợi đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 237,
+    "quote": "Hãy nhớ rằng ngày mai trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 238,
+    "quote": "Mỗi ngày là dịp để khoảnh khắc bên người thân không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 239,
+    "quote": "Đừng đợi đến khi những năm tháng đã qua trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 240,
+    "quote": "Đừng đợi đến khi hiện tại cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 241,
+    "quote": "Hãy nhớ rằng tuổi trẻ không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 242,
+    "quote": "Mỗi ngày là dịp để những ngày bình thường được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 243,
+    "quote": "Hãy sống sao để sự chờ đợi đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 244,
+    "quote": "Hãy nhớ rằng sự chờ đợi được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 245,
+    "quote": "Đừng đợi đến khi những ngày bình thường trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 246,
+    "quote": "Mỗi ngày là dịp để sự chờ đợi không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 247,
+    "quote": "Đừng đợi đến khi ngày mai trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 248,
+    "quote": "Hãy nhớ rằng ngày mai không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 249,
+    "quote": "Đừng đợi đến khi sự chờ đợi cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 250,
+    "quote": "Mỗi ngày là dịp để hiện tại chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 251,
+    "quote": "Đừng đợi đến khi những ngày bình thường không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 252,
+    "quote": "Hãy sống sao để mỗi buổi sáng cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 253,
+    "quote": "Đừng đợi đến khi những năm tháng đã qua đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 254,
+    "quote": "Đừng đánh đổi thời gian đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 255,
+    "quote": "Đừng đánh đổi những ngày bình thường trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 256,
+    "quote": "Đừng đợi đến khi sự chờ đợi chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 257,
+    "quote": "Đừng đợi đến khi tuổi trẻ trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 258,
+    "quote": "Đừng đánh đổi tuổi trẻ không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 259,
+    "quote": "Đừng đánh đổi sự chờ đợi trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 260,
+    "quote": "Đừng đợi đến khi ngày mai không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 261,
+    "quote": "Đừng đánh đổi hiện tại không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 262,
+    "quote": "Mỗi ngày là dịp để thời gian không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 263,
+    "quote": "Đừng đợi đến khi thời gian trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 264,
+    "quote": "Mỗi ngày là dịp để khoảnh khắc bên người thân đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 265,
+    "quote": "Hãy nhớ rằng mỗi buổi sáng được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 266,
+    "quote": "Hãy nhớ rằng thời gian đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 267,
+    "quote": "Đừng đợi đến khi ngày mai không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 268,
+    "quote": "Hãy sống sao để những năm tháng đã qua chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 269,
+    "quote": "Hãy nhớ rằng mỗi buổi sáng trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 270,
+    "quote": "Hãy sống sao để cơ hội cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 271,
+    "quote": "Hãy sống sao để những ngày bình thường không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 272,
+    "quote": "Mỗi ngày là dịp để những năm tháng đã qua không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 273,
+    "quote": "Mỗi ngày là dịp để những ngày bình thường cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 274,
+    "quote": "Hãy sống sao để hiện tại không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 275,
+    "quote": "Đừng đợi đến khi cơ hội trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 276,
+    "quote": "Mỗi ngày là dịp để những năm tháng đã qua không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 277,
+    "quote": "Hãy nhớ rằng những năm tháng đã qua được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 278,
+    "quote": "Đừng đánh đổi những năm tháng đã qua trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 279,
+    "quote": "Hãy nhớ rằng cơ hội chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 280,
+    "quote": "Đừng đợi đến khi tuổi trẻ được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 281,
+    "quote": "Hãy nhớ rằng những năm tháng đã qua chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 282,
+    "quote": "Mỗi ngày là dịp để những ngày bình thường trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 283,
+    "quote": "Hãy nhớ rằng ngày mai không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 284,
+    "quote": "Mỗi ngày là dịp để ngày mai được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 285,
+    "quote": "Đừng đánh đổi những năm tháng đã qua cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 286,
+    "quote": "Đừng đợi đến khi cơ hội cần được lấp đầy bằng điều có ý nghĩa.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 287,
+    "quote": "Mỗi ngày là dịp để những ngày bình thường không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 288,
+    "quote": "Đừng đợi đến khi ngày mai chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 289,
+    "quote": "Mỗi ngày là dịp để những ngày bình thường nhắc ta đừng trì hoãn điều tốt đẹp.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 290,
+    "quote": "Hãy sống sao để những năm tháng đã qua nhắc ta đừng trì hoãn điều tốt đẹp.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 291,
+    "quote": "Mỗi ngày là dịp để những năm tháng đã qua được tạo nên từ lựa chọn hôm nay.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 292,
+    "quote": "Đừng đợi đến khi cơ hội chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 293,
+    "quote": "Đừng đánh đổi tuổi trẻ không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 294,
+    "quote": "Đừng đợi đến khi khoảnh khắc bên người thân chỉ có ý nghĩa khi ta biết sử dụng.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 295,
+    "quote": "Đừng đợi đến khi cơ hội nhắc ta đừng trì hoãn điều tốt đẹp.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 296,
+    "quote": "Hãy nhớ rằng khoảnh khắc bên người thân đáng quý hơn khi được sống có mục đích.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 297,
+    "quote": "Đừng đợi đến khi sự chờ đợi không nên bị lãng phí cho hối tiếc.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 298,
+    "quote": "Mỗi ngày là dịp để cơ hội trôi qua dù ta có sẵn sàng hay không.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 299,
+    "quote": "Hãy nhớ rằng tuổi trẻ nhắc ta đừng trì hoãn điều tốt đẹp.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 300,
+    "quote": "Hãy nhớ rằng sự chờ đợi không quay lại vì sự chần chừ.",
+    "category": "Thời gian"
+  },
+  {
+    "id": 301,
+    "quote": "Một người đáng quý là người lời hứa là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 302,
+    "quote": "Một người đáng quý là người lòng tử tế xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 303,
+    "quote": "Trước khi mong được tôn trọng, hãy lòng biết ơn xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 304,
+    "quote": "Đừng dùng thái độ khi thành công không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 305,
+    "quote": "Một người đáng quý là người cách ta nói về người vắng mặt nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 306,
+    "quote": "Đừng dùng thái độ khi thành công không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 307,
+    "quote": "Hãy để lòng tử tế có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 308,
+    "quote": "Hãy để sự khiêm nhường không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 309,
+    "quote": "Giá trị của ta nằm ở cách đối xử với người yếu thế nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 310,
+    "quote": "Một người đáng quý là người sự công bằng có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 311,
+    "quote": "Trước khi mong được tôn trọng, hãy lời hứa nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 312,
+    "quote": "Đừng dùng sự công bằng không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 313,
+    "quote": "Một người đáng quý là người cách ta nói về người vắng mặt để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 314,
+    "quote": "Giá trị của ta nằm ở cách đối xử với người yếu thế không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 315,
+    "quote": "Đừng dùng sự khiêm nhường xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 316,
+    "quote": "Giá trị của ta nằm ở sự khiêm nhường nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 317,
+    "quote": "Hãy để sự khiêm nhường giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 318,
+    "quote": "Một người đáng quý là người thái độ khi thành công là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 319,
+    "quote": "Giá trị của ta nằm ở cách ta nói về người vắng mặt xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 320,
+    "quote": "Giá trị của ta nằm ở lòng tử tế nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 321,
+    "quote": "Hãy để thái độ khi thành công nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 322,
+    "quote": "Giá trị của ta nằm ở thái độ khi thành công là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 323,
+    "quote": "Hãy để lời hứa không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 324,
+    "quote": "Giá trị của ta nằm ở sự khiêm nhường có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 325,
+    "quote": "Giá trị của ta nằm ở sự trung thực nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 326,
+    "quote": "Hãy để cách đối xử với người yếu thế không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 327,
+    "quote": "Hãy để sự công bằng không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 328,
+    "quote": "Giá trị của ta nằm ở lòng biết ơn xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 329,
+    "quote": "Đừng dùng lòng biết ơn có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 330,
+    "quote": "Đừng dùng lòng tử tế để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 331,
+    "quote": "Hãy để cách ta nói về người vắng mặt để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 332,
+    "quote": "Đừng dùng sự trung thực có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 333,
+    "quote": "Đừng dùng sự khiêm nhường nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 334,
+    "quote": "Trước khi mong được tôn trọng, hãy cách đối xử với người yếu thế để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 335,
+    "quote": "Trước khi mong được tôn trọng, hãy lòng biết ơn không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 336,
+    "quote": "Đừng dùng lời hứa để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 337,
+    "quote": "Hãy để cách ta nói về người vắng mặt có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 338,
+    "quote": "Một người đáng quý là người cách đối xử với người yếu thế nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 339,
+    "quote": "Một người đáng quý là người nhân cách là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 340,
+    "quote": "Trước khi mong được tôn trọng, hãy lòng biết ơn không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 341,
+    "quote": "Hãy để nhân cách không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 342,
+    "quote": "Một người đáng quý là người sự trung thực để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 343,
+    "quote": "Một người đáng quý là người lời hứa không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 344,
+    "quote": "Một người đáng quý là người sự trung thực giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 345,
+    "quote": "Một người đáng quý là người nhân cách nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 346,
+    "quote": "Đừng dùng sự khiêm nhường là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 347,
+    "quote": "Giá trị của ta nằm ở sự công bằng xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 348,
+    "quote": "Một người đáng quý là người lời hứa không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 349,
+    "quote": "Đừng dùng sự công bằng giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 350,
+    "quote": "Trước khi mong được tôn trọng, hãy lòng tử tế để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 351,
+    "quote": "Đừng dùng cách ta nói về người vắng mặt để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 352,
+    "quote": "Hãy để sự khiêm nhường có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 353,
+    "quote": "Trước khi mong được tôn trọng, hãy lời hứa có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 354,
+    "quote": "Giá trị của ta nằm ở lòng tử tế để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 355,
+    "quote": "Đừng dùng lòng tử tế giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 356,
+    "quote": "Giá trị của ta nằm ở cách ta nói về người vắng mặt không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 357,
+    "quote": "Trước khi mong được tôn trọng, hãy thái độ khi thành công có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 358,
+    "quote": "Giá trị của ta nằm ở sự công bằng không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 359,
+    "quote": "Đừng dùng lời hứa nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 360,
+    "quote": "Giá trị của ta nằm ở cách đối xử với người yếu thế có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 361,
+    "quote": "Đừng dùng sự trung thực không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 362,
+    "quote": "Giá trị của ta nằm ở lời hứa có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 363,
+    "quote": "Một người đáng quý là người lòng tử tế giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 364,
+    "quote": "Giá trị của ta nằm ở sự công bằng là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 365,
+    "quote": "Hãy để lòng biết ơn không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 366,
+    "quote": "Trước khi mong được tôn trọng, hãy lòng biết ơn giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 367,
+    "quote": "Giá trị của ta nằm ở lòng biết ơn có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 368,
+    "quote": "Đừng dùng cách ta nói về người vắng mặt không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 369,
+    "quote": "Hãy để thái độ khi thành công có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 370,
+    "quote": "Giá trị của ta nằm ở lời hứa nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 371,
+    "quote": "Giá trị của ta nằm ở nhân cách giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 372,
+    "quote": "Giá trị của ta nằm ở cách ta nói về người vắng mặt có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 373,
+    "quote": "Trước khi mong được tôn trọng, hãy sự khiêm nhường xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 374,
+    "quote": "Một người đáng quý là người sự công bằng xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 375,
+    "quote": "Hãy để lòng biết ơn là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 376,
+    "quote": "Một người đáng quý là người lời hứa có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 377,
+    "quote": "Giá trị của ta nằm ở thái độ khi thành công có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 378,
+    "quote": "Đừng dùng thái độ khi thành công là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 379,
+    "quote": "Hãy để nhân cách để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 380,
+    "quote": "Một người đáng quý là người cách ta nói về người vắng mặt có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 381,
+    "quote": "Đừng dùng sự công bằng là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 382,
+    "quote": "Trước khi mong được tôn trọng, hãy sự công bằng nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 383,
+    "quote": "Giá trị của ta nằm ở sự khiêm nhường là nền tảng của sự tôn trọng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 384,
+    "quote": "Một người đáng quý là người thái độ khi thành công để lại dấu ấn sâu hơn lời nói.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 385,
+    "quote": "Trước khi mong được tôn trọng, hãy cách đối xử với người yếu thế xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 386,
+    "quote": "Giá trị của ta nằm ở lòng tử tế giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 387,
+    "quote": "Trước khi mong được tôn trọng, hãy sự công bằng giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 388,
+    "quote": "Một người đáng quý là người nhân cách xây dựng niềm tin lâu dài.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 389,
+    "quote": "Hãy để thái độ khi thành công không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 390,
+    "quote": "Đừng dùng sự trung thực không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 391,
+    "quote": "Hãy để cách ta nói về người vắng mặt không nên thay đổi theo lợi ích.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 392,
+    "quote": "Trước khi mong được tôn trọng, hãy sự trung thực giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 393,
+    "quote": "Hãy để nhân cách giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 394,
+    "quote": "Đừng dùng cách ta nói về người vắng mặt nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 395,
+    "quote": "Một người đáng quý là người sự công bằng nói lên con người thật của ta.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 396,
+    "quote": "Đừng dùng sự khiêm nhường có giá trị hơn vẻ ngoài hào nhoáng.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 397,
+    "quote": "Trước khi mong được tôn trọng, hãy sự công bằng không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 398,
+    "quote": "Trước khi mong được tôn trọng, hãy lời hứa không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 399,
+    "quote": "Một người đáng quý là người thái độ khi thành công không cần phô trương để được ghi nhận.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 400,
+    "quote": "Một người đáng quý là người cách ta nói về người vắng mặt giúp các mối quan hệ bền chặt.",
+    "category": "Nhân cách"
+  },
+  {
+    "id": 401,
+    "quote": "Đừng đo tình bạn bằng ranh giới trong tình bạn không thể chỉ dựa vào lợi ích.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 402,
+    "quote": "Hãy giữ bên mình sự hiện diện đúng lúc đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 403,
+    "quote": "Một tình bạn tốt cần sự hiện diện đúng lúc trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 404,
+    "quote": "Đừng đo tình bạn bằng khoảng cách cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 405,
+    "quote": "Đừng đo tình bạn bằng khoảng cách trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 406,
+    "quote": "Hãy học cách những người bạn cũ cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 407,
+    "quote": "Đôi khi điều quý nhất là khoảng cách cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 408,
+    "quote": "Hãy học cách sự hiện diện đúng lúc trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 409,
+    "quote": "Một tình bạn tốt cần lời góp ý thật lòng được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 410,
+    "quote": "Một tình bạn tốt cần những người bạn cũ không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 411,
+    "quote": "Hãy giữ bên mình khoảng cách không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 412,
+    "quote": "Đôi khi điều quý nhất là ranh giới trong tình bạn được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 413,
+    "quote": "Một tình bạn tốt cần sự tin tưởng được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 414,
+    "quote": "Hãy học cách tình bạn chân thành trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 415,
+    "quote": "Đừng đo tình bạn bằng lời góp ý thật lòng được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 416,
+    "quote": "Hãy giữ bên mình những lần cùng nhau vượt khó cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 417,
+    "quote": "Hãy giữ bên mình tình bạn chân thành đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 418,
+    "quote": "Một tình bạn tốt cần sự tin tưởng trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 419,
+    "quote": "Hãy học cách sự hiện diện đúng lúc cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 420,
+    "quote": "Đừng đo tình bạn bằng sự tin tưởng cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 421,
+    "quote": "Một tình bạn tốt cần tình bạn chân thành đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 422,
+    "quote": "Một tình bạn tốt cần những lần cùng nhau vượt khó cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 423,
+    "quote": "Hãy giữ bên mình ranh giới trong tình bạn cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 424,
+    "quote": "Đừng đo tình bạn bằng sự cảm thông không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 425,
+    "quote": "Đôi khi điều quý nhất là ranh giới trong tình bạn cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 426,
+    "quote": "Đừng đo tình bạn bằng những lần cùng nhau vượt khó cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 427,
+    "quote": "Đừng đo tình bạn bằng sự cảm thông cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 428,
+    "quote": "Đôi khi điều quý nhất là khoảng cách trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 429,
+    "quote": "Hãy học cách sự cảm thông được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 430,
+    "quote": "Đôi khi điều quý nhất là sự hiện diện đúng lúc không thể chỉ dựa vào lợi ích.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 431,
+    "quote": "Đừng đo tình bạn bằng lời góp ý thật lòng không thể chỉ dựa vào lợi ích.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 432,
+    "quote": "Đôi khi điều quý nhất là khoảng cách được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 433,
+    "quote": "Đôi khi điều quý nhất là sự tin tưởng cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 434,
+    "quote": "Đừng đo tình bạn bằng khoảng cách được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 435,
+    "quote": "Hãy giữ bên mình sự cảm thông giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 436,
+    "quote": "Đôi khi điều quý nhất là tình bạn chân thành cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 437,
+    "quote": "Hãy học cách khoảng cách cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 438,
+    "quote": "Hãy học cách một lời hỏi thăm giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 439,
+    "quote": "Một tình bạn tốt cần những người bạn cũ đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 440,
+    "quote": "Đừng đo tình bạn bằng tình bạn chân thành giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 441,
+    "quote": "Đôi khi điều quý nhất là khoảng cách không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 442,
+    "quote": "Đừng đo tình bạn bằng lời góp ý thật lòng giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 443,
+    "quote": "Hãy giữ bên mình một lời hỏi thăm không thể chỉ dựa vào lợi ích.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 444,
+    "quote": "Hãy giữ bên mình ranh giới trong tình bạn cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 445,
+    "quote": "Hãy giữ bên mình một lời hỏi thăm cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 446,
+    "quote": "Đừng đo tình bạn bằng sự hiện diện đúng lúc giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 447,
+    "quote": "Một tình bạn tốt cần ranh giới trong tình bạn trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 448,
+    "quote": "Đừng đo tình bạn bằng tình bạn chân thành trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 449,
+    "quote": "Đừng đo tình bạn bằng sự cảm thông giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 450,
+    "quote": "Đôi khi điều quý nhất là sự hiện diện đúng lúc cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 451,
+    "quote": "Đừng đo tình bạn bằng những người bạn cũ cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 452,
+    "quote": "Đôi khi điều quý nhất là sự cảm thông không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 453,
+    "quote": "Đôi khi điều quý nhất là lời góp ý thật lòng trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 454,
+    "quote": "Đôi khi điều quý nhất là một lời hỏi thăm giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 455,
+    "quote": "Đôi khi điều quý nhất là sự tin tưởng trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 456,
+    "quote": "Hãy giữ bên mình lời góp ý thật lòng cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 457,
+    "quote": "Đôi khi điều quý nhất là sự hiện diện đúng lúc đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 458,
+    "quote": "Hãy giữ bên mình sự tin tưởng giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 459,
+    "quote": "Đừng đo tình bạn bằng ranh giới trong tình bạn giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 460,
+    "quote": "Đừng đo tình bạn bằng sự cảm thông không thể chỉ dựa vào lợi ích.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 461,
+    "quote": "Đừng đo tình bạn bằng ranh giới trong tình bạn đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 462,
+    "quote": "Đừng đo tình bạn bằng sự tin tưởng giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 463,
+    "quote": "Một tình bạn tốt cần khoảng cách đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 464,
+    "quote": "Hãy giữ bên mình lời góp ý thật lòng cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 465,
+    "quote": "Hãy học cách sự cảm thông không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 466,
+    "quote": "Đôi khi điều quý nhất là sự cảm thông cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 467,
+    "quote": "Hãy học cách ranh giới trong tình bạn đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 468,
+    "quote": "Một tình bạn tốt cần lời góp ý thật lòng không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 469,
+    "quote": "Đôi khi điều quý nhất là những người bạn cũ giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 470,
+    "quote": "Một tình bạn tốt cần sự hiện diện đúng lúc được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 471,
+    "quote": "Hãy giữ bên mình tình bạn chân thành không thể chỉ dựa vào lợi ích.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 472,
+    "quote": "Hãy giữ bên mình tình bạn chân thành giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 473,
+    "quote": "Một tình bạn tốt cần sự cảm thông giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 474,
+    "quote": "Đừng đo tình bạn bằng sự hiện diện đúng lúc được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 475,
+    "quote": "Đôi khi điều quý nhất là tình bạn chân thành đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 476,
+    "quote": "Hãy giữ bên mình tình bạn chân thành cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 477,
+    "quote": "Đừng đo tình bạn bằng sự tin tưởng được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 478,
+    "quote": "Hãy giữ bên mình một lời hỏi thăm trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 479,
+    "quote": "Đôi khi điều quý nhất là sự cảm thông giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 480,
+    "quote": "Một tình bạn tốt cần những người bạn cũ giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 481,
+    "quote": "Đôi khi điều quý nhất là những lần cùng nhau vượt khó giúp ta thấy mình không đơn độc.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 482,
+    "quote": "Hãy học cách ranh giới trong tình bạn cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 483,
+    "quote": "Hãy giữ bên mình một lời hỏi thăm được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 484,
+    "quote": "Đừng đo tình bạn bằng sự tin tưởng trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 485,
+    "quote": "Hãy giữ bên mình khoảng cách trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 486,
+    "quote": "Đôi khi điều quý nhất là tình bạn chân thành cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 487,
+    "quote": "Một tình bạn tốt cần sự cảm thông cần cả chân thành lẫn giới hạn.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 488,
+    "quote": "Hãy giữ bên mình sự cảm thông không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 489,
+    "quote": "Đừng đo tình bạn bằng khoảng cách cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 490,
+    "quote": "Đôi khi điều quý nhất là sự hiện diện đúng lúc trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 491,
+    "quote": "Hãy học cách một lời hỏi thăm được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 492,
+    "quote": "Một tình bạn tốt cần những người bạn cũ trưởng thành nhờ sự thấu hiểu.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 493,
+    "quote": "Một tình bạn tốt cần sự tin tưởng cần được vun đắp bằng sự tôn trọng.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 494,
+    "quote": "Đừng đo tình bạn bằng một lời hỏi thăm được chứng minh qua hành động.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 495,
+    "quote": "Hãy học cách lời góp ý thật lòng đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 496,
+    "quote": "Một tình bạn tốt cần lời góp ý thật lòng đáng quý hơn những lời hứa lớn lao.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 497,
+    "quote": "Hãy học cách ranh giới trong tình bạn không thể chỉ dựa vào lợi ích.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 498,
+    "quote": "Hãy học cách tình bạn chân thành không thể chỉ dựa vào lợi ích.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 499,
+    "quote": "Đôi khi điều quý nhất là sự hiện diện đúng lúc không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 500,
+    "quote": "Đôi khi điều quý nhất là lời góp ý thật lòng không mất đi chỉ vì ít gặp.",
+    "category": "Tình bạn"
+  },
+  {
+    "id": 501,
+    "quote": "Đừng chờ đến khi lời hỏi han của cha mẹ đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 502,
+    "quote": "Đôi khi hạnh phúc là những người thân yêu cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 503,
+    "quote": "Hãy dành thời gian cho một cuộc gọi về nhà là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 504,
+    "quote": "Đừng quên rằng bữa cơm nhà là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 505,
+    "quote": "Hãy dành thời gian cho những người thân yêu đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 506,
+    "quote": "Hãy trân trọng lời hỏi han của cha mẹ đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 507,
+    "quote": "Hãy dành thời gian cho những người thân yêu lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 508,
+    "quote": "Hãy dành thời gian cho sự hy sinh thầm lặng lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 509,
+    "quote": "Đừng quên rằng mái nhà bình yên lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 510,
+    "quote": "Hãy dành thời gian cho thời gian dành cho gia đình trở nên ấm áp nhờ những điều nhỏ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 511,
+    "quote": "Hãy trân trọng những người thân yêu là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 512,
+    "quote": "Đôi khi hạnh phúc là sự hy sinh thầm lặng là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 513,
+    "quote": "Đôi khi hạnh phúc là sự hy sinh thầm lặng được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 514,
+    "quote": "Đừng quên rằng gia đình lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 515,
+    "quote": "Đôi khi hạnh phúc là sự bao dung là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 516,
+    "quote": "Đừng chờ đến khi sự bao dung là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 517,
+    "quote": "Đôi khi hạnh phúc là bữa cơm nhà lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 518,
+    "quote": "Hãy trân trọng những người thân yêu cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 519,
+    "quote": "Đôi khi hạnh phúc là thời gian dành cho gia đình không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 520,
+    "quote": "Đôi khi hạnh phúc là bữa cơm nhà là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 521,
+    "quote": "Đừng chờ đến khi sự hy sinh thầm lặng là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 522,
+    "quote": "Hãy dành thời gian cho mái nhà bình yên không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 523,
+    "quote": "Đừng quên rằng những người thân yêu là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 524,
+    "quote": "Hãy dành thời gian cho những người thân yêu không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 525,
+    "quote": "Đừng quên rằng sự bao dung lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 526,
+    "quote": "Hãy dành thời gian cho sự hy sinh thầm lặng không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 527,
+    "quote": "Đừng chờ đến khi lời hỏi han của cha mẹ là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 528,
+    "quote": "Hãy trân trọng lời hỏi han của cha mẹ không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 529,
+    "quote": "Hãy dành thời gian cho gia đình không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 530,
+    "quote": "Hãy dành thời gian cho gia đình là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 531,
+    "quote": "Đừng chờ đến khi sự bao dung cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 532,
+    "quote": "Đừng chờ đến khi bữa cơm nhà là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 533,
+    "quote": "Hãy dành thời gian cho mái nhà bình yên được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 534,
+    "quote": "Đôi khi hạnh phúc là sự bao dung là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 535,
+    "quote": "Đừng chờ đến khi bữa cơm nhà được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 536,
+    "quote": "Đôi khi hạnh phúc là một cuộc gọi về nhà lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 537,
+    "quote": "Đừng chờ đến khi thời gian dành cho gia đình được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 538,
+    "quote": "Hãy dành thời gian cho lời hỏi han của cha mẹ là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 539,
+    "quote": "Đôi khi hạnh phúc là một cuộc gọi về nhà cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 540,
+    "quote": "Đôi khi hạnh phúc là bữa cơm nhà là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 541,
+    "quote": "Đôi khi hạnh phúc là sự bao dung lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 542,
+    "quote": "Hãy trân trọng sự bao dung là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 543,
+    "quote": "Đôi khi hạnh phúc là mái nhà bình yên cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 544,
+    "quote": "Hãy trân trọng sự bao dung không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 545,
+    "quote": "Đôi khi hạnh phúc là lời hỏi han của cha mẹ đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 546,
+    "quote": "Đừng quên rằng những người thân yêu không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 547,
+    "quote": "Hãy trân trọng sự hy sinh thầm lặng được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 548,
+    "quote": "Đừng chờ đến khi ký ức tuổi thơ là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 549,
+    "quote": "Đừng quên rằng ký ức tuổi thơ không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 550,
+    "quote": "Đừng quên rằng ký ức tuổi thơ là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 551,
+    "quote": "Hãy trân trọng sự hy sinh thầm lặng là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 552,
+    "quote": "Đừng quên rằng lời hỏi han của cha mẹ là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 553,
+    "quote": "Đừng chờ đến khi một cuộc gọi về nhà lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 554,
+    "quote": "Đừng quên rằng lời hỏi han của cha mẹ được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 555,
+    "quote": "Hãy trân trọng gia đình là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 556,
+    "quote": "Đừng chờ đến khi ký ức tuổi thơ không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 557,
+    "quote": "Đừng chờ đến khi bữa cơm nhà không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 558,
+    "quote": "Hãy dành thời gian cho những người thân yêu được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 559,
+    "quote": "Hãy trân trọng mái nhà bình yên đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 560,
+    "quote": "Đừng chờ đến khi sự bao dung trở nên ấm áp nhờ những điều nhỏ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 561,
+    "quote": "Hãy dành thời gian cho lời hỏi han của cha mẹ là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 562,
+    "quote": "Đôi khi hạnh phúc là ký ức tuổi thơ được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 563,
+    "quote": "Hãy trân trọng mái nhà bình yên lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 564,
+    "quote": "Đừng chờ đến khi bữa cơm nhà lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 565,
+    "quote": "Hãy dành thời gian cho sự bao dung được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 566,
+    "quote": "Đừng quên rằng một cuộc gọi về nhà được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 567,
+    "quote": "Hãy trân trọng bữa cơm nhà đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 568,
+    "quote": "Đừng quên rằng lời hỏi han của cha mẹ lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 569,
+    "quote": "Đừng quên rằng mái nhà bình yên là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 570,
+    "quote": "Đừng quên rằng ký ức tuổi thơ đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 571,
+    "quote": "Đừng quên rằng sự bao dung cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 572,
+    "quote": "Đừng chờ đến khi những người thân yêu được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 573,
+    "quote": "Hãy trân trọng gia đình đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 574,
+    "quote": "Hãy trân trọng những người thân yêu trở nên ấm áp nhờ những điều nhỏ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 575,
+    "quote": "Hãy dành thời gian cho những người thân yêu cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 576,
+    "quote": "Đừng quên rằng ký ức tuổi thơ trở nên ấm áp nhờ những điều nhỏ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 577,
+    "quote": "Đừng chờ đến khi một cuộc gọi về nhà là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 578,
+    "quote": "Đừng chờ đến khi thời gian dành cho gia đình cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 579,
+    "quote": "Đừng quên rằng những người thân yêu cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 580,
+    "quote": "Hãy dành thời gian cho gia đình trở nên ấm áp nhờ những điều nhỏ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 581,
+    "quote": "Đừng quên rằng mái nhà bình yên được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 582,
+    "quote": "Đôi khi hạnh phúc là sự hy sinh thầm lặng không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 583,
+    "quote": "Hãy trân trọng sự bao dung đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 584,
+    "quote": "Hãy trân trọng ký ức tuổi thơ cần sự hiện diện chứ không chỉ vật chất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 585,
+    "quote": "Hãy dành thời gian cho mái nhà bình yên là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 586,
+    "quote": "Hãy trân trọng ký ức tuổi thơ được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 587,
+    "quote": "Hãy dành thời gian cho sự bao dung là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 588,
+    "quote": "Đừng chờ đến khi ký ức tuổi thơ lưu giữ những điều giản dị nhất.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 589,
+    "quote": "Đôi khi hạnh phúc là thời gian dành cho gia đình là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 590,
+    "quote": "Đừng chờ đến khi thời gian dành cho gia đình trở nên ấm áp nhờ những điều nhỏ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 591,
+    "quote": "Hãy trân trọng sự hy sinh thầm lặng là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 592,
+    "quote": "Đừng chờ đến khi sự hy sinh thầm lặng trở nên ấm áp nhờ những điều nhỏ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 593,
+    "quote": "Đôi khi hạnh phúc là lời hỏi han của cha mẹ không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 594,
+    "quote": "Hãy trân trọng thời gian dành cho gia đình không nên bị xem là điều hiển nhiên.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 595,
+    "quote": "Đừng chờ đến khi lời hỏi han của cha mẹ được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 596,
+    "quote": "Đừng chờ đến khi thời gian dành cho gia đình đáng quý hơn những điều xa xỉ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 597,
+    "quote": "Hãy dành thời gian cho gia đình là nơi ta có thể tìm về.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 598,
+    "quote": "Hãy trân trọng mái nhà bình yên được nuôi dưỡng bằng sự quan tâm.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 599,
+    "quote": "Đừng quên rằng thời gian dành cho gia đình trở nên ấm áp nhờ những điều nhỏ.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 600,
+    "quote": "Hãy trân trọng ký ức tuổi thơ là điểm tựa trong những ngày khó khăn.",
+    "category": "Gia đình"
+  },
+  {
+    "id": 601,
+    "quote": "Đừng tìm hạnh phúc thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 602,
+    "quote": "Hãy nhớ lòng biết đủ không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 603,
+    "quote": "Hạnh phúc đôi khi là một cuộc sống cân bằng lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 604,
+    "quote": "Hãy nhớ lòng biết đủ không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 605,
+    "quote": "Đừng tìm những điều nhỏ bé đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 606,
+    "quote": "Đừng để nụ cười chân thành không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 607,
+    "quote": "Hãy nhớ nụ cười chân thành cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 608,
+    "quote": "Hạnh phúc đôi khi là lòng biết đủ không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 609,
+    "quote": "Hạnh phúc đôi khi là sự bình yên không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 610,
+    "quote": "Đừng tìm sự tự do trong tâm trí đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 611,
+    "quote": "Hãy nhớ sự bình yên đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 612,
+    "quote": "Đừng để sự bình yên đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 613,
+    "quote": "Hãy nhớ niềm vui giản dị lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 614,
+    "quote": "Hạnh phúc đôi khi là một cuộc sống cân bằng cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 615,
+    "quote": "Hạnh phúc đôi khi là sự bình yên cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 616,
+    "quote": "Hãy nhớ sự tự do trong tâm trí đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 617,
+    "quote": "Hạnh phúc đôi khi là hạnh phúc đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 618,
+    "quote": "Hãy học cách nhận ra sự tự do trong tâm trí đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 619,
+    "quote": "Hãy học cách nhận ra hạnh phúc đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 620,
+    "quote": "Hạnh phúc đôi khi là nụ cười chân thành không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 621,
+    "quote": "Hãy nhớ sự hài lòng lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 622,
+    "quote": "Hạnh phúc đôi khi là sự tự do trong tâm trí cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 623,
+    "quote": "Đừng tìm niềm vui giản dị đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 624,
+    "quote": "Hạnh phúc đôi khi là những điều nhỏ bé không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 625,
+    "quote": "Hạnh phúc đôi khi là những điều nhỏ bé lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 626,
+    "quote": "Đừng tìm niềm vui giản dị thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 627,
+    "quote": "Hãy học cách nhận ra sự hài lòng không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 628,
+    "quote": "Hãy học cách nhận ra một cuộc sống cân bằng không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 629,
+    "quote": "Hạnh phúc đôi khi là sự tự do trong tâm trí lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 630,
+    "quote": "Đừng tìm sự tự do trong tâm trí thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 631,
+    "quote": "Hạnh phúc đôi khi là một cuộc sống cân bằng đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 632,
+    "quote": "Đừng tìm sự bình yên đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 633,
+    "quote": "Hạnh phúc đôi khi là một ngày khỏe mạnh thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 634,
+    "quote": "Hãy học cách nhận ra những điều nhỏ bé không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 635,
+    "quote": "Đừng tìm lòng biết đủ không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 636,
+    "quote": "Đừng để hạnh phúc lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 637,
+    "quote": "Hãy nhớ lòng biết đủ thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 638,
+    "quote": "Hãy nhớ sự hài lòng không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 639,
+    "quote": "Hạnh phúc đôi khi là một ngày khỏe mạnh đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 640,
+    "quote": "Hãy học cách nhận ra những điều nhỏ bé đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 641,
+    "quote": "Hãy học cách nhận ra hạnh phúc không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 642,
+    "quote": "Hãy nhớ một ngày khỏe mạnh cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 643,
+    "quote": "Đừng để những điều nhỏ bé cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 644,
+    "quote": "Hãy nhớ nụ cười chân thành đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 645,
+    "quote": "Đừng để sự bình yên đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 646,
+    "quote": "Hạnh phúc đôi khi là sự tự do trong tâm trí thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 647,
+    "quote": "Hãy học cách nhận ra sự hài lòng đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 648,
+    "quote": "Hạnh phúc đôi khi là nụ cười chân thành đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 649,
+    "quote": "Hạnh phúc đôi khi là nụ cười chân thành cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 650,
+    "quote": "Đừng tìm niềm vui giản dị không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 651,
+    "quote": "Đừng để hạnh phúc không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 652,
+    "quote": "Hạnh phúc đôi khi là lòng biết đủ cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 653,
+    "quote": "Hãy nhớ nụ cười chân thành đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 654,
+    "quote": "Hạnh phúc đôi khi là niềm vui giản dị lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 655,
+    "quote": "Hạnh phúc đôi khi là sự bình yên lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 656,
+    "quote": "Đừng tìm sự hài lòng đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 657,
+    "quote": "Đừng tìm một ngày khỏe mạnh không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 658,
+    "quote": "Hãy học cách nhận ra một cuộc sống cân bằng lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 659,
+    "quote": "Đừng để sự tự do trong tâm trí lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 660,
+    "quote": "Hãy nhớ nụ cười chân thành không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 661,
+    "quote": "Hạnh phúc đôi khi là sự tự do trong tâm trí đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 662,
+    "quote": "Đừng tìm lòng biết đủ không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 663,
+    "quote": "Hãy học cách nhận ra sự bình yên cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 664,
+    "quote": "Đừng tìm sự tự do trong tâm trí không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 665,
+    "quote": "Đừng tìm nụ cười chân thành không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 666,
+    "quote": "Đừng tìm những điều nhỏ bé lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 667,
+    "quote": "Đừng để sự tự do trong tâm trí đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 668,
+    "quote": "Đừng để lòng biết đủ đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 669,
+    "quote": "Hãy nhớ những điều nhỏ bé không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 670,
+    "quote": "Hạnh phúc đôi khi là sự hài lòng lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 671,
+    "quote": "Hãy học cách nhận ra niềm vui giản dị cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 672,
+    "quote": "Đừng tìm niềm vui giản dị đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 673,
+    "quote": "Đừng tìm sự bình yên lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 674,
+    "quote": "Hãy nhớ sự tự do trong tâm trí không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 675,
+    "quote": "Hãy học cách nhận ra sự bình yên không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 676,
+    "quote": "Đừng để hạnh phúc không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 677,
+    "quote": "Hãy học cách nhận ra một ngày khỏe mạnh không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 678,
+    "quote": "Hạnh phúc đôi khi là niềm vui giản dị không nằm hoàn toàn ở vật chất.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 679,
+    "quote": "Đừng tìm một cuộc sống cân bằng đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 680,
+    "quote": "Hãy học cách nhận ra một cuộc sống cân bằng đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 681,
+    "quote": "Đừng tìm hạnh phúc không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 682,
+    "quote": "Hãy nhớ một cuộc sống cân bằng không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 683,
+    "quote": "Đừng tìm niềm vui giản dị lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 684,
+    "quote": "Hãy nhớ hạnh phúc không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 685,
+    "quote": "Đừng tìm nụ cười chân thành lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 686,
+    "quote": "Hạnh phúc đôi khi là sự hài lòng cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 687,
+    "quote": "Đừng tìm những điều nhỏ bé thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 688,
+    "quote": "Hãy nhớ sự hài lòng thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 689,
+    "quote": "Hạnh phúc đôi khi là một cuộc sống cân bằng thường bắt đầu từ cách ta nhìn nhận.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 690,
+    "quote": "Hạnh phúc đôi khi là nụ cười chân thành đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 691,
+    "quote": "Hãy học cách nhận ra sự hài lòng lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 692,
+    "quote": "Hãy nhớ sự hài lòng cần được nhận ra trong hiện tại.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 693,
+    "quote": "Hãy nhớ niềm vui giản dị không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 694,
+    "quote": "Hãy nhớ sự hài lòng không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 695,
+    "quote": "Hãy nhớ một ngày khỏe mạnh không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 696,
+    "quote": "Đừng tìm một cuộc sống cân bằng đáng quý hơn sự hơn thua.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 697,
+    "quote": "Hạnh phúc đôi khi là lòng biết đủ đến từ việc sống đúng với giá trị của mình.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 698,
+    "quote": "Hạnh phúc đôi khi là hạnh phúc không thể vay mượn từ sự so sánh.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 699,
+    "quote": "Hãy nhớ hạnh phúc không nhất thiết phải ồn ào.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 700,
+    "quote": "Đừng để lòng biết đủ lớn lên khi ta biết sẻ chia.",
+    "category": "Hạnh phúc"
+  },
+  {
+    "id": 701,
+    "quote": "Một cánh cửa khép lại không có nghĩa là những ngày không như ý không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 702,
+    "quote": "Điều quan trọng không phải là một lần bắt đầu lại dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 703,
+    "quote": "Hãy xem thất bại cần được đối diện thay vì né tránh.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 704,
+    "quote": "Một cánh cửa khép lại không có nghĩa là kế hoạch đổ vỡ có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 705,
+    "quote": "Đừng để sai lầm dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 706,
+    "quote": "Sau mỗi lần vấp ngã, hãy sự hoài nghi dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 707,
+    "quote": "Sau mỗi lần vấp ngã, hãy thất bại đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 708,
+    "quote": "Hãy xem sai lầm không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 709,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sai lầm không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 710,
+    "quote": "Sau mỗi lần vấp ngã, hãy con đường vòng có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 711,
+    "quote": "Một cánh cửa khép lại không có nghĩa là thất bại đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 712,
+    "quote": "Hãy xem sự mất mát đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 713,
+    "quote": "Điều quan trọng không phải là thất bại đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 714,
+    "quote": "Một cánh cửa khép lại không có nghĩa là thất bại có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 715,
+    "quote": "Một cánh cửa khép lại không có nghĩa là những ngày không như ý đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 716,
+    "quote": "Sau mỗi lần vấp ngã, hãy lời từ chối không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 717,
+    "quote": "Hãy xem sai lầm giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 718,
+    "quote": "Đừng để bài học đắt giá không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 719,
+    "quote": "Đừng để kế hoạch đổ vỡ không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 720,
+    "quote": "Đừng để thất bại không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 721,
+    "quote": "Sau mỗi lần vấp ngã, hãy một lần bắt đầu lại không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 722,
+    "quote": "Hãy xem kế hoạch đổ vỡ dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 723,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sai lầm dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 724,
+    "quote": "Điều quan trọng không phải là lời từ chối giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 725,
+    "quote": "Một cánh cửa khép lại không có nghĩa là bài học đắt giá không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 726,
+    "quote": "Hãy xem sự mất mát không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 727,
+    "quote": "Sau mỗi lần vấp ngã, hãy con đường vòng dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 728,
+    "quote": "Sau mỗi lần vấp ngã, hãy thất bại có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 729,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sự mất mát dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 730,
+    "quote": "Sau mỗi lần vấp ngã, hãy con đường vòng không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 731,
+    "quote": "Sau mỗi lần vấp ngã, hãy thất bại giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 732,
+    "quote": "Một cánh cửa khép lại không có nghĩa là lời từ chối đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 733,
+    "quote": "Sau mỗi lần vấp ngã, hãy sai lầm cần được đối diện thay vì né tránh.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 734,
+    "quote": "Hãy xem sự hoài nghi đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 735,
+    "quote": "Đừng để sai lầm cần được đối diện thay vì né tránh.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 736,
+    "quote": "Điều quan trọng không phải là con đường vòng giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 737,
+    "quote": "Sau mỗi lần vấp ngã, hãy những ngày không như ý không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 738,
+    "quote": "Điều quan trọng không phải là lời từ chối không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 739,
+    "quote": "Sau mỗi lần vấp ngã, hãy kế hoạch đổ vỡ giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 740,
+    "quote": "Đừng để sự mất mát không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 741,
+    "quote": "Một cánh cửa khép lại không có nghĩa là thất bại không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 742,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sự hoài nghi không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 743,
+    "quote": "Đừng để sự mất mát có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 744,
+    "quote": "Điều quan trọng không phải là kế hoạch đổ vỡ đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 745,
+    "quote": "Sau mỗi lần vấp ngã, hãy một lần bắt đầu lại đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 746,
+    "quote": "Đừng để sự mất mát cần được đối diện thay vì né tránh.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 747,
+    "quote": "Hãy xem những ngày không như ý không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 748,
+    "quote": "Một cánh cửa khép lại không có nghĩa là những ngày không như ý giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 749,
+    "quote": "Một cánh cửa khép lại không có nghĩa là một lần bắt đầu lại không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 750,
+    "quote": "Đừng để sự hoài nghi không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 751,
+    "quote": "Điều quan trọng không phải là sai lầm có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 752,
+    "quote": "Sau mỗi lần vấp ngã, hãy bài học đắt giá đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 753,
+    "quote": "Một cánh cửa khép lại không có nghĩa là thất bại giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 754,
+    "quote": "Một cánh cửa khép lại không có nghĩa là bài học đắt giá dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 755,
+    "quote": "Điều quan trọng không phải là sự hoài nghi giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 756,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sự mất mát giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 757,
+    "quote": "Đừng để kế hoạch đổ vỡ giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 758,
+    "quote": "Sau mỗi lần vấp ngã, hãy thất bại không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 759,
+    "quote": "Một cánh cửa khép lại không có nghĩa là con đường vòng không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 760,
+    "quote": "Đừng để bài học đắt giá giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 761,
+    "quote": "Điều quan trọng không phải là sự mất mát không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 762,
+    "quote": "Sau mỗi lần vấp ngã, hãy bài học đắt giá dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 763,
+    "quote": "Hãy xem những ngày không như ý giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 764,
+    "quote": "Đừng để những ngày không như ý không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 765,
+    "quote": "Điều quan trọng không phải là bài học đắt giá cần được đối diện thay vì né tránh.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 766,
+    "quote": "Một cánh cửa khép lại không có nghĩa là một lần bắt đầu lại dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 767,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sự hoài nghi không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 768,
+    "quote": "Sau mỗi lần vấp ngã, hãy sự hoài nghi giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 769,
+    "quote": "Điều quan trọng không phải là một lần bắt đầu lại không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 770,
+    "quote": "Hãy xem kế hoạch đổ vỡ đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 771,
+    "quote": "Sau mỗi lần vấp ngã, hãy sai lầm không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 772,
+    "quote": "Hãy xem sự hoài nghi không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 773,
+    "quote": "Điều quan trọng không phải là con đường vòng không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 774,
+    "quote": "Đừng để sự mất mát giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 775,
+    "quote": "Hãy xem con đường vòng cần được đối diện thay vì né tránh.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 776,
+    "quote": "Hãy xem thất bại không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 777,
+    "quote": "Đừng để một lần bắt đầu lại có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 778,
+    "quote": "Sau mỗi lần vấp ngã, hãy sự mất mát đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 779,
+    "quote": "Điều quan trọng không phải là một lần bắt đầu lại không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 780,
+    "quote": "Sau mỗi lần vấp ngã, hãy một lần bắt đầu lại không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 781,
+    "quote": "Đừng để một lần bắt đầu lại giúp ta nhận ra điểm cần thay đổi.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 782,
+    "quote": "Điều quan trọng không phải là sự hoài nghi không quyết định toàn bộ tương lai.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 783,
+    "quote": "Hãy xem lời từ chối đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 784,
+    "quote": "Sau mỗi lần vấp ngã, hãy sự mất mát không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 785,
+    "quote": "Điều quan trọng không phải là những ngày không như ý dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 786,
+    "quote": "Một cánh cửa khép lại không có nghĩa là con đường vòng không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 787,
+    "quote": "Đừng để lời từ chối đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 788,
+    "quote": "Một cánh cửa khép lại không có nghĩa là kế hoạch đổ vỡ dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 789,
+    "quote": "Sau mỗi lần vấp ngã, hãy kế hoạch đổ vỡ không đáng sợ bằng việc ngừng cố gắng.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 790,
+    "quote": "Sau mỗi lần vấp ngã, hãy một lần bắt đầu lại không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 791,
+    "quote": "Sau mỗi lần vấp ngã, hãy con đường vòng cần được đối diện thay vì né tránh.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 792,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sự hoài nghi có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 793,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sự mất mát không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 794,
+    "quote": "Điều quan trọng không phải là thất bại không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 795,
+    "quote": "Đừng để sai lầm có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 796,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sự mất mát có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 797,
+    "quote": "Một cánh cửa khép lại không có nghĩa là lời từ chối có thể trở thành bài học nếu ta chịu nhìn lại.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 798,
+    "quote": "Điều quan trọng không phải là những ngày không như ý không xóa bỏ giá trị của nỗ lực.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 799,
+    "quote": "Hãy xem những ngày không như ý dạy ta chuẩn bị tốt hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 800,
+    "quote": "Một cánh cửa khép lại không có nghĩa là sai lầm đôi khi mở ra hướng đi phù hợp hơn.",
+    "category": "Thất bại"
+  },
+  {
+    "id": 801,
+    "quote": "Người ham học luôn thói quen đặt câu hỏi giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 802,
+    "quote": "Muốn hiểu sâu, hãy khả năng lắng nghe giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 803,
+    "quote": "Đừng nhầm góc nhìn khác biệt giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 804,
+    "quote": "Đừng nhầm góc nhìn khác biệt cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 805,
+    "quote": "Đừng nhầm những giả định cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 806,
+    "quote": "Đừng ngừng góc nhìn khác biệt mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 807,
+    "quote": "Muốn hiểu sâu, hãy sự tò mò mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 808,
+    "quote": "Người ham học luôn tinh thần học hỏi giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 809,
+    "quote": "Đừng ngừng sự tò mò giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 810,
+    "quote": "Đừng nhầm sự tò mò giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 811,
+    "quote": "Hãy rèn luyện tinh thần học hỏi giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 812,
+    "quote": "Hãy rèn luyện sự tập trung mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 813,
+    "quote": "Đừng nhầm tư duy cởi mở có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 814,
+    "quote": "Muốn hiểu sâu, hãy sự tò mò giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 815,
+    "quote": "Đừng nhầm sự tập trung giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 816,
+    "quote": "Muốn hiểu sâu, hãy tinh thần học hỏi giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 817,
+    "quote": "Đừng ngừng tinh thần học hỏi phát triển nhờ thực hành.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 818,
+    "quote": "Đừng nhầm khả năng tự phản biện giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 819,
+    "quote": "Hãy rèn luyện góc nhìn khác biệt có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 820,
+    "quote": "Người ham học luôn những giả định phát triển nhờ thực hành.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 821,
+    "quote": "Đừng ngừng thói quen đặt câu hỏi cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 822,
+    "quote": "Người ham học luôn sự tập trung giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 823,
+    "quote": "Người ham học luôn sự tò mò cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 824,
+    "quote": "Hãy rèn luyện kiến thức giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 825,
+    "quote": "Người ham học luôn khả năng tự phản biện giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 826,
+    "quote": "Muốn hiểu sâu, hãy thói quen đặt câu hỏi giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 827,
+    "quote": "Muốn hiểu sâu, hãy kiến thức giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 828,
+    "quote": "Muốn hiểu sâu, hãy những giả định là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 829,
+    "quote": "Người ham học luôn tư duy cởi mở phát triển nhờ thực hành.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 830,
+    "quote": "Muốn hiểu sâu, hãy khả năng lắng nghe giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 831,
+    "quote": "Đừng nhầm góc nhìn khác biệt là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 832,
+    "quote": "Người ham học luôn thói quen đặt câu hỏi có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 833,
+    "quote": "Đừng nhầm sự tò mò là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 834,
+    "quote": "Đừng ngừng sự tò mò cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 835,
+    "quote": "Muốn hiểu sâu, hãy những giả định giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 836,
+    "quote": "Người ham học luôn sự tập trung cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 837,
+    "quote": "Người ham học luôn sự tập trung là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 838,
+    "quote": "Hãy rèn luyện những giả định giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 839,
+    "quote": "Đừng nhầm tinh thần học hỏi có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 840,
+    "quote": "Đừng ngừng những giả định mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 841,
+    "quote": "Đừng ngừng khả năng tự phản biện giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 842,
+    "quote": "Người ham học luôn sự tò mò giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 843,
+    "quote": "Đừng ngừng thói quen đặt câu hỏi giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 844,
+    "quote": "Hãy rèn luyện sự tò mò giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 845,
+    "quote": "Đừng nhầm khả năng tự phản biện cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 846,
+    "quote": "Muốn hiểu sâu, hãy góc nhìn khác biệt giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 847,
+    "quote": "Đừng ngừng khả năng tự phản biện có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 848,
+    "quote": "Đừng ngừng kiến thức cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 849,
+    "quote": "Muốn hiểu sâu, hãy góc nhìn khác biệt mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 850,
+    "quote": "Người ham học luôn sự tò mò mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 851,
+    "quote": "Muốn hiểu sâu, hãy kiến thức mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 852,
+    "quote": "Đừng nhầm những giả định mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 853,
+    "quote": "Đừng nhầm khả năng tự phản biện mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 854,
+    "quote": "Muốn hiểu sâu, hãy sự tò mò cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 855,
+    "quote": "Hãy rèn luyện sự tập trung cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 856,
+    "quote": "Người ham học luôn sự tập trung giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 857,
+    "quote": "Đừng ngừng tư duy cởi mở cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 858,
+    "quote": "Muốn hiểu sâu, hãy khả năng tự phản biện phát triển nhờ thực hành.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 859,
+    "quote": "Hãy rèn luyện khả năng lắng nghe cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 860,
+    "quote": "Hãy rèn luyện khả năng lắng nghe phát triển nhờ thực hành.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 861,
+    "quote": "Hãy rèn luyện tinh thần học hỏi giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 862,
+    "quote": "Muốn hiểu sâu, hãy sự tập trung cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 863,
+    "quote": "Người ham học luôn những giả định giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 864,
+    "quote": "Hãy rèn luyện thói quen đặt câu hỏi giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 865,
+    "quote": "Đừng nhầm thói quen đặt câu hỏi giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 866,
+    "quote": "Người ham học luôn tinh thần học hỏi là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 867,
+    "quote": "Hãy rèn luyện khả năng lắng nghe giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 868,
+    "quote": "Đừng nhầm góc nhìn khác biệt có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 869,
+    "quote": "Muốn hiểu sâu, hãy những giả định có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 870,
+    "quote": "Người ham học luôn tư duy cởi mở giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 871,
+    "quote": "Người ham học luôn góc nhìn khác biệt giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 872,
+    "quote": "Hãy rèn luyện những giả định cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 873,
+    "quote": "Đừng ngừng sự tập trung cần đi cùng sự khiêm tốn.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 874,
+    "quote": "Đừng ngừng khả năng tự phản biện là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 875,
+    "quote": "Đừng nhầm tư duy cởi mở giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 876,
+    "quote": "Đừng ngừng kiến thức có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 877,
+    "quote": "Đừng nhầm tinh thần học hỏi mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 878,
+    "quote": "Muốn hiểu sâu, hãy tinh thần học hỏi mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 879,
+    "quote": "Đừng nhầm tư duy cởi mở giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 880,
+    "quote": "Người ham học luôn tinh thần học hỏi có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 881,
+    "quote": "Đừng ngừng tư duy cởi mở phát triển nhờ thực hành.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 882,
+    "quote": "Người ham học luôn khả năng lắng nghe có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 883,
+    "quote": "Đừng nhầm thói quen đặt câu hỏi mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 884,
+    "quote": "Muốn hiểu sâu, hãy sự tò mò là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 885,
+    "quote": "Hãy rèn luyện sự tập trung giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 886,
+    "quote": "Đừng ngừng tinh thần học hỏi có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 887,
+    "quote": "Đừng nhầm sự tập trung giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 888,
+    "quote": "Muốn hiểu sâu, hãy góc nhìn khác biệt có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 889,
+    "quote": "Đừng nhầm góc nhìn khác biệt mở rộng giới hạn hiểu biết.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 890,
+    "quote": "Muốn hiểu sâu, hãy khả năng lắng nghe giúp ta nhìn thấy nhiều khả năng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 891,
+    "quote": "Muốn hiểu sâu, hãy sự tập trung là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 892,
+    "quote": "Người ham học luôn tinh thần học hỏi giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 893,
+    "quote": "Đừng nhầm thói quen đặt câu hỏi là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 894,
+    "quote": "Hãy rèn luyện khả năng lắng nghe là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 895,
+    "quote": "Đừng ngừng những giả định có giá trị khi được áp dụng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 896,
+    "quote": "Đừng nhầm góc nhìn khác biệt phát triển nhờ thực hành.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 897,
+    "quote": "Người ham học luôn những giả định là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 898,
+    "quote": "Muốn hiểu sâu, hãy kiến thức giúp ta tránh kết luận vội vàng.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 899,
+    "quote": "Muốn hiểu sâu, hãy sự tập trung giúp ta phân biệt dữ kiện và cảm xúc.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 900,
+    "quote": "Người ham học luôn tư duy cởi mở là nền tảng của tiến bộ.",
+    "category": "Tư duy"
+  },
+  {
+    "id": 901,
+    "quote": "Hãy chịu trách nhiệm với sự tự chủ xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 902,
+    "quote": "Đừng quên chăm sóc ranh giới cá nhân không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 903,
+    "quote": "Trước khi thay đổi thế giới, hãy sự bình tĩnh giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 904,
+    "quote": "Hãy chịu trách nhiệm với lòng can đảm lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 905,
+    "quote": "Hãy chịu trách nhiệm với ranh giới cá nhân không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 906,
+    "quote": "Hãy học cách lòng tự tin không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 907,
+    "quote": "Hãy chịu trách nhiệm với giá trị riêng không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 908,
+    "quote": "Trước khi thay đổi thế giới, hãy lòng can đảm giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 909,
+    "quote": "Đừng quên chăm sóc thói quen mỗi ngày không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 910,
+    "quote": "Hãy học cách sự tự chủ xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 911,
+    "quote": "Đừng quên chăm sóc ranh giới cá nhân được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 912,
+    "quote": "Hãy chịu trách nhiệm với sự bình tĩnh được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 913,
+    "quote": "Trước khi thay đổi thế giới, hãy thói quen mỗi ngày lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 914,
+    "quote": "Đừng quên chăm sóc sức khỏe được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 915,
+    "quote": "Đừng đánh mất lòng tự tin là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 916,
+    "quote": "Đừng đánh mất sự bình tĩnh xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 917,
+    "quote": "Đừng đánh mất giá trị riêng giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 918,
+    "quote": "Trước khi thay đổi thế giới, hãy sự kiên định được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 919,
+    "quote": "Hãy học cách lòng can đảm xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 920,
+    "quote": "Hãy học cách sự tự chủ lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 921,
+    "quote": "Đừng quên chăm sóc lòng can đảm không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 922,
+    "quote": "Đừng quên chăm sóc lòng can đảm không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 923,
+    "quote": "Hãy học cách giá trị riêng lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 924,
+    "quote": "Đừng đánh mất sự tự chủ cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 925,
+    "quote": "Đừng đánh mất thói quen mỗi ngày cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 926,
+    "quote": "Hãy học cách lòng can đảm lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 927,
+    "quote": "Đừng quên chăm sóc lòng tự tin không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 928,
+    "quote": "Đừng đánh mất sự tự chủ lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 929,
+    "quote": "Trước khi thay đổi thế giới, hãy sự tự chủ không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 930,
+    "quote": "Hãy chịu trách nhiệm với ranh giới cá nhân giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 931,
+    "quote": "Đừng quên chăm sóc lòng tự tin xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 932,
+    "quote": "Hãy học cách giá trị riêng giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 933,
+    "quote": "Hãy học cách sự kiên định xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 934,
+    "quote": "Hãy học cách sự tự chủ là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 935,
+    "quote": "Đừng quên chăm sóc lòng tự tin cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 936,
+    "quote": "Đừng quên chăm sóc giá trị riêng là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 937,
+    "quote": "Trước khi thay đổi thế giới, hãy sự tự chủ là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 938,
+    "quote": "Đừng quên chăm sóc thói quen mỗi ngày là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 939,
+    "quote": "Đừng đánh mất ranh giới cá nhân xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 940,
+    "quote": "Hãy chịu trách nhiệm với sức khỏe xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 941,
+    "quote": "Đừng đánh mất lời hứa với chính mình là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 942,
+    "quote": "Hãy học cách sự tự chủ không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 943,
+    "quote": "Hãy học cách sự bình tĩnh không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 944,
+    "quote": "Đừng đánh mất lòng tự tin lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 945,
+    "quote": "Trước khi thay đổi thế giới, hãy sự tự chủ xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 946,
+    "quote": "Đừng quên chăm sóc giá trị riêng không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 947,
+    "quote": "Đừng đánh mất thói quen mỗi ngày không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 948,
+    "quote": "Trước khi thay đổi thế giới, hãy giá trị riêng không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 949,
+    "quote": "Hãy chịu trách nhiệm với thói quen mỗi ngày xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 950,
+    "quote": "Đừng quên chăm sóc lời hứa với chính mình không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 951,
+    "quote": "Hãy chịu trách nhiệm với ranh giới cá nhân không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 952,
+    "quote": "Hãy học cách sức khỏe lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 953,
+    "quote": "Hãy chịu trách nhiệm với sự bình tĩnh là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 954,
+    "quote": "Đừng đánh mất sự kiên định không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 955,
+    "quote": "Đừng quên chăm sóc lời hứa với chính mình giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 956,
+    "quote": "Đừng quên chăm sóc lòng tự tin được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 957,
+    "quote": "Hãy chịu trách nhiệm với giá trị riêng không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 958,
+    "quote": "Hãy học cách lòng tự tin không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 959,
+    "quote": "Đừng quên chăm sóc sự bình tĩnh xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 960,
+    "quote": "Hãy chịu trách nhiệm với sự bình tĩnh lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 961,
+    "quote": "Hãy học cách sức khỏe cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 962,
+    "quote": "Trước khi thay đổi thế giới, hãy lời hứa với chính mình xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 963,
+    "quote": "Hãy chịu trách nhiệm với sức khỏe giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 964,
+    "quote": "Hãy chịu trách nhiệm với sự tự chủ không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 965,
+    "quote": "Trước khi thay đổi thế giới, hãy sự bình tĩnh là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 966,
+    "quote": "Đừng đánh mất thói quen mỗi ngày lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 967,
+    "quote": "Đừng quên chăm sóc sự kiên định được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 968,
+    "quote": "Đừng quên chăm sóc lời hứa với chính mình không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 969,
+    "quote": "Trước khi thay đổi thế giới, hãy sự bình tĩnh cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 970,
+    "quote": "Đừng quên chăm sóc sự tự chủ xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 971,
+    "quote": "Hãy học cách sự bình tĩnh xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 972,
+    "quote": "Hãy học cách lòng can đảm cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 973,
+    "quote": "Đừng đánh mất lòng tự tin không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 974,
+    "quote": "Đừng quên chăm sóc sự bình tĩnh không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 975,
+    "quote": "Hãy chịu trách nhiệm với sự bình tĩnh không nên phụ thuộc vào lời khen.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 976,
+    "quote": "Đừng quên chăm sóc thói quen mỗi ngày lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 977,
+    "quote": "Hãy chịu trách nhiệm với lòng tự tin được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 978,
+    "quote": "Đừng đánh mất sự bình tĩnh cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 979,
+    "quote": "Hãy chịu trách nhiệm với giá trị riêng lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 980,
+    "quote": "Hãy chịu trách nhiệm với lòng can đảm cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 981,
+    "quote": "Trước khi thay đổi thế giới, hãy lòng tự tin giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 982,
+    "quote": "Trước khi thay đổi thế giới, hãy giá trị riêng được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 983,
+    "quote": "Đừng đánh mất sức khỏe xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 984,
+    "quote": "Hãy học cách sự tự chủ giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 985,
+    "quote": "Đừng quên chăm sóc thói quen mỗi ngày xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 986,
+    "quote": "Hãy chịu trách nhiệm với sức khỏe cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 987,
+    "quote": "Đừng đánh mất sự kiên định được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 988,
+    "quote": "Đừng đánh mất giá trị riêng lớn dần qua những quyết định đúng đắn.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 989,
+    "quote": "Trước khi thay đổi thế giới, hãy ranh giới cá nhân xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 990,
+    "quote": "Hãy chịu trách nhiệm với thói quen mỗi ngày là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 991,
+    "quote": "Hãy học cách ranh giới cá nhân giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 992,
+    "quote": "Trước khi thay đổi thế giới, hãy sự bình tĩnh không cần sự công nhận của tất cả mọi người.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 993,
+    "quote": "Hãy chịu trách nhiệm với giá trị riêng xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 994,
+    "quote": "Hãy chịu trách nhiệm với lời hứa với chính mình được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 995,
+    "quote": "Đừng quên chăm sóc giá trị riêng được xây dựng từ hành động nhỏ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 996,
+    "quote": "Hãy học cách lòng tự tin giúp ta sống có định hướng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 997,
+    "quote": "Hãy học cách thói quen mỗi ngày xứng đáng được chăm sóc.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 998,
+    "quote": "Đừng quên chăm sóc lời hứa với chính mình là tài sản không nên xem nhẹ.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 999,
+    "quote": "Đừng quên chăm sóc sự kiên định cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  },
+  {
+    "id": 1000,
+    "quote": "Trước khi thay đổi thế giới, hãy sức khỏe cần được bảo vệ bằng lựa chọn rõ ràng.",
+    "category": "Bản thân"
+  }
+]
