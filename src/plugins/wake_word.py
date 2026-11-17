@@ -5,6 +5,9 @@ from typing import Any
 
 from src.constants.constants import AbortReason
 from src.plugins.base import Plugin
+from src.utils.logging_config import get_logger
+
+logger = get_logger(__name__)
 
 
 class WakeWordPlugin(Plugin):
@@ -18,40 +21,47 @@ class WakeWordPlugin(Plugin):
 
     async def setup(self, app: Any) -> None:
         self.app = app
+        logger.info("WakeWordPlugin: bắt đầu khởi tạo...")
         try:
             from src.audio_processing.wake_word_detect import WakeWordDetector
 
             self.detector = WakeWordDetector()
             if not getattr(self.detector, "enabled", False):
+                logger.warning(
+                    "WakeWordPlugin: detector bị tắt hoặc khởi tạo Porcupine thất bại."
+                )
                 self.detector = None
                 return
 
             # Gắn kết callback
             self.detector.on_detected(self._on_detected)
             self.detector.on_error = self._on_error
-        except ImportError:
-            # WakeWordDetector module not available
+            logger.info("WakeWordPlugin: khởi tạo thành công.")
+        except ImportError as error:
             self.detector = None
-        except Exception:
-            # Other initialization errors
+            logger.error("WakeWordPlugin: thiếu dependency: %s", error)
+        except Exception as error:
             self.detector = None
+            logger.error("WakeWordPlugin: khởi tạo thất bại: %s", error, exc_info=True)
 
     async def start(self) -> None:
         if not self.detector:
+            logger.warning("WakeWordPlugin: detector chưa sẵn sàng, bỏ qua start.")
             return
         try:
             # Cần bộ giải mã âm thanh để cung cấp dữ liệu PCM thô
             audio_codec = getattr(self.app, "audio_codec", None)
             if audio_codec is None:
-                from src.utils.logging_config import get_logger
-                logger = get_logger(__name__)
                 logger.warning("WakeWordPlugin: audio_codec not found in app, detection will not start.")
                 return
-            await self.detector.start(audio_codec)
+            started = await self.detector.start(audio_codec)
+            if started:
+                logger.info("WakeWordPlugin: đã bắt đầu lắng nghe wake word.")
+            else:
+                logger.warning("WakeWordPlugin: không thể bắt đầu detector.")
         except Exception as e:
             # Log but don't crash if wake word fails to start
-            from src.utils.logging_config import get_logger
-            get_logger(__name__).warning(f"Failed to start wake word detection: {e}")
+            logger.error("WakeWordPlugin: bắt đầu detection thất bại: %s", e, exc_info=True)
 
     async def stop(self) -> None:
         if self.detector:
@@ -69,9 +79,6 @@ class WakeWordPlugin(Plugin):
 
     async def _on_detected(self, wake_word, full_text):
         # Phát hiện từ đánh thức: chuyển sang đối thoại tự động (tự động chọn thời gian thực/dừng tự động dựa trên AEC)
-        from src.utils.logging_config import get_logger
-        logger = get_logger(__name__)
-        
         try:
             logger.info(f"🎤 WakeWordPlugin: Detected '{wake_word}' - '{full_text}'")
             # Nếu đang nói, để logic ngắt/máy trạng thái của ứng dụng xử lý

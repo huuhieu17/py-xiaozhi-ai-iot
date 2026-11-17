@@ -196,6 +196,7 @@ class MusicPlayer:
         self._stream_player_backend: str = ""
         self._stream_monitor_task: Optional[asyncio.Task] = None
         self._is_stream_url = False
+        self._playback_lock = asyncio.Lock()
 
         # MPV IPC socket support cho volume realtime
         self._mpv_ipc_socket_path: Optional[str] = None
@@ -1029,6 +1030,11 @@ class MusicPlayer:
                 )
                 self._stream_player_process = process
                 self._stream_player_backend = backend
+                logger.info(
+                    "Đã khởi động player: backend=%s pid=%s",
+                    backend,
+                    process.pid,
+                )
                 return True
             except Exception as e:
                 logger.warning(f"Khởi chạy {backend} thất bại: {e}")
@@ -1042,6 +1048,13 @@ class MusicPlayer:
         return False
 
     async def _start_external_playback(self, start_position: float = 0.0) -> bool:
+        """Chuyển bài một cách tuần tự, tránh chạy đồng thời nhiều player."""
+        async with self._playback_lock:
+            return await self._start_external_playback_unlocked(start_position)
+
+    async def _start_external_playback_unlocked(
+        self, start_position: float = 0.0
+    ) -> bool:
         """Khởi động phát nhạc bằng backend ngoài với target hiện tại."""
         target = (self._playback_target or self.current_url or "").strip()
         if not target:
@@ -1128,14 +1141,22 @@ class MusicPlayer:
         if process is not None:
             try:
                 if process.poll() is None:
+                    logger.info(
+                        "Dừng player cũ trước khi phát bài mới: backend=%s pid=%s",
+                        self._stream_player_backend,
+                        process.pid,
+                    )
                     process.terminate()
                     await asyncio.to_thread(process.wait, 2)
-            except Exception:
+            except subprocess.TimeoutExpired:
                 try:
                     if process.poll() is None:
                         process.kill()
+                        await asyncio.to_thread(process.wait, 2)
                 except Exception:
-                    pass
+                    logger.warning("Không thể kết thúc hoàn toàn player cũ")
+            except Exception as e:
+                logger.warning("Lỗi khi dừng player cũ: %s", e)
             self._stream_player_process = None
             self._stream_player_backend = ""
 
