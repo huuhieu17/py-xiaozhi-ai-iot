@@ -8,6 +8,7 @@ from typing import Any, Dict
 import requests
 
 from src.mcp.tools.music import get_music_player_instance
+from src.mcp.tools.music.music_player import get_optimized_stream_bitrate
 from src.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -52,7 +53,8 @@ class YouTubeToolsManager:
                 elif "v=" in query:
                     video_id = query.split("v=", 1)[1].split("&", 1)[0]
             stream_url = (
-                f"{base}/youtube/play?videoId={quote(video_id)}&bitrate=192k"
+                f"{base}/youtube/play?videoId={quote(video_id)}"
+                f"&bitrate={quote(get_optimized_stream_bitrate('192k'))}"
             )
             result = await self._player.play_stream_url(stream_url, title=title)
             return result.get("message", "Đã xử lý yêu cầu phát YouTube.")

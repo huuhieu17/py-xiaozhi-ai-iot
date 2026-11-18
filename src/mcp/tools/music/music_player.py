@@ -14,6 +14,7 @@ import subprocess
 import tempfile
 import time
 import uuid
+import platform
 from pathlib import Path
 from typing import List, Optional, Tuple
 from urllib.parse import parse_qs, urljoin, urlparse
@@ -33,6 +34,43 @@ except ImportError:
     MUTAGEN_AVAILABLE = False
 
 logger = get_logger(__name__)
+
+
+def is_low_memory_device() -> bool:
+    """Detect ARM boards with less than 1 GB RAM, with an explicit override."""
+    override = str(os.environ.get("XIAOZHI_LOW_MEMORY", "")).strip().lower()
+    if override in {"1", "true", "yes", "on"}:
+        return True
+
+    machine = platform.machine().lower()
+    is_arm = machine.startswith(("arm", "aarch"))
+    if not is_arm:
+        return False
+
+    try:
+        import psutil
+
+        return psutil.virtual_memory().total < 1024 * 1024 * 1024
+    except Exception:
+        try:
+            with open("/proc/meminfo", "r", encoding="utf-8") as meminfo:
+                for line in meminfo:
+                    if line.startswith("MemTotal:"):
+                        return int(line.split()[1]) < 1024 * 1024
+        except Exception:
+            pass
+    return False
+
+
+def get_optimized_stream_bitrate(requested: str = "192k") -> str:
+    """Keep stream transcoding at a memory-safe bitrate on low-RAM devices."""
+    configured = str(os.environ.get("MUSIC_STREAM_BITRATE", "")).strip()
+    if configured:
+        requested = configured
+    if is_low_memory_device():
+        requested = str(os.environ.get("MUSIC_LOW_MEMORY_BITRATE", "128k")).strip()
+
+    return requested if re.fullmatch(r"\d{2,3}k", requested.lower()) else "128k"
 
 
 def _find_player_executable(name: str) -> Optional[str]:
@@ -197,10 +235,13 @@ class MusicPlayer:
         self._stream_monitor_task: Optional[asyncio.Task] = None
         self._is_stream_url = False
         self._playback_lock = asyncio.Lock()
+        self._stream_restart_count = 0
+        self._low_memory_mode = is_low_memory_device()
 
         # MPV IPC socket support cho volume realtime
         self._mpv_ipc_socket_path: Optional[str] = None
         self._mpv_command_id = 0
+        self._ffplay_volume_percent = 70
 
         logger.info("Khởi tạo singleton trình phát nhạc hoàn tất")
 
@@ -225,6 +266,8 @@ class MusicPlayer:
             self.cache_dir.mkdir(parents=True, exist_ok=True)
             # Tạo thư mục cache tạm thời
             self.temp_cache_dir.mkdir(parents=True, exist_ok=True)
+            self._low_memory_mode = is_low_memory_device()
+            self._enforce_cache_limit()
             logger.info(f"Khởi tạo thư mục cache nhạc hoàn tất: {self.cache_dir}")
         except Exception as e:
             logger.error(f"Tạo thư mục cache thất bại: {e}")
@@ -251,6 +294,33 @@ class MusicPlayer:
             logger.info("Dọn dẹp cache nhạc tạm thời hoàn tất")
         except Exception as e:
             logger.error(f"Dọn dẹp thư mục cache tạm thời thất bại: {e}")
+
+    def _enforce_cache_limit(self) -> None:
+        """Limit disk cache so low-RAM devices do not accumulate large media files."""
+        try:
+            max_bytes = (
+                256 * 1024 * 1024
+                if getattr(self, "_low_memory_mode", False)
+                else 1024 * 1024 * 1024
+            )
+            files = [
+                (path, path.stat().st_mtime, path.stat().st_size)
+                for path in self.cache_dir.glob("*.mp3")
+                if path.is_file()
+            ]
+            total = sum(size for _, _, size in files)
+            if total <= max_bytes:
+                return
+            for path, _, size in sorted(files, key=lambda item: item[1]):
+                try:
+                    path.unlink()
+                    total -= size
+                    if total <= max_bytes:
+                        break
+                except OSError:
+                    pass
+        except Exception as e:
+            logger.debug("Không thể giới hạn cache nhạc: %s", e)
 
     def _scan_local_music(self, force_refresh: bool = False) -> List[MusicMetadata]:
         """
@@ -807,6 +877,22 @@ class MusicPlayer:
                     "method": "ipc_realtime",
                 }
 
+        # ffplay hỗ trợ điều khiển âm lượng realtime qua stdin.
+        # Tránh restart ffplay (vốn làm gián đoạn stream) bằng cách gửi
+        # các phím '9'/'0' tương ứng tăng/giảm từng bước 10%.
+        if (
+            self._stream_player_backend == "ffplay"
+            and self.is_playing
+            and not self.paused
+            and await self._send_ffplay_volume(volume)
+        ):
+            return {
+                "status": "success",
+                "message": f"Đã đặt âm lượng: {self._volume_percent}%",
+                "volume": self._volume_percent,
+                "method": "stdin_realtime",
+            }
+
         # Fallback: restart player (ffplay/vlc hoặc mpv không có IPC)
         if self.is_playing and not self.paused:
             current_pos = max(self.current_position, time.time() - self.start_play_time)
@@ -978,11 +1064,27 @@ class MusicPlayer:
     async def _start_stream_player(self, url: str, start_position: float) -> bool:
         """Khởi chạy player ngoài để phát audio bằng URL/đường dẫn local."""
         candidates = []
-        
+
+        ffplay_path = _find_player_executable("ffplay")
+        if ffplay_path:
+            cmd = [ffplay_path, "-nodisp", "-autoexit", "-loglevel", "error", "-vn"]
+            if start_position > 0:
+                cmd.extend(["-ss", f"{start_position:.3f}"])
+            cmd.extend(["-volume", str(self._volume_percent)])
+            if self._low_memory_mode:
+                cmd.extend([
+                    "-probesize", "32768",
+                    "-analyzeduration", "100000",
+                    "-threads", "1",
+                    "-framedrop",
+                ])
+            cmd.append(url)
+            if self._low_memory_mode:
+                candidates.append(("ffplay", cmd))
 
         mpv_path = _find_player_executable("mpv")
         if mpv_path:
-            # MPV với IPC socket để điều khiển volume realtime
+            # MPV with IPC socket for realtime volume control
             self._mpv_ipc_socket_path = self._get_mpv_ipc_socket_path()
             cmd = [mpv_path, "--no-video", "--really-quiet", "--force-window=no"]
             if self._mpv_ipc_socket_path:
@@ -990,11 +1092,19 @@ class MusicPlayer:
             if start_position > 0:
                 cmd.append(f"--start={start_position:.3f}")
             cmd.append(f"--volume={self._volume_percent}")
+            if self._low_memory_mode:
+                cmd.extend([
+                    "--cache=yes",
+                    "--cache-secs=8",
+                    "--demuxer-readahead-secs=8",
+                    "--vd-lavc-threads=1",
+                    "--ad-lavc-threads=1",
+                    "--audio-buffer=0.5",
+                ])
             cmd.append(url)
             candidates.append(("mpv", cmd))
 
-        ffplay_path = _find_player_executable("ffplay")
-        if ffplay_path:
+        if ffplay_path and not self._low_memory_mode:
             cmd = [ffplay_path, "-nodisp", "-autoexit", "-loglevel", "error", "-vn"]
             if start_position > 0:
                 cmd.extend(["-ss", f"{start_position:.3f}"])
@@ -1016,8 +1126,9 @@ class MusicPlayer:
 
         for backend, command in candidates:
             try:
+                ffplay_stdin = subprocess.PIPE if backend == "ffplay" else subprocess.DEVNULL
                 kwargs = dict(
-                    stdin=subprocess.DEVNULL,
+                    stdin=ffplay_stdin,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
@@ -1030,6 +1141,8 @@ class MusicPlayer:
                 )
                 self._stream_player_process = process
                 self._stream_player_backend = backend
+                if backend == "ffplay":
+                    self._ffplay_volume_percent = self._volume_percent
                 logger.info(
                     "Đã khởi động player: backend=%s pid=%s",
                     backend,
@@ -1087,6 +1200,9 @@ class MusicPlayer:
         if not started:
             return False
 
+        if not hasattr(self, "_stream_restart_target") or self._stream_restart_target != target:
+            self._stream_restart_count = 0
+        self._stream_restart_target = target
         self.is_playing = True
         self.paused = False
         self.current_position = start_position
@@ -1109,6 +1225,39 @@ class MusicPlayer:
 
                 if self._stream_player_process.poll() is None:
                     continue
+
+                process = self._stream_player_process
+                returncode = process.returncode
+                elapsed = max(0.0, time.time() - self.start_play_time)
+                target = (self._playback_target or self.current_url or "").strip()
+
+                # A non-zero exit within 5 minutes is usually a stream/player
+                # failure on low-RAM ARM devices, not a normal end of track.
+                if (
+                    self._low_memory_mode
+                    and returncode != 0
+                    and elapsed < 300
+                    and target
+                    and self._stream_restart_count < 2
+                ):
+                    self._stream_restart_count += 1
+                    logger.warning(
+                        "Player stream thoát bất thường (exit=%s, elapsed=%.1fs); "
+                        "khởi động lại lần %d",
+                        returncode,
+                        elapsed,
+                        self._stream_restart_count,
+                    )
+                    self._stream_player_process = None
+                    started = await self._start_stream_player(
+                        target,
+                        start_position=max(0.0, elapsed),
+                    )
+                    if started:
+                        self.is_playing = True
+                        self.paused = False
+                        self.start_play_time = time.time() - elapsed
+                        continue
 
                 await self._handle_playback_finished()
                 break
@@ -1146,6 +1295,11 @@ class MusicPlayer:
                         self._stream_player_backend,
                         process.pid,
                     )
+                    if process.stdin:
+                        try:
+                            process.stdin.close()
+                        except Exception:
+                            pass
                     process.terminate()
                     await asyncio.to_thread(process.wait, 2)
             except subprocess.TimeoutExpired:
@@ -1217,6 +1371,7 @@ class MusicPlayer:
             # Tải xuống hoàn tất, di chuyển vào thư mục cache chính thức
             cache_path = self.cache_dir / filename
             shutil.move(str(temp_path), str(cache_path))
+            self._enforce_cache_limit()
 
             logger.info(f"Nhạc đã tải xuống và cache: {cache_path}")
             return cache_path
@@ -1480,6 +1635,48 @@ class MusicPlayer:
         except Exception as e:
             logger.debug(f"Gửi lệnh tới MPV thất bại: {e}")
             return False
+
+    async def _send_ffplay_volume(self, volume: int) -> bool:
+        """Change ffplay volume through stdin without restarting playback."""
+        process = self._stream_player_process
+        if (
+            process is None
+            or process.poll() is not None
+            or process.stdin is None
+        ):
+            return False
+
+        target = max(0, min(100, int(volume)))
+        current = max(0, min(100, int(self._ffplay_volume_percent)))
+
+        def send_keys() -> bool:
+            try:
+                if target > current:
+                    steps = max(1, round((target - current) / 10))
+                    payload = b"9" * steps
+                elif target < current:
+                    steps = max(1, round((current - target) / 10))
+                    payload = b"0" * steps
+                else:
+                    return True
+
+                process.stdin.write(payload)
+                process.stdin.flush()
+                return True
+            except (BrokenPipeError, OSError, ValueError):
+                return False
+
+        success = await asyncio.to_thread(send_keys)
+        if success:
+            # Key controls are approximate 10% steps; keep an updated estimate
+            # so repeated volume changes converge instead of accumulating drift.
+            if target > current:
+                self._ffplay_volume_percent = min(100, current + round((target - current) / 10) * 10)
+            elif target < current:
+                self._ffplay_volume_percent = max(0, current - round((current - target) / 10) * 10)
+            else:
+                self._ffplay_volume_percent = target
+        return success
 
     async def _safe_update_ui(self, message: str):
         """

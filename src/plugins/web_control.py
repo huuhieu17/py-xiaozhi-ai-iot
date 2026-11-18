@@ -16,6 +16,7 @@ web = None
 import requests
 
 from src.mcp.tools.music import get_music_player_instance
+from src.mcp.tools.music.music_player import get_optimized_stream_bitrate
 from src.plugins.base import Plugin
 from src.utils.logging_config import get_logger
 from src.utils.resource_finder import get_project_root
@@ -380,7 +381,8 @@ class WebControlPlugin(Plugin):
         if not url:
             raise RuntimeError("track_url không hợp lệ")
 
-        stream_url = self._soundcloud_api_url("stream/mp3") + f"?url={quote(url)}&bitrate={quote(bitrate)}"
+        optimized_bitrate = get_optimized_stream_bitrate(bitrate)
+        stream_url = self._soundcloud_api_url("stream/mp3") + f"?url={quote(url)}&bitrate={quote(optimized_bitrate)}"
         # Lấy title từ proxy nếu chưa có
         resolved_title = title
         if not resolved_title:
@@ -871,7 +873,7 @@ class WebControlPlugin(Plugin):
             or resolved_video_id
         ).strip()
         stream_mp3_url = self._youtube_api_url("stream/mp3") + (
-            f"?videoId={quote(resolved_video_id)}&bitrate=192k"
+            f"?videoId={quote(resolved_video_id)}&bitrate={quote(get_optimized_stream_bitrate('192k'))}"
         )
         logger.info("Resolved YouTube videoId=%s title=%s stream_mp3_url=%s", resolved_video_id, title, stream_mp3_url)
         player = get_music_player_instance()

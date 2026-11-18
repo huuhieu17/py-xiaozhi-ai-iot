@@ -8,6 +8,7 @@ from urllib.parse import quote
 import requests
 
 from src.mcp.tools.music import get_music_player_instance
+from src.mcp.tools.music.music_player import get_optimized_stream_bitrate
 from src.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -53,7 +54,7 @@ class SoundCloudToolsManager:
                 track_url = str(first.get("url") or first.get("permalink_url") or "").strip()
                 title = str(first.get("title") or query).strip()
 
-            bitrate = str(args.get("bitrate", "128k"))
+            bitrate = get_optimized_stream_bitrate(str(args.get("bitrate", "128k")))
             stream_url = f"{base}/soundcloud/stream/mp3?url={quote(track_url)}&bitrate={quote(bitrate)}"
             result = await self._player.play_stream_url(stream_url, title=title)
             return result.get("message", "Đã phát SoundCloud.")

@@ -342,6 +342,20 @@ optimize_system() {
         fi
         log "✓ Giảm GPU memory xuống 16MB"
     fi
+
+    # Pi 512MB needs a small swap area to avoid process kill under memory pressure.
+    TOTAL_KB=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+    if [ "${TOTAL_KB:-0}" -lt 1048576 ]; then
+        if command -v dphys-swapfile >/dev/null 2>&1; then
+            sudo sed -i 's/^CONF_SWAPSIZE=.*/CONF_SWAPSIZE=512/' /etc/dphys-swapfile 2>/dev/null || true
+            if ! grep -q '^CONF_SWAPSIZE=512' /etc/dphys-swapfile 2>/dev/null; then
+                echo 'CONF_SWAPSIZE=512' | sudo tee -a /etc/dphys-swapfile >/dev/null
+            fi
+            sudo dphys-swapfile setup >/dev/null 2>&1 || true
+            sudo dphys-swapfile swapon >/dev/null 2>&1 || true
+            log "✓ Đã cấu hình swap 512MB cho thiết bị RAM thấp"
+        fi
+    fi
     
     log "✓ Đã tắt các service không cần thiết"
 }

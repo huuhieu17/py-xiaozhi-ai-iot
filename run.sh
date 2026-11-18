@@ -13,6 +13,7 @@ mkdir -p logs
 # Python UTF-8 Encoding
 export PYTHONIOENCODING=utf-8
 export PYTHONUTF8=1
+export MALLOC_ARENA_MAX="${MALLOC_ARENA_MAX:-2}"
 
 # # Detect display environment
 # if [ -n "$WAYLAND_DISPLAY" ]; then
