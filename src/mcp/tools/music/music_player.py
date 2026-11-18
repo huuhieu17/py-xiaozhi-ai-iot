@@ -241,7 +241,6 @@ class MusicPlayer:
         # MPV IPC socket support cho volume realtime
         self._mpv_ipc_socket_path: Optional[str] = None
         self._mpv_command_id = 0
-        self._ffplay_volume_percent = 70
 
         logger.info("Khởi tạo singleton trình phát nhạc hoàn tất")
 
@@ -863,7 +862,12 @@ class MusicPlayer:
         self._volume_percent = volume
 
         # Nếu mpv IPC socket có sẵn, gửi lệnh realtime không cần restart player
-        if self._mpv_ipc_socket_path and self.is_playing and not self.paused:
+        if (
+            self._stream_player_backend == "mpv"
+            and self._mpv_ipc_socket_path
+            and self.is_playing
+            and not self.paused
+        ):
             success = await self._send_mpv_command(
                 "set_property",
                 "volume",
@@ -876,22 +880,6 @@ class MusicPlayer:
                     "volume": self._volume_percent,
                     "method": "ipc_realtime",
                 }
-
-        # ffplay hỗ trợ điều khiển âm lượng realtime qua stdin.
-        # Tránh restart ffplay (vốn làm gián đoạn stream) bằng cách gửi
-        # các phím '9'/'0' tương ứng tăng/giảm từng bước 10%.
-        if (
-            self._stream_player_backend == "ffplay"
-            and self.is_playing
-            and not self.paused
-            and await self._send_ffplay_volume(volume)
-        ):
-            return {
-                "status": "success",
-                "message": f"Đã đặt âm lượng: {self._volume_percent}%",
-                "volume": self._volume_percent,
-                "method": "stdin_realtime",
-            }
 
         # Fallback: restart player (ffplay/vlc hoặc mpv không có IPC)
         if self.is_playing and not self.paused:
@@ -1065,23 +1053,6 @@ class MusicPlayer:
         """Khởi chạy player ngoài để phát audio bằng URL/đường dẫn local."""
         candidates = []
 
-        ffplay_path = _find_player_executable("ffplay")
-        if ffplay_path:
-            cmd = [ffplay_path, "-nodisp", "-autoexit", "-loglevel", "error", "-vn"]
-            if start_position > 0:
-                cmd.extend(["-ss", f"{start_position:.3f}"])
-            cmd.extend(["-volume", str(self._volume_percent)])
-            if self._low_memory_mode:
-                cmd.extend([
-                    "-probesize", "32768",
-                    "-analyzeduration", "100000",
-                    "-threads", "1",
-                    "-framedrop",
-                ])
-            cmd.append(url)
-            if self._low_memory_mode:
-                candidates.append(("ffplay", cmd))
-
         mpv_path = _find_player_executable("mpv")
         if mpv_path:
             # MPV with IPC socket for realtime volume control
@@ -1104,11 +1075,19 @@ class MusicPlayer:
             cmd.append(url)
             candidates.append(("mpv", cmd))
 
-        if ffplay_path and not self._low_memory_mode:
+        ffplay_path = _find_player_executable("ffplay")
+        if ffplay_path:
             cmd = [ffplay_path, "-nodisp", "-autoexit", "-loglevel", "error", "-vn"]
             if start_position > 0:
                 cmd.extend(["-ss", f"{start_position:.3f}"])
             cmd.extend(["-volume", str(self._volume_percent)])
+            if self._low_memory_mode:
+                cmd.extend([
+                    "-probesize", "32768",
+                    "-analyzeduration", "100000",
+                    "-threads", "1",
+                    "-framedrop",
+                ])
             cmd.append(url)
             candidates.append(("ffplay", cmd))
 
@@ -1126,9 +1105,8 @@ class MusicPlayer:
 
         for backend, command in candidates:
             try:
-                ffplay_stdin = subprocess.PIPE if backend == "ffplay" else subprocess.DEVNULL
                 kwargs = dict(
-                    stdin=ffplay_stdin,
+                    stdin=subprocess.DEVNULL,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
@@ -1141,8 +1119,6 @@ class MusicPlayer:
                 )
                 self._stream_player_process = process
                 self._stream_player_backend = backend
-                if backend == "ffplay":
-                    self._ffplay_volume_percent = self._volume_percent
                 logger.info(
                     "Đã khởi động player: backend=%s pid=%s",
                     backend,
@@ -1635,48 +1611,6 @@ class MusicPlayer:
         except Exception as e:
             logger.debug(f"Gửi lệnh tới MPV thất bại: {e}")
             return False
-
-    async def _send_ffplay_volume(self, volume: int) -> bool:
-        """Change ffplay volume through stdin without restarting playback."""
-        process = self._stream_player_process
-        if (
-            process is None
-            or process.poll() is not None
-            or process.stdin is None
-        ):
-            return False
-
-        target = max(0, min(100, int(volume)))
-        current = max(0, min(100, int(self._ffplay_volume_percent)))
-
-        def send_keys() -> bool:
-            try:
-                if target > current:
-                    steps = max(1, round((target - current) / 10))
-                    payload = b"9" * steps
-                elif target < current:
-                    steps = max(1, round((current - target) / 10))
-                    payload = b"0" * steps
-                else:
-                    return True
-
-                process.stdin.write(payload)
-                process.stdin.flush()
-                return True
-            except (BrokenPipeError, OSError, ValueError):
-                return False
-
-        success = await asyncio.to_thread(send_keys)
-        if success:
-            # Key controls are approximate 10% steps; keep an updated estimate
-            # so repeated volume changes converge instead of accumulating drift.
-            if target > current:
-                self._ffplay_volume_percent = min(100, current + round((target - current) / 10) * 10)
-            elif target < current:
-                self._ffplay_volume_percent = max(0, current - round((current - target) / 10) * 10)
-            else:
-                self._ffplay_volume_percent = target
-        return success
 
     async def _safe_update_ui(self, message: str):
         """
