@@ -65,9 +65,7 @@ class AIChatPlugin(Plugin):
         # Tạo HTTP client
         self.http_client = httpx.AsyncClient(timeout=9999)
         logger.info(f"AI Chat plugin started (API: {self.api_url})")
-        await asyncio.sleep(2)  # Đảm bảo async context
-        await self.handle_ai_query("Bạn hãy hỏi tôi chào tôi, và hỏi 1 câu ngắn gọn được không, ví dụ bạn có khoẻ không, hoặc thời tiết hay gì đó, hãy trả lời tôi bằng tiếng Việt nhé ngắn gọn thôi, không dài dòng random chủ đề câu hỏi")
-                      
+        await asyncio.sleep(2)  # Đảm bảo async context              
     async def stop(self) -> None:
         """Dừng plugin"""
         if self.http_client:
